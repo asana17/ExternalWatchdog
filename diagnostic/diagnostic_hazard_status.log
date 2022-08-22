@@ -1,0 +1,1068 @@
+
+stamp:
+  sec: 1660872876
+  nanosec: 302160085
+status:
+  level: 3
+  emergency: true
+  emergency_holding: false
+  diag_no_fault:
+  - level: "\x03"
+    name: /autoware/localization/performance_monitoring/matching_score
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\0"
+    name: /autoware/planning/performance_monitoring/trajectory_validation
+    message: OK
+    hardware_id: ''
+    values:
+    - key: trajectory_curvature_validation
+      value: OK
+    - key: trajectory_point_validation
+      value: OK
+    - key: trajectory_interval_validation
+      value: OK
+    - key: trajectory_relative_angle_validation
+      value: OK
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_curvature_validation/planning_error_monitor: trajecto...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_point_validation/planning_error_monitor: trajectory_p...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_interval_validation/planning_error_monitor: trajector...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_relative_angle_validation/planning_error_monitor: tra...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: /autoware/sensing/node_alive_monitoring
+    message: OK
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: OK
+  - level: "\0"
+    name: '/autoware/sensing/node_alive_monitoring/topic_status/ad_service_state_monitor: sensing_topic_status'
+    message: OK
+    hardware_id: ad_service_state_monitor
+    values: []
+  - level: "\0"
+    name: /autoware/system/node_alive_monitoring
+    message: OK
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: OK
+  - level: "\0"
+    name: '/autoware/system/node_alive_monitoring/topic_status/ad_service_state_monitor: system_topic_status'
+    message: OK
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /system/emergency/control_cmd status
+      value: OK
+  - level: "\x02"
+    name: /autoware/system/resource_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: /autoware/system/resource_monitoring/clock
+      value: OK
+    - key: /autoware/system/resource_monitoring/cpu
+      value: Error
+    - key: /autoware/system/resource_monitoring/gpu
+      value: Error
+    - key: /autoware/system/resource_monitoring/memory
+      value: OK
+    - key: /autoware/system/resource_monitoring/network
+      value: OK
+    - key: /autoware/system/resource_monitoring/storage
+      value: Error
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/clock/clock_offset/ntp_monitor: NTP Offset'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: Frequency
+      value: 13.457 ppm fast
+    - key: Last offset
+      value: +0.000179330 seconds
+    - key: Leap status
+      value: Normal
+    - key: RMS offset
+      value: 0.000248728 seconds
+    - key: Ref time (UTC)
+      value: Fri Aug 19 01:34:35 2022
+    - key: Reference ID
+      value: 81FA23FA (x.ns.gin.ntt.net)
+    - key: Residual freq
+      value: +0.000 ppm
+    - key: Root delay
+      value: 0.124490581 seconds
+    - key: Root dispersion
+      value: 0.010136385 seconds
+    - key: Skew
+      value: 0.028 ppm
+    - key: Stratum
+      value: '3'
+    - key: System time
+      value: 0.000613670 seconds slow of NTP time
+    - key: Update interval
+      value: 1028.8 seconds
+    - key: execution time
+      value: 26.421951 ms
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/cpu/temperature/cpu_monitor: CPU Temperature'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: Package id 0
+      value: 56.0 DegC
+    - key: Core 0
+      value: 43.0 DegC
+    - key: Core 1
+      value: 41.0 DegC
+    - key: Core 2
+      value: 56.0 DegC
+    - key: Core 3
+      value: 42.0 DegC
+    - key: Core 4
+      value: 41.0 DegC
+    - key: Core 5
+      value: 40.0 DegC
+    - key: Core 6
+      value: 41.0 DegC
+    - key: Core 7
+      value: 42.0 DegC
+    - key: execution time
+      value: 0.278195 ms
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/cpu/thermal_throttling/cpu_monitor: CPU Thermal Throttling'
+    message: connect error
+    hardware_id: asana17-t4
+    values:
+    - key: connect
+      value: Connection refused
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/cpu/usage/cpu_monitor: CPU Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'CPU all: status'
+      value: OK
+    - key: 'CPU all: total'
+      value: 11.79%
+    - key: 'CPU all: usr'
+      value: 8.28%
+    - key: 'CPU all: nice'
+      value: 0.00%
+    - key: 'CPU all: sys'
+      value: 3.39%
+    - key: 'CPU all: idle'
+      value: 88.21%
+    - key: 'CPU 0: status'
+      value: OK
+    - key: 'CPU 0: total'
+      value: 14.00%
+    - key: 'CPU 0: usr'
+      value: 5.00%
+    - key: 'CPU 0: nice'
+      value: 0.00%
+    - key: 'CPU 0: sys'
+      value: 9.00%
+    - key: 'CPU 0: idle'
+      value: 86.00%
+    - key: 'CPU 1: status'
+      value: OK
+    - key: 'CPU 1: total'
+      value: 21.00%
+    - key: 'CPU 1: usr'
+      value: 19.00%
+    - key: 'CPU 1: nice'
+      value: 0.00%
+    - key: 'CPU 1: sys'
+      value: 2.00%
+    - key: 'CPU 1: idle'
+      value: 79.00%
+    - key: 'CPU 2: status'
+      value: OK
+    - key: 'CPU 2: total'
+      value: 26.00%
+    - key: 'CPU 2: usr'
+      value: 20.00%
+    - key: 'CPU 2: nice'
+      value: 0.00%
+    - key: 'CPU 2: sys'
+      value: 6.00%
+    - key: 'CPU 2: idle'
+      value: 74.00%
+    - key: 'CPU 3: status'
+      value: OK
+    - key: 'CPU 3: total'
+      value: 5.94%
+    - key: 'CPU 3: usr'
+      value: 4.95%
+    - key: 'CPU 3: nice'
+      value: 0.00%
+    - key: 'CPU 3: sys'
+      value: 0.99%
+    - key: 'CPU 3: idle'
+      value: 94.06%
+    - key: 'CPU 4: status'
+      value: OK
+    - key: 'CPU 4: total'
+      value: 6.93%
+    - key: 'CPU 4: usr'
+      value: 5.94%
+    - key: 'CPU 4: nice'
+      value: 0.00%
+    - key: 'CPU 4: sys'
+      value: 0.00%
+    - key: 'CPU 4: idle'
+      value: 93.07%
+    - key: 'CPU 5: status'
+      value: OK
+    - key: 'CPU 5: total'
+      value: 9.28%
+    - key: 'CPU 5: usr'
+      value: 4.12%
+    - key: 'CPU 5: nice'
+      value: 0.00%
+    - key: 'CPU 5: sys'
+      value: 5.15%
+    - key: 'CPU 5: idle'
+      value: 90.72%
+    - key: 'CPU 6: status'
+      value: OK
+    - key: 'CPU 6: total'
+      value: 7.00%
+    - key: 'CPU 6: usr'
+      value: 4.00%
+    - key: 'CPU 6: nice'
+      value: 0.00%
+    - key: 'CPU 6: sys'
+      value: 3.00%
+    - key: 'CPU 6: idle'
+      value: 93.00%
+    - key: 'CPU 7: status'
+      value: OK
+    - key: 'CPU 7: total'
+      value: 4.08%
+    - key: 'CPU 7: usr'
+      value: 3.06%
+    - key: 'CPU 7: nice'
+      value: 0.00%
+    - key: 'CPU 7: sys'
+      value: 1.02%
+    - key: 'CPU 7: idle'
+      value: 95.92%
+    - key: execution time
+      value: 1011.680725 ms
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/memory_usage/gpu_monitor: GPU Memory Usage'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/temperature/gpu_monitor: GPU Temperature'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/thermal_throttling/gpu_monitor: GPU Thermal Throttling'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/gpu_usage/gpu_monitor: GPU Usage'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/memory/usage/mem_monitor: Memory Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'Mem: usage'
+      value: 56.60%
+    - key: 'Mem: total'
+      value: 15.6G
+    - key: 'Mem: used'
+      value: 8.4G
+    - key: 'Mem: free'
+      value: 715M
+    - key: 'Mem: shared'
+      value: 133M
+    - key: 'Mem: buff/cache'
+      value: 6.5G
+    - key: 'Mem: available'
+      value: 6.8G
+    - key: 'Swap: total'
+      value: 14.9G
+    - key: 'Swap: used'
+      value: 7.5M
+    - key: 'Swap: free'
+      value: 14.9G
+    - key: 'Total: total'
+      value: 30.5G
+    - key: 'Total: used'
+      value: 8.4G
+    - key: 'Total: free'
+      value: 15.6G
+    - key: 'Total: used+'
+      value: 8.5G
+    - key: execution time
+      value: 42.133705 ms
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/network/network_usage/net_monitor: Network Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'Network 0: status'
+      value: OK
+    - key: 'Network 0: interface name'
+      value: enp6s0
+    - key: 'Network 0: rx_usage'
+      value: 0.00%
+    - key: 'Network 0: tx_usage'
+      value: 0.48%
+    - key: 'Network 0: rx_traffic'
+      value: 0.00 MBit/s
+    - key: 'Network 0: tx_traffic'
+      value: 4.79 MBit/s
+    - key: 'Network 0: capacity'
+      value: 1000.0 MBit/s
+    - key: 'Network 0: mtu'
+      value: '1500'
+    - key: 'Network 0: rx_bytes'
+      value: '1471055891'
+    - key: 'Network 0: rx_errors'
+      value: '0'
+    - key: 'Network 0: tx_bytes'
+      value: '160565705'
+    - key: 'Network 0: tx_errors'
+      value: '0'
+    - key: 'Network 0: collisions'
+      value: '0'
+    - key: 'Network 1: status'
+      value: down
+    - key: 'Network 1: interface name'
+      value: docker0
+    - key: 'Network 1: rx_usage'
+      value: 0.00%
+    - key: 'Network 1: tx_usage'
+      value: 0.00%
+    - key: 'Network 1: rx_traffic'
+      value: 0.00 MBit/s
+    - key: 'Network 1: tx_traffic'
+      value: 0.00 MBit/s
+    - key: 'Network 1: capacity'
+      value: 65535.0 MBit/s
+    - key: 'Network 1: mtu'
+      value: '1500'
+    - key: 'Network 1: rx_bytes'
+      value: '0'
+    - key: 'Network 1: rx_errors'
+      value: '0'
+    - key: 'Network 1: tx_bytes'
+      value: '0'
+    - key: 'Network 1: tx_errors'
+      value: '0'
+    - key: 'Network 1: collisions'
+      value: '0'
+    - key: execution time
+      value: 0.169406 ms
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/storage/temperature/hdd_monitor: HDD Temperature'
+    message: connect error
+    hardware_id: asana17-t4
+    values:
+    - key: connect
+      value: Connection refused
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/storage/usage/hdd_monitor: HDD Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'HDD 0: status'
+      value: OK
+    - key: 'HDD 0: filesystem'
+      value: /dev/sdc3
+    - key: 'HDD 0: size'
+      value: 460368 MiB
+    - key: 'HDD 0: used'
+      value: 206115 MiB
+    - key: 'HDD 0: avail'
+      value: 230796 MiB
+    - key: 'HDD 0: use'
+      value: 48%
+    - key: 'HDD 0: mounted on'
+      value: /
+    - key: execution time
+      value: 30.273991 ms
+  diag_safe_fault: []
+  diag_latent_fault: []
+  diag_single_point_fault:
+  - level: "\x02"
+    name: /autoware/control/autonomous_driving/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/control/autonomous_driving/node_alive_monitoring/topic_status/ad_service_state_monitor: control_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /control/trajectory_follower/control_cmd status
+      value: Not Received
+    - key: /control/command/control_cmd status
+      value: Not Received
+  - level: "\x03"
+    name: /autoware/control/autonomous_driving/performance_monitoring/lane_departure
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x03"
+    name: /autoware/control/control_command_gate/node_alive_monitoring
+    message: Stale
+    hardware_id: ''
+    values:
+    - key: heartbeat
+      value: Stale
+  - level: "\x03"
+    name: /autoware/control/control_command_gate/node_alive_monitoring/heartbeat
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x02"
+    name: /autoware/localization/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/localization/node_alive_monitoring/topic_status/ad_service_state_monitor: localization_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /initialpose2d status
+      value: Not Received
+  - level: "\x03"
+    name: /autoware/localization/performance_monitoring/localization_accuracy
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x02"
+    name: /autoware/map/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/map/node_alive_monitoring/topic_status/ad_service_state_monitor: map_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /map/vector_map status
+      value: Not Received
+    - key: /map/pointcloud_map status
+      value: Not Received
+  - level: "\x02"
+    name: /autoware/perception/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/perception/node_alive_monitoring/topic_status/ad_service_state_monitor: perception_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /perception/object_recognition/objects status
+      value: Not Received
+  - level: "\x02"
+    name: /autoware/planning/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/planning/node_alive_monitoring/topic_status/ad_service_state_monitor: planning_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /planning/mission_planning/route status
+      value: Not Received
+    - key: /planning/scenario_planning/trajectory status
+      value: Not Received
+  - level: "\x03"
+    name: /autoware/system/emergency_stop_operation
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x02"
+    name: /autoware/vehicle/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/vehicle/node_alive_monitoring/topic_status/ad_service_state_monitor: vehicle_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /vehicle/status/velocity_status status
+      value: Not Received
+    - key: /vehicle/status/steering_status status
+      value: Not Received
+---
+stamp:
+  sec: 1660872876
+  nanosec: 400667972
+status:
+  level: 3
+  emergency: true
+  emergency_holding: false
+  diag_no_fault:
+  - level: "\x03"
+    name: /autoware/localization/performance_monitoring/matching_score
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\0"
+    name: /autoware/planning/performance_monitoring/trajectory_validation
+    message: OK
+    hardware_id: ''
+    values:
+    - key: trajectory_curvature_validation
+      value: OK
+    - key: trajectory_point_validation
+      value: OK
+    - key: trajectory_interval_validation
+      value: OK
+    - key: trajectory_relative_angle_validation
+      value: OK
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_curvature_validation/planning_error_monitor: trajecto...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_point_validation/planning_error_monitor: trajectory_p...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_interval_validation/planning_error_monitor: trajector...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: '/autoware/planning/performance_monitoring/trajectory_validation/trajectory_relative_angle_validation/planning_error_monitor: tra...'
+    message: No trajectory message was set.
+    hardware_id: planning_error_monitor
+    values: []
+  - level: "\0"
+    name: /autoware/sensing/node_alive_monitoring
+    message: OK
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: OK
+  - level: "\0"
+    name: '/autoware/sensing/node_alive_monitoring/topic_status/ad_service_state_monitor: sensing_topic_status'
+    message: OK
+    hardware_id: ad_service_state_monitor
+    values: []
+  - level: "\0"
+    name: /autoware/system/node_alive_monitoring
+    message: OK
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: OK
+  - level: "\0"
+    name: '/autoware/system/node_alive_monitoring/topic_status/ad_service_state_monitor: system_topic_status'
+    message: OK
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /system/emergency/control_cmd status
+      value: OK
+  - level: "\x02"
+    name: /autoware/system/resource_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: /autoware/system/resource_monitoring/clock
+      value: OK
+    - key: /autoware/system/resource_monitoring/cpu
+      value: Error
+    - key: /autoware/system/resource_monitoring/gpu
+      value: Error
+    - key: /autoware/system/resource_monitoring/memory
+      value: OK
+    - key: /autoware/system/resource_monitoring/network
+      value: OK
+    - key: /autoware/system/resource_monitoring/storage
+      value: Error
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/clock/clock_offset/ntp_monitor: NTP Offset'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: Frequency
+      value: 13.457 ppm fast
+    - key: Last offset
+      value: +0.000179330 seconds
+    - key: Leap status
+      value: Normal
+    - key: RMS offset
+      value: 0.000248728 seconds
+    - key: Ref time (UTC)
+      value: Fri Aug 19 01:34:35 2022
+    - key: Reference ID
+      value: 81FA23FA (x.ns.gin.ntt.net)
+    - key: Residual freq
+      value: +0.000 ppm
+    - key: Root delay
+      value: 0.124490581 seconds
+    - key: Root dispersion
+      value: 0.010136385 seconds
+    - key: Skew
+      value: 0.028 ppm
+    - key: Stratum
+      value: '3'
+    - key: System time
+      value: 0.000613670 seconds slow of NTP time
+    - key: Update interval
+      value: 1028.8 seconds
+    - key: execution time
+      value: 26.421951 ms
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/cpu/temperature/cpu_monitor: CPU Temperature'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: Package id 0
+      value: 56.0 DegC
+    - key: Core 0
+      value: 43.0 DegC
+    - key: Core 1
+      value: 41.0 DegC
+    - key: Core 2
+      value: 56.0 DegC
+    - key: Core 3
+      value: 42.0 DegC
+    - key: Core 4
+      value: 41.0 DegC
+    - key: Core 5
+      value: 40.0 DegC
+    - key: Core 6
+      value: 41.0 DegC
+    - key: Core 7
+      value: 42.0 DegC
+    - key: execution time
+      value: 0.278195 ms
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/cpu/thermal_throttling/cpu_monitor: CPU Thermal Throttling'
+    message: connect error
+    hardware_id: asana17-t4
+    values:
+    - key: connect
+      value: Connection refused
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/cpu/usage/cpu_monitor: CPU Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'CPU all: status'
+      value: OK
+    - key: 'CPU all: total'
+      value: 11.79%
+    - key: 'CPU all: usr'
+      value: 8.28%
+    - key: 'CPU all: nice'
+      value: 0.00%
+    - key: 'CPU all: sys'
+      value: 3.39%
+    - key: 'CPU all: idle'
+      value: 88.21%
+    - key: 'CPU 0: status'
+      value: OK
+    - key: 'CPU 0: total'
+      value: 14.00%
+    - key: 'CPU 0: usr'
+      value: 5.00%
+    - key: 'CPU 0: nice'
+      value: 0.00%
+    - key: 'CPU 0: sys'
+      value: 9.00%
+    - key: 'CPU 0: idle'
+      value: 86.00%
+    - key: 'CPU 1: status'
+      value: OK
+    - key: 'CPU 1: total'
+      value: 21.00%
+    - key: 'CPU 1: usr'
+      value: 19.00%
+    - key: 'CPU 1: nice'
+      value: 0.00%
+    - key: 'CPU 1: sys'
+      value: 2.00%
+    - key: 'CPU 1: idle'
+      value: 79.00%
+    - key: 'CPU 2: status'
+      value: OK
+    - key: 'CPU 2: total'
+      value: 26.00%
+    - key: 'CPU 2: usr'
+      value: 20.00%
+    - key: 'CPU 2: nice'
+      value: 0.00%
+    - key: 'CPU 2: sys'
+      value: 6.00%
+    - key: 'CPU 2: idle'
+      value: 74.00%
+    - key: 'CPU 3: status'
+      value: OK
+    - key: 'CPU 3: total'
+      value: 5.94%
+    - key: 'CPU 3: usr'
+      value: 4.95%
+    - key: 'CPU 3: nice'
+      value: 0.00%
+    - key: 'CPU 3: sys'
+      value: 0.99%
+    - key: 'CPU 3: idle'
+      value: 94.06%
+    - key: 'CPU 4: status'
+      value: OK
+    - key: 'CPU 4: total'
+      value: 6.93%
+    - key: 'CPU 4: usr'
+      value: 5.94%
+    - key: 'CPU 4: nice'
+      value: 0.00%
+    - key: 'CPU 4: sys'
+      value: 0.00%
+    - key: 'CPU 4: idle'
+      value: 93.07%
+    - key: 'CPU 5: status'
+      value: OK
+    - key: 'CPU 5: total'
+      value: 9.28%
+    - key: 'CPU 5: usr'
+      value: 4.12%
+    - key: 'CPU 5: nice'
+      value: 0.00%
+    - key: 'CPU 5: sys'
+      value: 5.15%
+    - key: 'CPU 5: idle'
+      value: 90.72%
+    - key: 'CPU 6: status'
+      value: OK
+    - key: 'CPU 6: total'
+      value: 7.00%
+    - key: 'CPU 6: usr'
+      value: 4.00%
+    - key: 'CPU 6: nice'
+      value: 0.00%
+    - key: 'CPU 6: sys'
+      value: 3.00%
+    - key: 'CPU 6: idle'
+      value: 93.00%
+    - key: 'CPU 7: status'
+      value: OK
+    - key: 'CPU 7: total'
+      value: 4.08%
+    - key: 'CPU 7: usr'
+      value: 3.06%
+    - key: 'CPU 7: nice'
+      value: 0.00%
+    - key: 'CPU 7: sys'
+      value: 1.02%
+    - key: 'CPU 7: idle'
+      value: 95.92%
+    - key: execution time
+      value: 1011.680725 ms
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/memory_usage/gpu_monitor: GPU Memory Usage'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/temperature/gpu_monitor: GPU Temperature'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/thermal_throttling/gpu_monitor: GPU Thermal Throttling'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/gpu/gpu_usage/gpu_monitor: GPU Usage'
+    message: gpu not found
+    hardware_id: asana17-t4
+    values: []
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/memory/usage/mem_monitor: Memory Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'Mem: usage'
+      value: 56.60%
+    - key: 'Mem: total'
+      value: 15.6G
+    - key: 'Mem: used'
+      value: 8.4G
+    - key: 'Mem: free'
+      value: 715M
+    - key: 'Mem: shared'
+      value: 133M
+    - key: 'Mem: buff/cache'
+      value: 6.5G
+    - key: 'Mem: available'
+      value: 6.8G
+    - key: 'Swap: total'
+      value: 14.9G
+    - key: 'Swap: used'
+      value: 7.5M
+    - key: 'Swap: free'
+      value: 14.9G
+    - key: 'Total: total'
+      value: 30.5G
+    - key: 'Total: used'
+      value: 8.4G
+    - key: 'Total: free'
+      value: 15.6G
+    - key: 'Total: used+'
+      value: 8.5G
+    - key: execution time
+      value: 42.133705 ms
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/network/network_usage/net_monitor: Network Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'Network 0: status'
+      value: OK
+    - key: 'Network 0: interface name'
+      value: enp6s0
+    - key: 'Network 0: rx_usage'
+      value: 0.00%
+    - key: 'Network 0: tx_usage'
+      value: 0.48%
+    - key: 'Network 0: rx_traffic'
+      value: 0.00 MBit/s
+    - key: 'Network 0: tx_traffic'
+      value: 4.79 MBit/s
+    - key: 'Network 0: capacity'
+      value: 1000.0 MBit/s
+    - key: 'Network 0: mtu'
+      value: '1500'
+    - key: 'Network 0: rx_bytes'
+      value: '1471055891'
+    - key: 'Network 0: rx_errors'
+      value: '0'
+    - key: 'Network 0: tx_bytes'
+      value: '160565705'
+    - key: 'Network 0: tx_errors'
+      value: '0'
+    - key: 'Network 0: collisions'
+      value: '0'
+    - key: 'Network 1: status'
+      value: down
+    - key: 'Network 1: interface name'
+      value: docker0
+    - key: 'Network 1: rx_usage'
+      value: 0.00%
+    - key: 'Network 1: tx_usage'
+      value: 0.00%
+    - key: 'Network 1: rx_traffic'
+      value: 0.00 MBit/s
+    - key: 'Network 1: tx_traffic'
+      value: 0.00 MBit/s
+    - key: 'Network 1: capacity'
+      value: 65535.0 MBit/s
+    - key: 'Network 1: mtu'
+      value: '1500'
+    - key: 'Network 1: rx_bytes'
+      value: '0'
+    - key: 'Network 1: rx_errors'
+      value: '0'
+    - key: 'Network 1: tx_bytes'
+      value: '0'
+    - key: 'Network 1: tx_errors'
+      value: '0'
+    - key: 'Network 1: collisions'
+      value: '0'
+    - key: execution time
+      value: 0.169406 ms
+  - level: "\x02"
+    name: '/autoware/system/resource_monitoring/storage/temperature/hdd_monitor: HDD Temperature'
+    message: connect error
+    hardware_id: asana17-t4
+    values:
+    - key: connect
+      value: Connection refused
+  - level: "\0"
+    name: '/autoware/system/resource_monitoring/storage/usage/hdd_monitor: HDD Usage'
+    message: OK
+    hardware_id: asana17-t4
+    values:
+    - key: 'HDD 0: status'
+      value: OK
+    - key: 'HDD 0: filesystem'
+      value: /dev/sdc3
+    - key: 'HDD 0: size'
+      value: 460368 MiB
+    - key: 'HDD 0: used'
+      value: 206115 MiB
+    - key: 'HDD 0: avail'
+      value: 230796 MiB
+    - key: 'HDD 0: use'
+      value: 48%
+    - key: 'HDD 0: mounted on'
+      value: /
+    - key: execution time
+      value: 30.273991 ms
+  diag_safe_fault: []
+  diag_latent_fault: []
+  diag_single_point_fault:
+  - level: "\x02"
+    name: /autoware/control/autonomous_driving/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/control/autonomous_driving/node_alive_monitoring/topic_status/ad_service_state_monitor: control_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /control/trajectory_follower/control_cmd status
+      value: Not Received
+    - key: /control/command/control_cmd status
+      value: Not Received
+  - level: "\x03"
+    name: /autoware/control/autonomous_driving/performance_monitoring/lane_departure
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x03"
+    name: /autoware/control/control_command_gate/node_alive_monitoring
+    message: Stale
+    hardware_id: ''
+    values:
+    - key: heartbeat
+      value: Stale
+  - level: "\x03"
+    name: /autoware/control/control_command_gate/node_alive_monitoring/heartbeat
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x02"
+    name: /autoware/localization/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/localization/node_alive_monitoring/topic_status/ad_service_state_monitor: localization_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /initialpose2d status
+      value: Not Received
+  - level: "\x03"
+    name: /autoware/localization/performance_monitoring/localization_accuracy
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x02"
+    name: /autoware/map/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/map/node_alive_monitoring/topic_status/ad_service_state_monitor: map_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /map/vector_map status
+      value: Not Received
+    - key: /map/pointcloud_map status
+      value: Not Received
+  - level: "\x02"
+    name: /autoware/perception/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/perception/node_alive_monitoring/topic_status/ad_service_state_monitor: perception_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /perception/object_recognition/objects status
+      value: Not Received
+  - level: "\x02"
+    name: /autoware/planning/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/planning/node_alive_monitoring/topic_status/ad_service_state_monitor: planning_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /planning/mission_planning/route status
+      value: Not Received
+    - key: /planning/scenario_planning/trajectory status
+      value: Not Received
+  - level: "\x03"
+    name: /autoware/system/emergency_stop_operation
+    message: Stale
+    hardware_id: ''
+    values: []
+  - level: "\x02"
+    name: /autoware/vehicle/node_alive_monitoring
+    message: Error
+    hardware_id: ''
+    values:
+    - key: topic_status
+      value: Error
+  - level: "\x02"
+    name: '/autoware/vehicle/node_alive_monitoring/topic_status/ad_service_state_monitor: vehicle_topic_status'
+    message: Error
+    hardware_id: ad_service_state_monitor
+    values:
+    - key: /vehicle/status/velocity_status status
+      value: Not Received
+    - key: /vehicle/status/steering_status status
+      value: Not Received

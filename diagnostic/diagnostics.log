@@ -1,0 +1,2292 @@
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 329441033
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 329432314
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 329488868
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 349032401
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 363717040
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 365403212
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 372812190
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 384197993
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 389126281
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 429514458
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 429427128
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 429549590
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 449036701
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 463682738
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 465404935
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 472793678
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 484102324
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 489145550
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 529451518
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 529512399
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 529564700
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 549033140
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 563699869
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 565391320
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 572792845
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 584181757
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 589123187
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 629428364
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 629561546
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 629654792
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 649030307
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 663715486
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 665408640
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 672792197
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 684192931
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 689142301
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 729459442
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 729508196
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 729566659
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 749033285
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 763714422
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 765407464
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 772791739
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 784196986
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 789125361
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 829425569
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 829464507
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 829561885
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 849027254
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 863712743
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 865401930
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 872797505
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 884191844
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 889119040
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 929427314
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 929510722
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 929562214
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 949038791
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 963720511
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 965407287
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 972793793
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 984194551
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339789
+    nanosec: 989140891
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 29433047
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 29521360
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 29555519
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 49029443
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 63718297
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 65502763
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 72794852
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 84199958
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 89128382
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 129434415
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 129569287
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 129659209
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 149036143
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 163720048
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 165405076
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 172792921
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 184196343
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 189126226
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 229427559
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 229502957
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 229567395
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 249027173
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 263715483
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 265383131
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 272791730
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 284190407
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 289122549
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 329476887
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 329465397
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 329539800
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 349025614
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 363715194
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 365402243
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 372755304
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 384189013
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 389142509
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 429433292
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 429507237
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 429570325
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 449033377
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 463717867
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 465435023
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 472804354
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 484199851
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 489183197
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 529521468
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 529411930
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 529548225
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 549031835
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 563720349
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 565405375
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 572799779
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 584191614
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 589129010
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 629455463
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 629575837
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 629650111
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 649030057
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 663721735
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 665404895
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 672793125
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 684192492
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 689135602
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 729503483
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 729431869
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 729570283
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 749043652
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 763720166
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 765376138
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 772760222
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 784198680
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 789128422
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 829499844
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 829433923
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 829563397
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 849032536
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 863716736
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 865389787
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 872790036
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 884193251
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 889125188
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 929431740
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 929505736
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 929563014
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 949027380
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 963717665
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 965403678
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 972789023
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 984191842
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339790
+    nanosec: 989129081
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 29421594
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 29440273
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 29496965
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 49020014
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 63722723
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 65406053
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 72701891
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 84136281
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 89129935
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 129540395
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 129434573
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 129501882
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 149051029
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 163717863
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 165410426
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 172792632
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 184199515
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 189126597
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 229412286
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 229441676
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 229495722
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 249022003
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 263716316
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 265388812
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 272790918
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 284206453
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 289138601
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 329413071
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 329475645
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 329495903
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_676696767379732753: livox_ptp_signal'
+  message: OK
+  hardware_id: dummy_diag_livox_ptp_signal
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 349022470
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2094491119523824902: camera_connection'
+  message: OK
+  hardware_id: dummy_diag_camera_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 363717217
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5525568804189871433: lane_departure'
+  message: OK
+  hardware_id: dummy_diag_lane_departure
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 365404621
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_466687968271645612: obstacle_crash'
+  message: OK
+  hardware_id: dummy_diag_obstacle_crash
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 372808886
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_3190610779511371094: vehicle_errors'
+  message: OK
+  hardware_id: dummy_diag_vehicle_errors
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 384192628
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_2516949435093065941: can_bus_connection'
+  message: OK
+  hardware_id: dummy_diag_can_bus_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 389125954
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_7714766039797366544: speaker'
+  message: OK
+  hardware_id: dummy_diag_speaker
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 429431485
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_6541831600289513124: velodyne_connection'
+  message: OK
+  hardware_id: dummy_diag_velodyne_connection
+  values: []
+---
+header:
+  stamp:
+    sec: 1659339791
+    nanosec: 429498641
+  frame_id: ''
+status:
+- level: "\0"
+  name: 'dummy_diag_publisher_asana17_t4_17288_5159725221229043480: velodyne_temperature'
+  message: OK
+  hardware_id: dummy_diag_velodyne_temperature
+  values: []
+---
