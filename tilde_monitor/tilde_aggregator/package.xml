@@ -3,11 +3,15 @@
 <package format="3">
   <name>tilde_aggregator</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
+  <description>The tilde_aggregator package in ROS2</description>
   <maintainer email="akihiro.sakurai@tier4.jp">asana17</maintainer>
-  <license>TODO: License declaration</license>
+  <license>Apache License 2.0</license>
 
-  <buildtool_depend>ament_cmake</buildtool_depend>
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <depend>rclcpp</depend>
+  <depend>tilde_msg</depend>
+  <depend>fmt</depend>
+  <depend>watchdog_system_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>

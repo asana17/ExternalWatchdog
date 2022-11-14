@@ -1,0 +1,2 @@
+builtin_interfaces/Time stamp
+watchdog_system_msgs/TildeHazardStatus status

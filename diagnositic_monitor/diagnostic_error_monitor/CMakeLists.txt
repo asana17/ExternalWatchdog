@@ -16,7 +16,7 @@ find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
 # Target
-## diagnositc_error_monitor_node
+## diagnostic_error_monitor_node
 set(DIAGNOSTIC_ERROR_MONITOR_SRC
   src/diagnostic_error_monitor_core.cpp
 )

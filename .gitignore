@@ -1,6 +1,7 @@
 # Vim
 *.swp
 *.swo
+*.cache
 
 # Visual Studio Code
 .vscode/
@@ -13,3 +14,6 @@ log/
 
 # Python
 *.pyc
+
+#TILDE
+TILDE/

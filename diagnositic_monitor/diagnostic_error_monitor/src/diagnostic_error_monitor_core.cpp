@@ -170,7 +170,7 @@ DiagnosticErrorMonitor::DiagnosticErrorMonitor()
 // Load required modules and params from config yaml
 void DiagnosticErrorMonitor::loadRequiredModules(const std::string & key)
 {
-  //TODO: Are two config keyname needed?
+  //TODO: Are two config keynames needed?
   const auto param_key = std::string("required_modules.") + key;
 
   const uint64_t depth = 3;
@@ -260,7 +260,6 @@ bool DiagnosticErrorMonitor::isDataReady()
     RCLCPP_WARN_THROTTLE(get_logger(), *get_clock(), 5000, "waiting for diag_array msg...");
     return false;
   }
-  //TODO: Add any other message
   return true;
 }
 
@@ -280,6 +279,7 @@ void DiagnosticErrorMonitor::onTimer()
   updateHazardStatus();
   publishHazardStatus(hazard_status_);
 }
+
 
 //get latest diag from map
 

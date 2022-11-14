@@ -21,6 +21,10 @@ ament_auto_find_build_dependencies()
 rosidl_generate_interfaces(${PROJECT_NAME}
   "msg/HazardStatus.msg"
   "msg/HazardStatusStamped.msg"
+  "msg/TildeDiagnosticStatus.msg"
+  "msg/TildeDiagnosticArray.msg"
+  "msg/TildeHazardStatus.msg"
+  "msg/TildeHazardStatusStamped.msg"
   DEPENDENCIES
     diagnostic_msgs
     std_msgs
