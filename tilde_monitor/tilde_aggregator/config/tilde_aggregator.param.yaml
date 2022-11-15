@@ -21,3 +21,9 @@
           /topic_with_stamp : {deadine: 20.0, level : warn}
           /topic_without_stamp : {deadine: 20.0, level : error}
 
+      test_sensing:
+        /sensing/lidar/concatenated/pointcloud :
+          /sensing/lidar/left/pointcloud_ex : {deadline : 1000.0, level : error}
+          /sensing/lidar/right/pointcloud_ex : {deadline : 1000.0, level : error}
+          /sensing/lidar/top/pointcloud_ex : {deadline : 1000.0, level : error}
+

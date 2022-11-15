@@ -54,6 +54,23 @@ int str2level(const std::string & level_str)
 
   throw std::runtime_error(fmt::format("invalid level: {}", level_str));
 }
+
+#define INPUT_DATA_TIMEOUT_ERROR 2
+
+watchdog_system_msgs::msg::TildeDiagnosticArray createTimeoutTildeDiagnosticArray()
+{
+  watchdog_system_msgs::msg::TildeDiagnosticArray tilde_diagnostic_array;
+  watchdog_system_msgs::msg::TildeDiagnosticStatus tilde_diagnostic_status;
+  auto tilde_diagnostic_status_ref = tilde_diagnostic_array.status;
+  tilde_diagnostic_status.level = INPUT_DATA_TIMEOUT_ERROR;
+  tilde_diagnostic_status.start_point = "";
+  tilde_diagnostic_status.end_point = "";
+  tilde_diagnostic_status.message = "input data timeout";
+
+  tilde_diagnostic_status_ref.push_back(tilde_diagnostic_status);
+  return tilde_diagnostic_array;
+}
+
 }//namespace
 
 
@@ -67,20 +84,26 @@ TildeAggregator::TildeAggregator()
 
   //Parameters
   get_parameter_or<int>("update_rate", params_.update_rate, 10);
+  get_parameter_or<double>("message_tracking_tag_timeout_sec", params_.message_tracking_tag_timeout_sec, 1.0);
   get_parameter_or<double>("data_ready_timeout", params_.data_ready_timeout, 30.0);
 
-  loadRequiredTopics(KeyName::test);
-  loadRequiredPaths(KeyName::test);
+  //load topics and paths
+  loadRequiredTopics(KeyName::test_sensing);
+  loadRequiredPaths(KeyName::test_sensing);
 
   using std::placeholders::_1;
 
   //Subscriber
-  for (const auto & required_topic : required_topics_map_.at(current_mode_)) {
+  for (const auto & required_topic : required_topics_map_.at(KeyName::test_sensing)) {
 
     //TODO error handling when no topic
     create_subscription<tilde_msg::msg::MessageTrackingTag>(
         required_topic, rclcpp::QoS{1}, std::bind(&TildeAggregator::onMessageTrackingTag, this, _1));
   }
+
+  //Publisher
+  pub_tilde_diagnostic_ = create_publisher<watchdog_system_msgs::msg::TildeDiagnosticArray> (
+      "~/output/tilde_agg", rclcpp::QoS{1});
 
   //Timer
   initialized_time_ = this->now();
@@ -237,11 +260,12 @@ void TildeAggregator::onTimer()
     if ((this->now() - initialized_time_).seconds() > params_.data_ready_timeout) {
       RCLCPP_WARN_THROTTLE(
           get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(), "input data is timeout");
-      //TODO publishTildeDiag(createTimeoutTildeDiag());
+      auto timeout_tilde_diagnostic_array = createTimeoutTildeDiagnosticArray();
+      publishTildeDiag(timeout_tilde_diagnostic_array);
     }
     return;
   }
-  current_mode_ = KeyName::test;
+  current_mode_ = KeyName::test_sensing;
   updateTildeDiag();
   publishTildeDiag(tilde_diagnostic_array_);
 }
@@ -337,59 +361,71 @@ std::optional<MessageTrackingTagStamped> TildeAggregator::getMessageTrackingTag(
 }
 
 //Register DiagnosticStatus
-void TildeAggregator::appendTildeDiag (const TildePathConfig & required_path,
-    const MessageTrackingTagStamped & message_tracking_tag,
-    watchdog_system_msgs::msg::TildeDiagnosticArray* tilde_diagnostic_array) const {
 
-  using watchdog_system_msgs::msg::TildeDiagnosticStatus;
-
-  const auto tilde_diag_level = getTildeDiagLevel(required_path, message_tracking_tag);
-  TildeDiagnosticStatus tilde_diagnostic_status;
-
-  if (tilde_diag_level == RESPONSE_TIME_CALC_ERROR) {
-    tilde_diagnostic_status.level = TildeDiagnosticStatus::WARN;
-    tilde_diagnostic_status.message = "response time calc error";
-  } else {
-    tilde_diagnostic_status.level = tilde_diag_level;
-    tilde_diagnostic_status.message = "";
-  }
-
-  tilde_diagnostic_status.start_point = required_path.start_point;
-  tilde_diagnostic_status.end_point = required_path.end_point;
-
+void TildeAggregator::appendTildeDiagnosticStatus (const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status, watchdog_system_msgs::msg::TildeDiagnosticArray * tilde_diagnostic_array) const {
   auto & target_tilde_diagnostic_status_ref = tilde_diagnostic_array->status;
   target_tilde_diagnostic_status_ref.push_back(tilde_diagnostic_status);
-
 }
 
 watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagnosticStatus() const {
 
   using watchdog_system_msgs::msg::TildeDiagnosticArray;
+  using watchdog_system_msgs::msg::TildeDiagnosticStatus;
 
-  TildeDiagnosticArray tilde_diag_array;
+  TildeDiagnosticArray tilde_diagnostic_array;
 
   for (const auto & required_path : required_paths_map_.at(current_mode_)) {
 
     const auto & end_point = required_path.end_point;
+    const auto & start_point = required_path.start_point;
     const auto latest_message_tracking_tag = getLatestMessageTrackingTag(end_point);
 
     // no MessageTrackingTag found
     if (!latest_message_tracking_tag) {
-      //TODO error process
+      TildeDiagnosticStatus missing_tilde_diagnostic_status;
+      missing_tilde_diagnostic_status.level = TildeDiagnosticStatus::ERROR;
+      missing_tilde_diagnostic_status.start_point = start_point;
+      missing_tilde_diagnostic_status.end_point = end_point;
+      missing_tilde_diagnostic_status.message = "no message tracking tag found";
+
+      appendTildeDiagnosticStatus(missing_tilde_diagnostic_status, &tilde_diagnostic_array);
     }
     
     {
-      appendTildeDiag(required_path, *latest_message_tracking_tag, &tilde_diag_array);
+      const auto tilde_diag_level = getTildeDiagLevel(required_path, *latest_message_tracking_tag);
+      TildeDiagnosticStatus tilde_diagnostic_status;
+
+      if (tilde_diag_level == RESPONSE_TIME_CALC_ERROR) {
+        tilde_diagnostic_status.level = TildeDiagnosticStatus::WARN;
+        tilde_diagnostic_status.message = "response time calc error";
+      } else {
+        tilde_diagnostic_status.level = tilde_diag_level;
+        tilde_diagnostic_status.message = "";
+      }
+
+      tilde_diagnostic_status.start_point = start_point;
+      tilde_diagnostic_status.end_point = end_point;
+
+      appendTildeDiagnosticStatus(tilde_diagnostic_status, &tilde_diagnostic_array);
     }
 
-    //timeout
+    //diag timeout
     {
-      //TODO timeout process
-    }
+      const auto time_diff = this->now() - latest_message_tracking_tag->header.stamp;
+      if (time_diff.seconds() > params_.message_tracking_tag_timeout_sec) {
+        TildeDiagnosticStatus timeout_tilde_diagnostic_status;
+        timeout_tilde_diagnostic_status.level = TildeDiagnosticStatus::ERROR;
+        timeout_tilde_diagnostic_status.message = "timeout";
+        timeout_tilde_diagnostic_status.start_point = start_point;
+        timeout_tilde_diagnostic_status.end_point = end_point;
 
+        appendTildeDiagnosticStatus(timeout_tilde_diagnostic_status, & tilde_diagnostic_array);
+
+      }
+    }
   }
 
-  return tilde_diag_array;
+  return tilde_diagnostic_array;
 
 }
 

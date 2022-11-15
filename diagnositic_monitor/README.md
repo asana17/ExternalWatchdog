@@ -114,7 +114,7 @@ DiagStamped == struct<header, diag status>
 
 タイマでheaderに関係なくstatusを送るならこちらが都合が良い
 
-### 
+###
 
 現在の時間とdiagのheaderを比較して一定時間以上遅延がある場合、errorをwatchdogにpublishするのがよいかも。  
 データ構造は流用してもよさそう。

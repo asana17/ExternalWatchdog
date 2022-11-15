@@ -1,0 +1,15 @@
+<launch>
+  <arg name="config_file" default="$(find-pkg-share tilde_error_monitor)/config/tilde_error_monitor.param.yaml" />
+  <arg name="data_ready_timeout" />
+  <arg name="tilde_diag_timeout_sec" />
+
+
+  <node pkg="tilde_error_monitor" exec="tilde_error_monitor" name="tilde_error_monitor" output="screen">
+    <remap from="input/diag_array" to="/diagnostics_agg" />
+    <remap from="~/output/tilde_agg" to="/tilde_agg" />
+
+    <param from="$(var config_file)" />
+    <param name="data_ready_timeout" value="$(var data_ready_timeout)" />
+    <param name="tilde_diag_timeout_sec" value="$(var tilde_diag_timeout_sec)" />
+  </node>
+</launch>

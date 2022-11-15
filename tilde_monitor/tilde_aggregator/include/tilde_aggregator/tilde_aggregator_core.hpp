@@ -54,6 +54,7 @@ struct KeyName
 {
   static constexpr const char * autonomous_driving = "autonomous_driving";
   static constexpr const char * test= "test";
+  static constexpr const char * test_sensing= "test_sensing";
 };
 
 class TildeAggregator : public rclcpp::Node
@@ -66,6 +67,7 @@ private:
   struct Parameters
   {
     int update_rate;
+    double message_tracking_tag_timeout_sec;
     double data_ready_timeout;
   };
 
@@ -105,9 +107,8 @@ private:
   //get tilde diag from message tracking tag
   std::optional<MessageTrackingTagStamped> getLatestMessageTrackingTag(const std::string & end_topic_name) const;
   std::optional<MessageTrackingTagStamped> getMessageTrackingTag(const std::string & topic_name, const rclcpp::Time header_stamp) const;
-  void appendTildeDiag(
-      const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag,
-      watchdog_system_msgs::msg::TildeDiagnosticArray* tilde_diagnostic_array) const;
+  void appendTildeDiagnosticStatus(
+      const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status, watchdog_system_msgs::msg::TildeDiagnosticArray* tilde_diagnostic_array) const;
   uint8_t getTildeDiagLevel(const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag) const;
   std::optional<rclcpp::Duration> calculateResponseTime(const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag) const;
   std::optional<MessageTrackingTagStamped> findStartPoint(const TildePathConfig & required_path, const SubTopicTimeInfoBuffer & input_infos) const;

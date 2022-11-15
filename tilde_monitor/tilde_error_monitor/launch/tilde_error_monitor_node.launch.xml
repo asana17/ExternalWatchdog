@@ -1,0 +1,19 @@
+<launch>
+  <arg name="config_file" default="$(find-pkg-share tilde_error_monitor)/config/tilde_error_monitor.param.yaml" />
+  <arg name="ignore_missing_tilde_diagnostics" />
+  <arg name="data_ready_timeout" />
+  <arg name="tilde_diag_timeout_sec" />
+
+  <arg name="emergency_tilde_hazard_level" default="2" description="1: Safe Fault, 2: Latent Fault, 3: Single Point Fault" />
+
+  <node pkg="tilde_error_monitor" exec="tilde_error_monitor" name="tilde_error_monitor" output="screen">
+    <remap from="input/diag_array" to="/diagnostics_agg" />
+      <remap from="~/output/tilde_hazard_status" to="/watchdog/emergency/tilde_hazard_status"/>
+
+    <param from="$(var config_file)" />
+    <param name="ignore_tilde_missing_diagnostics" value="$(var ignore_tilde_missing_diagnostics)" />
+    <param name="data_ready_timeout" value="$(var data_ready_timeout)" />
+    <param name="tilde_diag_timeout_sec" value="$(var tilde_diag_timeout_sec)" />
+    <param name="emergency_tilde_hazard_level" value="$(var emergency_tilde_hazard_level)" />
+  </node>
+</launch>

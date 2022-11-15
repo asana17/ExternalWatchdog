@@ -14,6 +14,8 @@ message tracking tagのsub : topic名をどう取得するのか？
 一旦pathを登録して、レイテンシ計算を行う
 その後判定
 
+launch file作る
+
 ## 実装
 
 pathの登録

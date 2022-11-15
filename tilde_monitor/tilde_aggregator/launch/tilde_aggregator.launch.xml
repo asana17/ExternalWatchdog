@@ -1,0 +1,14 @@
+<launch>
+  <arg name="config_file" default="$(find-pkg-share tilde_aggregator)/config/tilde_aggregator.param.yaml" />
+  <arg name="config_file_message_tracking_tag" default="$(find-pkg-share tilde_aggregator)/config/tilde_message_tracking_tag.param.yaml" />
+
+  <arg name="data_ready_timeout" default="30.0" />
+  <arg name="tilde_diag_timeout_sec" default="1.0" />
+
+
+  <include file="$(find-pkg-share tilde_aggregator)/launch/tilde_aggregator_node.launch.xml">
+    <arg name="config_file" value="$(var config_file)"/>
+    <arg name="data_ready_timeout" value="$(var data_ready_timeout)" />
+    <arg name="tilde_diag_timeout_sec" value="$(var tilde_diag_timeout_sec)" />
+  </include>
+</launch>

@@ -1,0 +1,15 @@
+<launch>
+  <arg name="config_file" default="$(find-pkg-share tilde_error_monitor)/config/tilde_error_monitor.param.yaml" />
+
+  <arg name="ignore_missing_tilde_diagnostics" default="false" />
+  <arg name="data_ready_timeout" default="30.0" />
+  <arg name="tilde_diag_timeout_sec" default="1.0" />
+
+
+  <include file="$(find-pkg-share tilde_error_monitor)/launch/tilde_error_monitor_node.launch.xml">
+    <arg name="config_file" value="$(var config_file)"/>
+    <arg name="ignore_missing_tilde_diagnostics" value="$(var ignore_missing_tilde_diagnostics)"/>
+    <arg name="data_ready_timeout" value="$(var data_ready_timeout)" />
+    <arg name="tilde_diag_timeout_sec" value="$(var tilde_diag_timeout_sec)" />
+  </include>
+</launch>
