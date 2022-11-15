@@ -16,4 +16,4 @@ log/
 *.pyc
 
 #TILDE
-TILDE/
+src/TILDE/
