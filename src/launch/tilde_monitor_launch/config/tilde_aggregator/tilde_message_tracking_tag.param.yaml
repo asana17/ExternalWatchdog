@@ -1,0 +1,44 @@
+# Description:
+#   name: topic name
+#   sf_at: diag level where it becomes Safe Fault
+#   lf_at: diag level where it becomes Latent Fault
+#   spf_at: diag level where it becomes Single Point Fault
+#   auto_recovery: Determines whether the system will automatically recover when it recovers from an error.
+#
+# Note:
+# empty-value for sf_at, lf_at and spf_at is "none"
+# default values are:
+#   sf_at: "none"
+#   lf_at: "warn"
+#   spf_at: "error"
+#   auto_recovery: "true"
+---
+/**:
+  ros__parameters:
+    required_topics:
+      autonomous_driving:
+        /sensing/lidar/top/self_cropped/pointcloud_ex
+        /sensing/lidar/top/rectified/pointcloud_ex
+        /sensing/lidar/top/outlier_filtered/pointcloud
+        /sensing/lidar/concatenated/pointcloud
+        /sensing/lidar/measurement_range_cropped/pointcloud
+      
+      test:
+        /relay_with_stamp
+        /topic_with_stamp
+        /topic_without_stamp
+
+      test_sensing:
+        /sensing/lidar/concatenated/pointcloud
+        /sensing/lidar/left/outlier_filtered/pointcloud
+        /sensing/lidar/left/mirror_cropped/pointcloud_ex
+        /sensing/lidar/left/self_cropped/pointcloud_ex
+        /sensing/lidar/left/pointcloud_raw_ex
+        /sensing/lidar/right/outlier_filtered/pointcloud
+        /sensing/lidar/right/mirror_cropped/pointcloud_ex
+        /sensing/lidar/right/self_cropped/pointcloud_ex
+        /sensing/lidar/right/pointcloud_raw_ex
+        /sensing/lidar/top/outlier_filtered/pointcloud
+        /sensing/lidar/top/mirror_cropped/pointcloud_ex
+        /sensing/lidar/top/self_cropped/pointcloud_ex
+        /sensing/lidar/top/pointcloud_raw_ex

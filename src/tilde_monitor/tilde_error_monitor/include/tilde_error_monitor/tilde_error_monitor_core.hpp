@@ -34,6 +34,7 @@ using RequiredPaths = std::vector<TildeDiagConfig>;
 struct KeyName
 {
   static constexpr const char * autonomous_driving = "autonomous_driving";
+  static constexpr const char * test_sensing = "test_sensing";
 };
 
 

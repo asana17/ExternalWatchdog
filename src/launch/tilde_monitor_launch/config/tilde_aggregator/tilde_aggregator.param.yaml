@@ -1,0 +1,29 @@
+# Description:
+# path_end_point : path_start_point : {deadline, level}
+#
+# deadline:
+# level : error level when deadline exceeded
+---
+/**:
+  ros__parameters:
+    required_paths:
+      autonomous_driving :
+        /control/trajectory_follower/lateral/control_cmd :
+          /sensing/lidar/right/mirror_cropped/pointcloud_ex : {deadline : 310.0, level : warn}
+          /sensing/lidar/right/self_cropped/pointcloud_ex : {deadline : 400.0, level: error}
+          /sensing/lidar/left/self_cropped/pointcloud_ex : {deadline : 400.0, level: error}
+
+        /sensing/lidar/top/outlier_filtered/pointcloud :
+          /sensing/lidar/top/self_cropped/pointcloud_ex : {deadline : 400.0, level: error}
+
+      test:
+        /relay_with_stamp :
+          /topic_with_stamp : {deadine: 20.0, level : warn}
+          /topic_without_stamp : {deadine: 20.0, level : error}
+
+      test_sensing:
+        /sensing/lidar/concatenated/pointcloud :
+          /sensing/lidar/left/pointcloud_ex : {deadline : 1000.0, level : error}
+          /sensing/lidar/right/pointcloud_ex : {deadline : 1000.0, level : error}
+          /sensing/lidar/top/pointcloud_ex : {deadline : 1000.0, level : error}
+

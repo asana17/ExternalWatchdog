@@ -6,39 +6,37 @@
 #   auto_recovery: Determines whether the system will automatically recover when it recovers from an error.
 #
 # Note:
-# empty-value for sf_at, lf_at and spf_at is "none"
-# default values are:
-#   sf_at: "none"
-#   lf_at: "warn"
-#   spf_at: "error"
-#   auto_recovery: "true"
+# topic
 ---
 /**:
   ros__parameters:
     required_topics:
       autonomous_driving:
-        /sensing/lidar/top/self_cropped/pointcloud_ex
-        /sensing/lidar/top/rectified/pointcloud_ex
-        /sensing/lidar/top/outlier_filtered/pointcloud
-        /sensing/lidar/concatenated/pointcloud
-        /sensing/lidar/measurement_range_cropped/pointcloud
+        /sensing/lidar/top/self_cropped/pointcloud_ex: 0
+        /sensing/lidar/top/rectified/pointcloud_ex: 0
+        /sensing/lidar/top/outlier_filtered/pointcloud: 0
+        /sensing/lidar/concatenated/pointcloud: 0
+        /sensing/lidar/measurement_range_cropped/pointcloud: 0
       
       test:
-        /relay_with_stamp
-        /topic_with_stamp
-        /topic_without_stamp
+        /relay_with_stamp: 0
+        /topic_with_stamp: 0
+        /topic_without_stamp: 0
 
       test_sensing:
-        /sensing/lidar/concatenated/pointcloud
-        /sensing/lidar/left/outlier_filtered/pointcloud
-        /sensing/lidar/left/mirror_cropped/pointcloud_ex
-        /sensing/lidar/left/self_cropped/pointcloud_ex
-        /sensing/lidar/left/pointcloud_raw_ex
-        /sensing/lidar/right/outlier_filtered/pointcloud
-        /sensing/lidar/right/mirror_cropped/pointcloud_ex
-        /sensing/lidar/right/self_cropped/pointcloud_ex
-        /sensing/lidar/right/pointcloud_raw_ex
-        /sensing/lidar/top/outlier_filtered/pointcloud
-        /sensing/lidar/top/mirror_cropped/pointcloud_ex
-        /sensing/lidar/top/self_cropped/pointcloud_ex
-        /sensing/lidar/top/pointcloud_raw_ex
+        /sensing/lidar/concatenated/pointcloud: 0
+        /sensing/lidar/left/outlier_filtered/pointcloud: 0
+        /sensing/lidar/left/rectified/pointcloud_ex: 0
+        /sensing/lidar/left/mirror_cropped/pointcloud_ex: 0
+        /sensing/lidar/left/self_cropped/pointcloud_ex: 0
+        /sensing/lidar/left/pointcloud_raw_ex: 0
+        /sensing/lidar/right/outlier_filtered/pointcloud: 0
+        /sensing/lidar/right/rectified/pointcloud_ex: 0
+        /sensing/lidar/right/mirror_cropped/pointcloud_ex: 0
+        /sensing/lidar/right/self_cropped/pointcloud_ex: 0
+        /sensing/lidar/right/pointcloud_raw_ex: 0
+        /sensing/lidar/top/outlier_filtered/pointcloud: 0
+        /sensing/lidar/top/rectified/pointcloud_ex: 0
+        /sensing/lidar/top/mirror_cropped/pointcloud_ex: 0
+        /sensing/lidar/top/self_cropped/pointcloud_ex: 0
+        /sensing/lidar/top/pointcloud_raw_ex: 0

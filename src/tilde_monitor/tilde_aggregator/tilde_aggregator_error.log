@@ -1,0 +1,127 @@
+[tilde_aggregator-1] judged: calc
+[tilde_aggregator-1] getTildeDiagLevel!
+[tilde_aggregator-1] calculateResponseTime
+[tilde_aggregator-1] findStartPoint
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/left/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/left/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/left/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/left/outlier_filtered/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/left/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/left/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/left/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/left/rectified/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/left/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/left/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/left/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/left/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/left/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/left/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/left/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/left/self_cropped/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/left/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/left/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/left/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/left/pointcloud_raw_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/left/velodyne_packets
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/left/velodyne_packets
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/sensing/lidar/left/velodyne_packets
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag:/vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/vehicle/status/velocity_status
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/right/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/right/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/right/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/right/outlier_filtered/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/right/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/right/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/right/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/right/rectified/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/right/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/right/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/right/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/right/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/right/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/right/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/right/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/right/self_cropped/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/right/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/right/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/right/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/right/pointcloud_raw_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/right/velodyne_packets
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/right/velodyne_packets
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/sensing/lidar/right/velodyne_packets
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag:/vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/vehicle/status/velocity_status
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/top/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/top/outlier_filtered/pointcloud
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/top/outlier_filtered/pointcloud
+[tilde_aggregator-1] [INFO] [1668583057.386737017] [rclcpp]: signal_handler(signal_value=2)
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/top/outlier_filtered/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/top/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/top/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/top/rectified/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/top/rectified/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/top/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/top/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/top/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/top/mirror_cropped/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/top/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/top/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/top/self_cropped/pointcloud_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/top/self_cropped/pointcloud_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/top/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/top/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag: topic found/sensing/lidar/top/pointcloud_raw_ex
+[tilde_aggregator-1] getMessageTrackingTag: message_tracking_tag found/sensing/lidar/top/pointcloud_raw_ex
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : not start point - continue search
+[tilde_aggregator-1] findStartPoint: startpoint=/sensing/lidar/right/pointcloud_ex endpoint=/sensing/lidar/concatenated/pointcloud
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /sensing/lidar/top/velodyne_packets
+[tilde_aggregator-1] getMessageTrackingTag:/sensing/lidar/top/velodyne_packets
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/sensing/lidar/top/velodyne_packets
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag:/vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/vehicle/status/velocity_status
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag /vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag:/vehicle/status/velocity_status
+[tilde_aggregator-1] getMessageTrackingTag: topic not found/vehicle/status/velocity_status
+[tilde_aggregator-1] findStartPoint: getMessageTrackingTag : notfound - continue
+[tilde_aggregator-1] start point not found
+[tilde_aggregator-1] calculate error
+[tilde_aggregator-1] calc : calc error

@@ -15,9 +15,6 @@
 /**:
   ros__parameters:
     required_modules:
-      autonomous_driving:
-
-
       test_sensing:
         /sensing/lidar/left/pointcloud_ex :
           /sensing/lidar/concatenated/pointcloud : { sf_at: "warn", lf_at: "none", spf_at: "none" }

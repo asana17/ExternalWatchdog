@@ -8,6 +8,7 @@
 
   <include file="$(find-pkg-share tilde_aggregator)/launch/tilde_aggregator_node.launch.xml">
     <arg name="config_file" value="$(var config_file)"/>
+    <arg name="config_file_message_tracking_tag" value="$(var config_file_message_tracking_tag)"/>
     <arg name="data_ready_timeout" value="$(var data_ready_timeout)" />
     <arg name="tilde_diag_timeout_sec" value="$(var tilde_diag_timeout_sec)" />
   </include>

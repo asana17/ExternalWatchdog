@@ -120,7 +120,7 @@ TildeErrorMonitor::TildeErrorMonitor()
   get_parameter_or<double>("data_ready_timeout", params_.data_ready_timeout, 30.0);
   get_parameter_or<int>("emergency_tilde_hazard_level", params_.emergency_tilde_hazard_level, watchdog_system_msgs::msg::TildeHazardStatus::LATENT_FAULT);
 
-  loadRequiredPaths(KeyName::autonomous_driving);
+  loadRequiredPaths(KeyName::test_sensing);
 
 
   using std::placeholders::_1;
@@ -234,7 +234,7 @@ void TildeErrorMonitor::onTimer()
     }
     return;
   }
-  current_mode_ = KeyName::autonomous_driving;
+  current_mode_ = KeyName::test_sensing;
   updateTildeHazardStatus();
   publishTildeHazardStatus(tilde_hazard_status_);
 }
