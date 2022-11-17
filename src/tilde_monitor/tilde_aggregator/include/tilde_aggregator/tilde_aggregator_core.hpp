@@ -109,8 +109,7 @@ private:
     const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status,
     watchdog_system_msgs::msg::TildeDiagnosticArray * tilde_diagnostic_array) const;
   void getTildeDiagLevel(
-    const TildePathConfig & required_path,
-    const MessageTrackingTagStamped & message_tracking_tag,
+    const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag,
     watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status) const;
   std::optional<rclcpp::Duration> calculateResponseTime(
     const TildePathConfig & required_path,

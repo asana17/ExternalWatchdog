@@ -128,7 +128,7 @@ TildeErrorMonitor::TildeErrorMonitor()
   sub_tilde_diag_array_ = create_subscription<watchdog_system_msgs::msg::TildeDiagnosticArray>(
     "input/tilde_diag_array", rclcpp::QoS{1}, std::bind(&TildeErrorMonitor::onDiagArray, this, _1));
 
-  //Publisher
+  // Publisher
   pub_tilde_hazard_status_ = create_publisher<watchdog_system_msgs::msg::TildeHazardStatusStamped>(
     "~/output/tilde_hazard_status", rclcpp::QoS{1});
 
@@ -297,7 +297,6 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
   using watchdog_system_msgs::msg::TildeDiagnosticStatus;
   using watchdog_system_msgs::msg::TildeHazardStatus;
 
-
   TildeHazardStatus tilde_hazard_status;
 
   for (const auto & required_path : required_paths_map_.at(current_mode_)) {
@@ -361,7 +360,6 @@ void TildeErrorMonitor::updateTildeHazardStatus()
     tilde_hazard_status_.emergency =
       tilde_hazard_status_.level >= params_.emergency_tilde_hazard_level;
   }
-
 }
 
 void TildeErrorMonitor::publishTildeHazardStatus(

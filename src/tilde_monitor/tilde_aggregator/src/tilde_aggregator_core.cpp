@@ -287,8 +287,7 @@ std::optional<MessageTrackingTagStamped> TildeAggregator::getLatestMessageTracki
 #define RESPONSE_TIME_CALC_ERROR 4
 
 void TildeAggregator::getTildeDiagLevel(
-  const TildePathConfig & required_path,
-  const MessageTrackingTagStamped & message_tracking_tag,
+  const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag,
   watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status) const
 {
   using watchdog_system_msgs::msg::TildeDiagnosticStatus;
@@ -340,7 +339,6 @@ std::optional<MessageTrackingTagStamped> TildeAggregator::findStartPoint(
     if (!input_info.has_header_stamp) {
       continue;
     }
-
 
     const auto input_message_tracking_tag =
       getMessageTrackingTag(input_info.topic_name, input_info.header_stamp);
@@ -416,7 +414,8 @@ watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagn
 
     {
       TildeDiagnosticStatus tilde_diagnostic_status;
-      getTildeDiagLevel(required_path, latest_message_tracking_tag.value(), tilde_diagnostic_status);
+      getTildeDiagLevel(
+        required_path, latest_message_tracking_tag.value(), tilde_diagnostic_status);
 
       if (tilde_diagnostic_status.level == RESPONSE_TIME_CALC_ERROR) {
         tilde_diagnostic_status.level = TildeDiagnosticStatus::WARN;
