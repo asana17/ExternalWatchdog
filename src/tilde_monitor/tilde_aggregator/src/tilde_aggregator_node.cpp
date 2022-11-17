@@ -1,6 +1,6 @@
 #include "tilde_aggregator/tilde_aggregator_core.hpp"
 
-#include<memory>
+#include <memory>
 
 int main(int argc, char ** argv)
 {

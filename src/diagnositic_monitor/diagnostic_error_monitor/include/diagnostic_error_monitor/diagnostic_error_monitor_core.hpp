@@ -1,17 +1,16 @@
 #ifndef DIAGNOSTIC_ERROR_MONITOR__DIAGNOSTIC_ERROR_MONITOR_CORE_HPP_
 #define DIAGNOSTIC_ERROR_MONITOR__DIAGNOSTIC_ERROR_MONITOR_CORE_HPP_
 
-
-#include <rclcpp/rclcpp.hpp>
 #include <rclcpp/create_timer.hpp>
-#include <diagnostic_msgs/msg/diagnostic_array.hpp>
+#include <rclcpp/rclcpp.hpp>
 
+#include <diagnostic_msgs/msg/diagnostic_array.hpp>
 #include <watchdog_system_msgs/msg/hazard_status_stamped.hpp>
 
-#include <optional>
 #include <deque>
-#include <unordered_map>
+#include <optional>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 struct DiagStamped
@@ -38,14 +37,12 @@ struct KeyName
   static constexpr const char * autonomous_driving = "autonomous_driving";
 };
 
-
 class DiagnosticErrorMonitor : public rclcpp::Node
 {
 public:
   DiagnosticErrorMonitor();
 
 private:
-
   struct Parameters
   {
     int update_rate;
@@ -67,27 +64,26 @@ private:
 
   void loadRequiredModules(const std::string & key);
 
-  //Timer
+  // Timer
   rclcpp::TimerBase::SharedPtr timer_;
 
   bool isDataReady();
   void onTimer();
 
-  //subscriber
+  // subscriber
   rclcpp::Subscription<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr sub_diag_array_;
 
-  void onDiagArray(const diagnostic_msgs::msg::DiagnosticArray::ConstSharedPtr msg); // msg parser
-  
+  void onDiagArray(const diagnostic_msgs::msg::DiagnosticArray::ConstSharedPtr msg);  // msg parser
+
   const size_t diag_buffer_size_ = 100;
-  std::unordered_map<std::string, DiagBuffer> diag_buffer_map_; // map of (header, diag status)
-  diagnostic_msgs::msg::DiagnosticArray::ConstSharedPtr diag_array_; //ptr for msg
-  
-  //publisher
-  rclcpp::Publisher<watchdog_system_msgs::msg::HazardStatusStamped>::SharedPtr
-    pub_hazard_status_;
+  std::unordered_map<std::string, DiagBuffer> diag_buffer_map_;  // map of (header, diag status)
+  diagnostic_msgs::msg::DiagnosticArray::ConstSharedPtr diag_array_;  // ptr for msg
+
+  // publisher
+  rclcpp::Publisher<watchdog_system_msgs::msg::HazardStatusStamped>::SharedPtr pub_hazard_status_;
   void publishHazardStatus(const watchdog_system_msgs::msg::HazardStatus & hazard_status);
 
-  //get hazard status from diagnostics
+  // get hazard status from diagnostics
 
   std::optional<DiagStamped> getLatestDiag(const std::string & diag_name) const;
   uint8_t getHazardLevel(const DiagConfig & required_module, const int diag_level) const;
@@ -96,7 +92,7 @@ private:
     watchdog_system_msgs::msg::HazardStatus * hazard_status) const;
   watchdog_system_msgs::msg::HazardStatus judgeHazardStatus() const;
   void updateHazardStatus();
-  //bool canAutoRecovery() const;
+  // bool canAutoRecovery() const;
 };
 
 #endif  // DIAGNOSTIC_ERROR_MONITOR__DIAGNOSTIC_ERROR_MONITOR_CORE_HPP_

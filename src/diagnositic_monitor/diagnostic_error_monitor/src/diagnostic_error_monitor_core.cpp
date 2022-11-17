@@ -20,8 +20,8 @@
 #include <vector>
 
 #define FMT_HEADER_ONLY
-#include "diagnostic_error_monitor/diagnostics_filter.hpp"
 #include "diagnostic_error_monitor/diagnostic_error_monitor_core.hpp"
+#include "diagnostic_error_monitor/diagnostics_filter.hpp"
 
 #include <fmt/format.h>
 
@@ -68,7 +68,7 @@ bool isOverLevel(const int & diag_level, const std::string & failure_level_str)
 
 // Get ref of target hazard level diagnostic array in message
 std::vector<diagnostic_msgs::msg::DiagnosticStatus> & getTargetDiagnosticsRef(
-    const int hazard_level, watchdog_system_msgs::msg::HazardStatus * hazard_status)
+  const int hazard_level, watchdog_system_msgs::msg::HazardStatus * hazard_status)
 {
   using watchdog_system_msgs::msg::HazardStatus;
 
@@ -114,7 +114,7 @@ std::vector<diagnostic_msgs::msg::DiagnosticStatus> & getTargetDiagnosticsRef(
   return error_modules;
 }*/
 
-//Timeout error message
+// Timeout error message
 watchdog_system_msgs::msg::HazardStatus createTimeoutHazardStatus()
 {
   watchdog_system_msgs::msg::HazardStatus hazard_status;
@@ -129,13 +129,12 @@ watchdog_system_msgs::msg::HazardStatus createTimeoutHazardStatus()
   return hazard_status;
 }
 
-}//namespace
-
+}  // namespace
 
 DiagnosticErrorMonitor::DiagnosticErrorMonitor()
-  : Node(
-      "diagnostic_error_monitor",
-      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+: Node(
+    "diagnostic_error_monitor",
+    rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
 {
   // Parameter
   get_parameter_or<int>("update_rate", params_.update_rate, 10);
@@ -143,34 +142,35 @@ DiagnosticErrorMonitor::DiagnosticErrorMonitor()
   get_parameter_or<bool>("add_leaf_diagnostics", params_.add_leaf_diagnostics, true);
   get_parameter_or<double>("data_ready_timeout", params_.data_ready_timeout, 30.0);
   get_parameter_or<double>("diag_timeout_sec", params_.diag_timeout_sec, 1.0);
-  get_parameter_or<int>("emergency_hazard_level", params_.emergency_hazard_level, watchdog_system_msgs::msg::HazardStatus::LATENT_FAULT);
+  get_parameter_or<int>(
+    "emergency_hazard_level", params_.emergency_hazard_level,
+    watchdog_system_msgs::msg::HazardStatus::LATENT_FAULT);
   get_parameter_or<bool>("use_emergency_hold", params_.use_emergency_hold, false);
 
-  //TODO Define config yaml key name
+  // TODO Define config yaml key name
   loadRequiredModules(KeyName::autonomous_driving);
 
   using std::placeholders::_1;
 
   // Subscriber
   sub_diag_array_ = create_subscription<diagnostic_msgs::msg::DiagnosticArray>(
-      "input/diag_array", rclcpp::QoS{1}, std::bind(&DiagnosticErrorMonitor::onDiagArray, this, _1));
+    "input/diag_array", rclcpp::QoS{1}, std::bind(&DiagnosticErrorMonitor::onDiagArray, this, _1));
 
   // Publisher
   pub_hazard_status_ = create_publisher<watchdog_system_msgs::msg::HazardStatusStamped>(
-      "~/output/diagnostic_hazard_status", rclcpp::QoS{1});
+    "~/output/diagnostic_hazard_status", rclcpp::QoS{1});
 
   // Timer
   initialized_time_ = this->now();
   const auto period_ns = rclcpp::Rate(params_.update_rate).period();
   timer_ = rclcpp::create_timer(
-      this, get_clock(), period_ns, std::bind(&DiagnosticErrorMonitor::onTimer, this));
+    this, get_clock(), period_ns, std::bind(&DiagnosticErrorMonitor::onTimer, this));
 }
-
 
 // Load required modules and params from config yaml
 void DiagnosticErrorMonitor::loadRequiredModules(const std::string & key)
 {
-  //TODO: Are two config keynames needed?
+  // TODO: Are two config keynames needed?
   const auto param_key = std::string("required_modules.") + key;
 
   const uint64_t depth = 3;
@@ -192,14 +192,14 @@ void DiagnosticErrorMonitor::loadRequiredModules(const std::string & key)
     const auto & param_key = split_names.at(1);
     const auto & param_module = split_names.at(2);
     // TODO: param_required_modules is fixed to "required_modules"
-    const auto module_name_with_prefix = 
+    const auto module_name_with_prefix =
       fmt::format("{0}.{1}.{2}", param_required_modules, param_key, param_module);
 
     if (module_names.count(module_name_with_prefix) != 0) {
-      continue; // Skip duplicate parameter
+      continue;  // Skip duplicate parameter
     }
 
-    //Register name
+    // Register name
     module_names.insert(module_name_with_prefix);
 
     // Load diag level
@@ -213,47 +213,44 @@ void DiagnosticErrorMonitor::loadRequiredModules(const std::string & key)
     std::string spf_at;
     this->get_parameter_or(spf_key, spf_at, std::string("error"));
 
-    //auto_recovery
+    // auto_recovery
     const auto auto_recovery_key = module_name_with_prefix + std::string(".auto_recovery");
     std::string auto_recovery_approval_str;
     this->get_parameter_or(auto_recovery_key, auto_recovery_approval_str, std::string("true"));
-    //convert str to bool
+    // convert str to bool
     bool auto_recovery_approval{};
     std::istringstream(auto_recovery_approval_str) >> std::boolalpha >> auto_recovery_approval;
 
-    //Register each module
+    // Register each module
     required_modules.push_back({param_module, sf_at, lf_at, spf_at, auto_recovery_approval});
   }
 
   required_modules_map_.insert(std::make_pair(key, required_modules));
-
 }
-
 
 // Register diag and msg from message to map
 void DiagnosticErrorMonitor::onDiagArray(
-    const diagnostic_msgs::msg::DiagnosticArray::ConstSharedPtr msg)
+  const diagnostic_msgs::msg::DiagnosticArray::ConstSharedPtr msg)
 {
   diag_array_ = msg;
-  
+
   const auto & header = msg->header;
 
   for (const auto & diag : msg->status) {
     if (diag_buffer_map_.count(diag.name) == 0) {
-        diag_buffer_map_.insert(std::make_pair(diag.name,DiagBuffer{}));
-      }
+      diag_buffer_map_.insert(std::make_pair(diag.name, DiagBuffer{}));
+    }
 
-      auto & diag_buffer = diag_buffer_map_.at(diag.name);
-      diag_buffer.push_back(DiagStamped{header, diag});
+    auto & diag_buffer = diag_buffer_map_.at(diag.name);
+    diag_buffer.push_back(DiagStamped{header, diag});
 
-      while (diag_buffer.size() > diag_buffer_size_) {
+    while (diag_buffer.size() > diag_buffer_size_) {
       diag_buffer.pop_front();
     }
   }
 }
 
-
-//Timer functions
+// Timer functions
 bool DiagnosticErrorMonitor::isDataReady()
 {
   if (!diag_array_) {
@@ -268,30 +265,30 @@ void DiagnosticErrorMonitor::onTimer()
   if (!isDataReady()) {
     if ((this->now() - initialized_time_).seconds() > params_.data_ready_timeout) {
       RCLCPP_WARN_THROTTLE(
-          get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(), "input data is timeout");
+        get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(),
+        "input data is timeout");
       publishHazardStatus(createTimeoutHazardStatus());
     }
     return;
   }
-  
-  //TODO: Define config yaml keynames
+
+  // TODO: Define config yaml keynames
   current_mode_ = KeyName::autonomous_driving;
   updateHazardStatus();
   publishHazardStatus(hazard_status_);
 }
 
-
-//get latest diag from map
+// get latest diag from map
 
 std::optional<DiagStamped> DiagnosticErrorMonitor::getLatestDiag(
-    const std::string & diag_name) const
+  const std::string & diag_name) const
 {
   if (diag_buffer_map_.count(diag_name) == 0) {
     return {};
   }
-  
+
   const auto & diag_buffer = diag_buffer_map_.at(diag_name);
-  
+
   if (diag_buffer.empty()) {
     return {};
   }
@@ -299,7 +296,8 @@ std::optional<DiagStamped> DiagnosticErrorMonitor::getLatestDiag(
   return diag_buffer.back();
 }
 
-uint8_t DiagnosticErrorMonitor::getHazardLevel(const DiagConfig & required_module, const int diag_level) const
+uint8_t DiagnosticErrorMonitor::getHazardLevel(
+  const DiagConfig & required_module, const int diag_level) const
 {
   using watchdog_system_msgs::msg::HazardStatus;
 
@@ -318,8 +316,8 @@ uint8_t DiagnosticErrorMonitor::getHazardLevel(const DiagConfig & required_modul
 
 // Register DiagnosticStatus to HazardStatus by each hazard level
 void DiagnosticErrorMonitor::appendHazardDiag(
-    const DiagConfig & required_module, const diagnostic_msgs::msg::DiagnosticStatus & hazard_diag,
-    watchdog_system_msgs::msg::HazardStatus * hazard_status) const
+  const DiagConfig & required_module, const diagnostic_msgs::msg::DiagnosticStatus & hazard_diag,
+  watchdog_system_msgs::msg::HazardStatus * hazard_status) const
 {
   const auto hazard_level = getHazardLevel(required_module, hazard_diag.level);
 
@@ -341,11 +339,11 @@ void DiagnosticErrorMonitor::appendHazardDiag(
 
 watchdog_system_msgs::msg::HazardStatus DiagnosticErrorMonitor::judgeHazardStatus() const
 {
-  using watchdog_system_msgs::msg::HazardStatus;
   using diagnostic_msgs::msg::DiagnosticStatus;
+  using watchdog_system_msgs::msg::HazardStatus;
 
   HazardStatus hazard_status;
-  
+
   for (const auto & required_module : required_modules_map_.at(current_mode_)) {
     const auto & diag_name = required_module.name;
     const auto latest_diag = getLatestDiag(diag_name);
@@ -388,29 +386,29 @@ watchdog_system_msgs::msg::HazardStatus DiagnosticErrorMonitor::judgeHazardStatu
 
 void DiagnosticErrorMonitor::updateHazardStatus()
 {
-  //const bool prev_emergency_status = hazard_status_.emergency;
+  // const bool prev_emergency_status = hazard_status_.emergency;
 
   // Create hazard status based on diagnostics
   if (!hazard_status_.emergency_holding) {
     const auto current_hazard_status = judgeHazardStatus();
     hazard_status_.level = current_hazard_status.level;
-    hazard_status_.diag_no_fault= current_hazard_status.diag_no_fault;
-    hazard_status_.diag_safe_fault= current_hazard_status.diag_safe_fault;
-    hazard_status_.diag_latent_fault= current_hazard_status.diag_latent_fault;
-    hazard_status_.diag_single_point_fault= current_hazard_status.diag_single_point_fault;
+    hazard_status_.diag_no_fault = current_hazard_status.diag_no_fault;
+    hazard_status_.diag_safe_fault = current_hazard_status.diag_safe_fault;
+    hazard_status_.diag_latent_fault = current_hazard_status.diag_latent_fault;
+    hazard_status_.diag_single_point_fault = current_hazard_status.diag_single_point_fault;
   }
 
   // Update emergency status
   {
     hazard_status_.emergency = hazard_status_.level >= params_.emergency_hazard_level;
 
-    //Emergency hold related
+    // Emergency hold related
     /*if (hazard_status_.emergency != prev_emergency_status) {
       emergency_state_swich_time_ = this->now();
     }*/
   }
 
-  //TODO emergency_holding condition?
+  // TODO emergency_holding condition?
 }
 
 // Emergency hold related function
@@ -430,12 +428,11 @@ void DiagnosticErrorMonitor::updateHazardStatus()
   return true;
 }*/
 
-
 void DiagnosticErrorMonitor::publishHazardStatus(
-    const watchdog_system_msgs::msg::HazardStatus & hazard_status)
+  const watchdog_system_msgs::msg::HazardStatus & hazard_status)
 {
   watchdog_system_msgs::msg::HazardStatusStamped hazard_status_stamped;
   hazard_status_stamped.stamp = this->now();
-  hazard_status_stamped.status= hazard_status;
+  hazard_status_stamped.status = hazard_status;
   pub_hazard_status_->publish(hazard_status_stamped);
 }

@@ -12,19 +12,19 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <string>
-#include <vector>
-#include <regex>
-
 #include "tilde_aggregator/tilde_aggregator_core.hpp"
+
 #include "tilde_msg/msg/message_tracking_tag.hpp"
 
+#include <regex>
+#include <string>
+#include <vector>
 
 #define FMT_HEADER_ONLY
 #include <fmt/format.h>
 
-
-namespace{
+namespace
+{
 
 std::vector<std::string> split(const std::string & str, const char delim)
 {
@@ -39,8 +39,8 @@ std::vector<std::string> split(const std::string & str, const char delim)
 
 int str2level(const std::string & level_str)
 {
-  using watchdog_system_msgs::msg::TildeDiagnosticStatus;
   using std::regex_constants::icase;
+  using watchdog_system_msgs::msg::TildeDiagnosticStatus;
 
   if (std::regex_match(level_str, std::regex("warn", icase))) {
     return TildeDiagnosticStatus::WARN;
@@ -71,56 +71,47 @@ watchdog_system_msgs::msg::TildeDiagnosticArray createTimeoutTildeDiagnosticArra
   return tilde_diagnostic_array;
 }
 
-}//namespace
+}  // namespace
 
-
-
-std::vector<rclcpp::Subscription<tilde_msg::msg::MessageTrackingTag>::SharedPtr> sub_message_tracking_tag_buffer_;
+std::vector<rclcpp::Subscription<tilde_msg::msg::MessageTrackingTag>::SharedPtr>
+  sub_message_tracking_tag_buffer_;
 
 TildeAggregator::TildeAggregator()
-  : Node(
-      "tilde_aggregator",
-      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+: Node(
+    "tilde_aggregator", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
 {
-
-  //Parameters
+  // Parameters
   get_parameter_or<int>("update_rate", params_.update_rate, 10);
-  get_parameter_or<double>("message_tracking_tag_timeout_sec", params_.message_tracking_tag_timeout_sec, 1.0);
+  get_parameter_or<double>(
+    "message_tracking_tag_timeout_sec", params_.message_tracking_tag_timeout_sec, 1.0);
   get_parameter_or<double>("data_ready_timeout", params_.data_ready_timeout, 30.0);
-  std::cout << "loaded params" << std::endl;
 
-  //load topics and paths
+  // load topics and paths
   loadRequiredTopics(KeyName::test_sensing);
-  std::cout << "loaded topic" << std::endl;
   loadRequiredPaths(KeyName::test_sensing);
-  std::cout << "loaded path" << std::endl;
 
   using std::placeholders::_1;
 
-  //Subscriber
+  // Subscriber
   for (const auto & required_topic : required_topics_map_.at(KeyName::test_sensing)) {
-
-    //TODO error handling when no topic
-    std::cout << "subscription_topic:" << required_topic << std::endl;
+    // TODO error handling when no topic
     const auto sub_message_tracking_tag = create_subscription<tilde_msg::msg::MessageTrackingTag>(
-        required_topic, rclcpp::QoS{1}, std::bind(&TildeAggregator::onMessageTrackingTag, this, _1));
+      required_topic, rclcpp::QoS{1}, std::bind(&TildeAggregator::onMessageTrackingTag, this, _1));
     sub_message_tracking_tag_buffer_.push_back(sub_message_tracking_tag);
   }
 
-  //Publisher
-  pub_tilde_diagnostic_ = create_publisher<watchdog_system_msgs::msg::TildeDiagnosticArray> (
-      "~/output/tilde_agg", rclcpp::QoS{1});
+  // Publisher
+  pub_tilde_diagnostic_ = create_publisher<watchdog_system_msgs::msg::TildeDiagnosticArray>(
+    "~/output/tilde_agg", rclcpp::QoS{1});
 
-  //Timer
+  // Timer
   initialized_time_ = this->now();
   const auto period_ns = rclcpp::Rate(params_.update_rate).period();
-  timer_ = rclcpp::create_timer(this, get_clock(), period_ns, std::bind(&TildeAggregator::onTimer, this));
-
+  timer_ =
+    rclcpp::create_timer(this, get_clock(), period_ns, std::bind(&TildeAggregator::onTimer, this));
 }
 
-
-
-//load required topics from config yaml
+// load required topics from config yaml
 void TildeAggregator::loadRequiredTopics(const std::string & key)
 {
   const auto param_key = std::string("required_topics.") + key;
@@ -134,31 +125,31 @@ void TildeAggregator::loadRequiredTopics(const std::string & key)
   std::set<std::string> topic_names;
   RequiredTopics required_topics;
 
-  for (const auto & param_name: param_names) {
-    //Example of param_name: required_topics.key_name.topic_name
+  for (const auto & param_name : param_names) {
+    // Example of param_name: required_topics.key_name.topic_name
     const auto split_names = split(param_name, '.');
     const auto & param_required_topics = split_names.at(0);
     const auto & param_key = split_names.at(1);
     const auto & param_topic_name = split_names.at(2);
 
-
     const auto & topic_name_with_prefix =
       fmt::format("{0}.{1}.{2}", param_required_topics, param_key, param_topic_name);
 
     if (topic_names.count(topic_name_with_prefix) != 0) {
-      continue; //Skip duprecated topic
+      continue;  // Skip duprecated topic
     }
 
-    //Register name
+    // Register name
     topic_names.insert(topic_name_with_prefix);
 
-    //Register topics
+    // Register topics
 
-    const auto param_topic_name_with_prefix = param_topic_name + std::string("/message_tracking_tag");
+    const auto param_topic_name_with_prefix =
+      param_topic_name + std::string("/message_tracking_tag");
     required_topics.push_back(param_topic_name_with_prefix);
   }
 
-  required_topics_map_.insert(std::make_pair(key,required_topics));
+  required_topics_map_.insert(std::make_pair(key, required_topics));
 }
 
 // load required paths and params from config yaml
@@ -177,7 +168,7 @@ void TildeAggregator::loadRequiredPaths(const std::string & key)
   std::set<std::string> path_names;
   RequiredPaths required_paths;
 
-  for (const auto & param_name: param_names) {
+  for (const auto & param_name : param_names) {
     // Example of param_name: required_paths.key.start_point.end_point
     //                    or  required_paths.key.start_point.end_point.parameter
     const auto split_names = split(param_name, '.');
@@ -186,14 +177,14 @@ void TildeAggregator::loadRequiredPaths(const std::string & key)
     const auto & param_end_point = split_names.at(2);
     const auto & param_start_point = split_names.at(3);
 
-    const auto & path_name_with_prefix =
-      fmt::format("{0}.{1}.{2}.{3}", param_required_paths, param_key, param_end_point, param_start_point);
+    const auto & path_name_with_prefix = fmt::format(
+      "{0}.{1}.{2}.{3}", param_required_paths, param_key, param_end_point, param_start_point);
 
     if (path_names.count(path_name_with_prefix) != 0) {
-      continue; //Skip duprecated path
+      continue;  // Skip duprecated path
     }
 
-    //Register name
+    // Register name
     path_names.insert(path_name_with_prefix);
 
     const auto deadline_key = path_name_with_prefix + std::string(".deadline");
@@ -211,17 +202,16 @@ void TildeAggregator::loadRequiredPaths(const std::string & key)
     std::string level;
     this->get_parameter_or(level_key, level, std::string("none"));
 
-    //Register each path
+    // Register each path
     required_paths.push_back({param_end_point, param_start_point, time_deadline, level});
   }
 
   required_paths_map_.insert(std::make_pair(key, required_paths));
-
 }
 
-//register message tracking tag to map
+// register message tracking tag to map
 void TildeAggregator::onMessageTrackingTag(
-    const tilde_msg::msg::MessageTrackingTag::ConstSharedPtr msg)
+  const tilde_msg::msg::MessageTrackingTag::ConstSharedPtr msg)
 {
   message_tracking_tag_ = msg;
 
@@ -245,11 +235,11 @@ void TildeAggregator::onMessageTrackingTag(
 
   message_tracking_tag_buffer.push_back(message_tracking_tag_stamped);
   while (message_tracking_tag_buffer.size() > message_tracking_tag_buffer_size_) {
-     message_tracking_tag_buffer.pop_front();
+    message_tracking_tag_buffer.pop_front();
   }
 }
 
-//Timer functions
+// Timer functions
 bool TildeAggregator::isDataReady()
 {
   if (!message_tracking_tag_) {
@@ -264,7 +254,8 @@ void TildeAggregator::onTimer()
   if (!isDataReady()) {
     if ((this->now() - initialized_time_).seconds() > params_.data_ready_timeout) {
       RCLCPP_WARN_THROTTLE(
-          get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(), "input data is timeout");
+        get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(),
+        "input data is timeout");
       auto timeout_tilde_diagnostic_array = createTimeoutTildeDiagnosticArray();
       publishTildeDiag(timeout_tilde_diagnostic_array);
     }
@@ -275,8 +266,9 @@ void TildeAggregator::onTimer()
   publishTildeDiag(tilde_diagnostic_array_);
 }
 
-//get latest message tracking tag from map
-  std::optional<MessageTrackingTagStamped> TildeAggregator::getLatestMessageTrackingTag(const std::string & end_topic_name) const
+// get latest message tracking tag from map
+std::optional<MessageTrackingTagStamped> TildeAggregator::getLatestMessageTrackingTag(
+  const std::string & end_topic_name) const
 {
   if (message_tracking_tag_buffer_map_.count(end_topic_name) == 0) {
     return {};
@@ -293,54 +285,52 @@ void TildeAggregator::onTimer()
 
 #define RESPONSE_TIME_CALC_ERROR 4
 
-uint8_t TildeAggregator::getTildeDiagLevel(const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag) const
+void TildeAggregator::getTildeDiagLevel(
+  const TildePathConfig & required_path,
+  const MessageTrackingTagStamped & message_tracking_tag,
+  watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status) const
 {
-  std::cout<< "getTildeDiagLevel!" << std::endl;
   using watchdog_system_msgs::msg::TildeDiagnosticStatus;
 
   const auto deadline = required_path.deadline;
 
-  std::cout<< "calculateResponseTime" << std::endl;
   const auto response_time = calculateResponseTime(required_path, message_tracking_tag);
 
   if (!response_time) {
-    std::cout<< "calculate error" << std::endl;
-    return RESPONSE_TIME_CALC_ERROR;
+    tilde_diagnostic_status.level = RESPONSE_TIME_CALC_ERROR;
   }
 
-  std::cout<< "calculate succedded" << std::endl;
-  if (*response_time > deadline) {
-    return str2level(required_path.level);
+  if ((response_time.value() > deadline)) {
+    tilde_diagnostic_status.level = str2level(required_path.level);
+  } else {
+    tilde_diagnostic_status.level = TildeDiagnosticStatus::OK;
   }
-
-  return TildeDiagnosticStatus::OK;
-
+  tilde_diagnostic_status.response_time = response_time.value();
 }
 
-std::optional<rclcpp::Duration> TildeAggregator::calculateResponseTime(const TildePathConfig & required_path, const MessageTrackingTagStamped & message_tracking_tag) const
+std::optional<rclcpp::Duration> TildeAggregator::calculateResponseTime(
+  const TildePathConfig & required_path,
+  const MessageTrackingTagStamped & message_tracking_tag) const
 {
   rclcpp::Time pub_time = message_tracking_tag.pub_topic_time_info.pub_time;
 
-  std::cout<< "findStartPoint" << std::endl;
-  const auto & input_message_tracking_tag = findStartPoint(required_path, message_tracking_tag.sub_topic_time_infos);
+  const auto & input_message_tracking_tag =
+    findStartPoint(required_path, message_tracking_tag.sub_topic_time_infos);
 
   if (!input_message_tracking_tag) {
-    std::cout<< "start point not found" << std::endl;
     return {};
   }
-  std::cout<< "start point found" << std::endl;
-  rclcpp::Time initial_sub_time = input_message_tracking_tag->pub_topic_time_info.pub_time;
+  rclcpp::Time initial_sub_time = input_message_tracking_tag.value().pub_topic_time_info.pub_time;
 
   const auto response_time = pub_time - initial_sub_time;
 
   return response_time;
 }
 
-std::optional<MessageTrackingTagStamped> TildeAggregator::findStartPoint(const TildePathConfig & required_path, const SubTopicTimeInfoBuffer & input_infos) const
+std::optional<MessageTrackingTagStamped> TildeAggregator::findStartPoint(
+  const TildePathConfig & required_path, const SubTopicTimeInfoBuffer & input_infos) const
 {
-  std::cout << "findStartPoint: startpoint=" << required_path.start_point << " endpoint=" << required_path.end_point << std::endl;
   if (sizeof(input_infos) == 0) {
-    std::cout<< "findStartPoint: no input info" << std::endl;
     return {};
   }
   const auto start_point = required_path.start_point;
@@ -348,72 +338,69 @@ std::optional<MessageTrackingTagStamped> TildeAggregator::findStartPoint(const T
     if (!input_info.has_header_stamp) {
       continue;
     }
-    
-    std::cout<< "findStartPoint: getMessageTrackingTag " << input_info.topic_name << std::endl;
 
-    const auto input_message_tracking_tag = getMessageTrackingTag(input_info.topic_name, input_info.header_stamp);
+
+    const auto input_message_tracking_tag =
+      getMessageTrackingTag(input_info.topic_name, input_info.header_stamp);
     if (!input_message_tracking_tag) {
-      std::cout<< "findStartPoint: getMessageTrackingTag : notfound - continue" << std::endl;
       continue;
     }
     if (input_info.topic_name == start_point) {
-      std::cout<< "findStartPoint: getMessageTrackingTag : found start point" << std::endl;
-      return input_message_tracking_tag;
+      return input_message_tracking_tag.value();
     }
-    std::cout<< "findStartPoint: getMessageTrackingTag : not start point - continue search" << std::endl;
-    const auto r_input_message_tracking_tag = findStartPoint(required_path, input_message_tracking_tag->sub_topic_time_infos);
+    const auto r_input_message_tracking_tag =
+      findStartPoint(required_path, input_message_tracking_tag->sub_topic_time_infos);
     if (!r_input_message_tracking_tag) {
       continue;
     } else {
-      return r_input_message_tracking_tag;
+      return r_input_message_tracking_tag.value();
     }
   }
   return {};
 }
 
-std::optional<MessageTrackingTagStamped> TildeAggregator::getMessageTrackingTag(const std::string & topic_name, const rclcpp::Time header_stamp) const
+std::optional<MessageTrackingTagStamped> TildeAggregator::getMessageTrackingTag(
+  const std::string & topic_name, const rclcpp::Time header_stamp) const
 {
-  std::cout << "getMessageTrackingTag:" << topic_name << std::endl;
   if (message_tracking_tag_buffer_map_.count(topic_name) == 0) {
-    std::cout << "getMessageTrackingTag: topic not found" << topic_name << std::endl;
     return {};
   }
-  std::cout << "getMessageTrackingTag: topic found" << topic_name << std::endl;
   const auto message_tracking_tag_buffer = message_tracking_tag_buffer_map_.at(topic_name);
 
-  for (auto ritr = message_tracking_tag_buffer.rbegin(); ritr != message_tracking_tag_buffer.rend(); ++ritr) {
+  for (auto ritr = message_tracking_tag_buffer.rbegin(); ritr != message_tracking_tag_buffer.rend();
+       ++ritr) {
     const auto tag_output_header_stamp = ritr->pub_topic_time_info.header_stamp;
     if (tag_output_header_stamp == header_stamp) {
-      std::cout << "getMessageTrackingTag: message_tracking_tag found" << topic_name << std::endl;
       return *ritr;
     }
   }
   return {};
 }
 
-//Register DiagnosticStatus
+// Register DiagnosticStatus
 
-void TildeAggregator::appendTildeDiagnosticStatus (const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status, watchdog_system_msgs::msg::TildeDiagnosticArray * tilde_diagnostic_array) const {
+void TildeAggregator::appendTildeDiagnosticStatus(
+  const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_diagnostic_status,
+  watchdog_system_msgs::msg::TildeDiagnosticArray * tilde_diagnostic_array) const
+{
   auto & target_tilde_diagnostic_status_ref = tilde_diagnostic_array->status;
   target_tilde_diagnostic_status_ref.push_back(tilde_diagnostic_status);
 }
 
-watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagnosticStatus() const {
-
+watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagnosticStatus() const
+{
   using watchdog_system_msgs::msg::TildeDiagnosticArray;
   using watchdog_system_msgs::msg::TildeDiagnosticStatus;
 
   TildeDiagnosticArray tilde_diagnostic_array;
 
   for (const auto & required_path : required_paths_map_.at(current_mode_)) {
-
     const auto & end_point = required_path.end_point;
     const auto & start_point = required_path.start_point;
     const auto latest_message_tracking_tag = getLatestMessageTrackingTag(end_point);
 
     // no MessageTrackingTag found
     if (!latest_message_tracking_tag) {
-      std::cout << "judged: no MessageTrackingTag" << std::endl;
       TildeDiagnosticStatus missing_tilde_diagnostic_status;
       missing_tilde_diagnostic_status.level = TildeDiagnosticStatus::ERROR;
       missing_tilde_diagnostic_status.start_point = start_point;
@@ -421,21 +408,18 @@ watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagn
       missing_tilde_diagnostic_status.message = "no message tracking tag found";
 
       appendTildeDiagnosticStatus(missing_tilde_diagnostic_status, &tilde_diagnostic_array);
+
+      continue;
     }
-    
+
     {
-
-      std::cout << "judged: calc" << std::endl;
-      const auto tilde_diag_level = getTildeDiagLevel(required_path, *latest_message_tracking_tag);
       TildeDiagnosticStatus tilde_diagnostic_status;
+      getTildeDiagLevel(required_path, latest_message_tracking_tag.value(), tilde_diagnostic_status);
 
-      if (tilde_diag_level == RESPONSE_TIME_CALC_ERROR) {
-        std::cout << "calc : calc error" << std::endl;
+      if (tilde_diagnostic_status.level == RESPONSE_TIME_CALC_ERROR) {
         tilde_diagnostic_status.level = TildeDiagnosticStatus::WARN;
         tilde_diagnostic_status.message = "response time calc error";
       } else {
-        std::cout << "calc : calc succeeded" << std::endl;
-        tilde_diagnostic_status.level = tilde_diag_level;
         tilde_diagnostic_status.message = "";
       }
 
@@ -443,14 +427,13 @@ watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagn
       tilde_diagnostic_status.end_point = end_point;
 
       appendTildeDiagnosticStatus(tilde_diagnostic_status, &tilde_diagnostic_array);
-
     }
 
-    //diag timeout
+    // diag timeout
     /*{
-      std::cout << "judged: diag timeout" << std::endl;
-      const auto time_diff = this->now() - latest_message_tracking_tag->header.stamp;
+      const auto time_diff = this->now() - latest_message_tracking_tag.value().header.stamp;
       if (time_diff.seconds() > params_.message_tracking_tag_timeout_sec) {
+        std::cout << time_diff.seconds() << std::endl;
         TildeDiagnosticStatus timeout_tilde_diagnostic_status;
         timeout_tilde_diagnostic_status.level = TildeDiagnosticStatus::ERROR;
         timeout_tilde_diagnostic_status.message = "timeout";
@@ -464,17 +447,16 @@ watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagn
   }
 
   return tilde_diagnostic_array;
-
 }
-
 
 void TildeAggregator::updateTildeDiag()
 {
-  const auto current_tilde_diagnostic_array= judgeTildeDiagnosticStatus();
-  tilde_diagnostic_array_.status= current_tilde_diagnostic_array.status;
+  const auto current_tilde_diagnostic_array = judgeTildeDiagnosticStatus();
+  tilde_diagnostic_array_.status = current_tilde_diagnostic_array.status;
 }
 
-void TildeAggregator::publishTildeDiag(watchdog_system_msgs::msg::TildeDiagnosticArray & tilde_diagnostic_array)
+void TildeAggregator::publishTildeDiag(
+  watchdog_system_msgs::msg::TildeDiagnosticArray & tilde_diagnostic_array)
 {
   tilde_diagnostic_array.header.stamp = this->now();
   pub_tilde_diagnostic_->publish(tilde_diagnostic_array);

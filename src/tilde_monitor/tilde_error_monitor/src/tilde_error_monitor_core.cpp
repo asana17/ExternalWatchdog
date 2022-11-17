@@ -11,19 +11,18 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include <regex>
-#include <string>
-#include <set>
-#include <vector>
-
 #include "tilde_error_monitor/tilde_error_monitor_core.hpp"
 
+#include <regex>
+#include <set>
+#include <string>
+#include <vector>
 
 #define FMT_HEADER_ONLY
 #include <fmt/format.h>
 
-
-namespace{
+namespace
+{
 
 std::vector<std::string> split(const std::string & str, const char delim)
 {
@@ -44,8 +43,8 @@ std::string getPathName(const std::string & start_point, const std::string & end
 
 int str2level(const std::string & level_str)
 {
-  using watchdog_system_msgs::msg::TildeDiagnosticStatus;
   using std::regex_constants::icase;
+  using watchdog_system_msgs::msg::TildeDiagnosticStatus;
 
   if (std::regex_match(level_str, std::regex("warn", icase))) {
     return TildeDiagnosticStatus::WARN;
@@ -69,9 +68,9 @@ bool isOverLevel(const int & tilde_diag_level, const std::string & failure_level
   return tilde_diag_level >= str2level(failure_level_str);
 }
 
-//Get ref of target hazard level tilde diagnostic array in message
+// Get ref of target hazard level tilde diagnostic array in message
 std::vector<watchdog_system_msgs::msg::TildeDiagnosticStatus> & getTargetTildeDiagnosticsRef(
-    const int tilde_hazard_level, watchdog_system_msgs::msg::TildeHazardStatus * tilde_hazard_status)
+  const int tilde_hazard_level, watchdog_system_msgs::msg::TildeHazardStatus * tilde_hazard_status)
 {
   using watchdog_system_msgs::msg::TildeHazardStatus;
 
@@ -104,35 +103,35 @@ watchdog_system_msgs::msg::TildeHazardStatus createTimeoutTildeHazardStatus()
   return tilde_hazard_status;
 }
 
-}//namespace
-
+}  // namespace
 
 TildeErrorMonitor::TildeErrorMonitor()
-  : Node(
-      "tilde_error_monitor",
-      rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+: Node(
+    "tilde_error_monitor",
+    rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
 {
-
-  //Parameter
+  // Parameter
   get_parameter_or<int>("update_rate", params_.update_rate, 10);
-  get_parameter_or<bool>("ignore_missing_tilde_diagnostics", params_.ignore_missing_tilde_diagnostics, false);
+  get_parameter_or<bool>(
+    "ignore_missing_tilde_diagnostics", params_.ignore_missing_tilde_diagnostics, false);
   get_parameter_or<double>("tilde_diag_timeout_sec", params_.tilde_diag_timeout_sec, 1.0);
   get_parameter_or<double>("data_ready_timeout", params_.data_ready_timeout, 30.0);
-  get_parameter_or<int>("emergency_tilde_hazard_level", params_.emergency_tilde_hazard_level, watchdog_system_msgs::msg::TildeHazardStatus::LATENT_FAULT);
+  get_parameter_or<int>(
+    "emergency_tilde_hazard_level", params_.emergency_tilde_hazard_level,
+    watchdog_system_msgs::msg::TildeHazardStatus::LATENT_FAULT);
 
   loadRequiredPaths(KeyName::test_sensing);
 
-
   using std::placeholders::_1;
 
-  //Subscriber
+  // Subscriber
   sub_tilde_diag_array_ = create_subscription<watchdog_system_msgs::msg::TildeDiagnosticArray>(
-      "<input name>", rclcpp::QoS{1}, std::bind(&TildeErrorMonitor::onDiagArray, this, _1));
+    "<input name>", rclcpp::QoS{1}, std::bind(&TildeErrorMonitor::onDiagArray, this, _1));
 
   initialized_time_ = this->now();
   const auto period_ns = rclcpp::Rate(params_.update_rate).period();
   timer_ = rclcpp::create_timer(
-      this, get_clock(), period_ns, std::bind(&TildeErrorMonitor::onTimer, this));
+    this, get_clock(), period_ns, std::bind(&TildeErrorMonitor::onTimer, this));
 }
 
 // load required paths and params from config yaml
@@ -151,7 +150,7 @@ void TildeErrorMonitor::loadRequiredPaths(const std::string & key)
   std::set<std::string> path_names;
   RequiredPaths required_paths;
 
-  for (const auto & param_name: param_names) {
+  for (const auto & param_name : param_names) {
     // Example of param_name: required_paths.key.start_point.end_point
     //                    or  required_paths.key.start_point.end_point.parameter
     const auto split_names = split(param_name, '.');
@@ -160,14 +159,14 @@ void TildeErrorMonitor::loadRequiredPaths(const std::string & key)
     const auto & param_start_point = split_names.at(2);
     const auto & param_end_point = split_names.at(3);
 
-    const auto & path_name_with_prefix =
-      fmt::format("{0}.{1}.{2}.{3}", param_required_paths, param_key, param_start_point, param_end_point);
+    const auto & path_name_with_prefix = fmt::format(
+      "{0}.{1}.{2}.{3}", param_required_paths, param_key, param_start_point, param_end_point);
 
     if (path_names.count(path_name_with_prefix) != 0) {
-      continue; //Skip duprecated path
+      continue;  // Skip duprecated path
     }
 
-    //Register name
+    // Register name
     path_names.insert(path_name_with_prefix);
 
     // Load diag level
@@ -181,18 +180,16 @@ void TildeErrorMonitor::loadRequiredPaths(const std::string & key)
     std::string spf_at;
     this->get_parameter_or(spf_key, spf_at, std::string("error"));
 
-    //Register each path
+    // Register each path
     required_paths.push_back({param_start_point, param_end_point, sf_at, lf_at, spf_at});
   }
 
   required_paths_map_.insert(std::make_pair(key, required_paths));
-
 }
-
 
 // Register diag and msg from message to map
 void TildeErrorMonitor::onDiagArray(
-    const watchdog_system_msgs::msg::TildeDiagnosticArray::ConstSharedPtr msg)
+  const watchdog_system_msgs::msg::TildeDiagnosticArray::ConstSharedPtr msg)
 {
   tilde_diag_array_ = msg;
 
@@ -201,20 +198,19 @@ void TildeErrorMonitor::onDiagArray(
   for (const auto & tilde_diag : msg->status) {
     const std::string tilde_path_name = getPathName(tilde_diag.start_point, tilde_diag.end_point);
     if (tilde_diag_buffer_map_.count(tilde_path_name) == 0) {
-        tilde_diag_buffer_map_.insert(std::make_pair(tilde_path_name,TildeDiagBuffer{}));
-      }
+      tilde_diag_buffer_map_.insert(std::make_pair(tilde_path_name, TildeDiagBuffer{}));
+    }
 
-      auto & tilde_diag_buffer = tilde_diag_buffer_map_.at(tilde_path_name);
-      tilde_diag_buffer.push_back(TildeDiagStamped{header, tilde_diag});
+    auto & tilde_diag_buffer = tilde_diag_buffer_map_.at(tilde_path_name);
+    tilde_diag_buffer.push_back(TildeDiagStamped{header, tilde_diag});
 
-      while (tilde_diag_buffer.size() > tilde_diag_buffer_size_) {
+    while (tilde_diag_buffer.size() > tilde_diag_buffer_size_) {
       tilde_diag_buffer.pop_front();
     }
   }
 }
 
-
-//Timer functions
+// Timer functions
 bool TildeErrorMonitor::isDataReady()
 {
   if (!tilde_diag_array_) {
@@ -229,7 +225,8 @@ void TildeErrorMonitor::onTimer()
   if (!isDataReady()) {
     if ((this->now() - initialized_time_).seconds() > params_.data_ready_timeout) {
       RCLCPP_WARN_THROTTLE(
-          get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(), "input data is timeout");
+        get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(),
+        "input data is timeout");
       publishTildeHazardStatus(createTimeoutTildeHazardStatus());
     }
     return;
@@ -239,18 +236,16 @@ void TildeErrorMonitor::onTimer()
   publishTildeHazardStatus(tilde_hazard_status_);
 }
 
-
-
-//get latest diag from map
+// get latest diag from map
 std::optional<TildeDiagStamped> TildeErrorMonitor::getLatestTildeDiag(
-    const std::string & tilde_path_name) const
+  const std::string & tilde_path_name) const
 {
   if (tilde_diag_buffer_map_.count(tilde_path_name) == 0) {
     return {};
   }
-  
+
   const auto & tilde_diag_buffer = tilde_diag_buffer_map_.at(tilde_path_name);
-  
+
   if (tilde_diag_buffer.empty()) {
     return {};
   }
@@ -258,8 +253,8 @@ std::optional<TildeDiagStamped> TildeErrorMonitor::getLatestTildeDiag(
   return tilde_diag_buffer.back();
 }
 
-
-uint8_t TildeErrorMonitor::getTildeHazardLevel(const TildeDiagConfig & required_path, const int tilde_diag_level) const
+uint8_t TildeErrorMonitor::getTildeHazardLevel(
+  const TildeDiagConfig & required_path, const int tilde_diag_level) const
 {
   using watchdog_system_msgs::msg::TildeHazardStatus;
 
@@ -276,29 +271,29 @@ uint8_t TildeErrorMonitor::getTildeHazardLevel(const TildeDiagConfig & required_
   return TildeHazardStatus::NO_FAULT;
 }
 
-//Register TildeDiagnosticStatus to TildeHazardStatus by each hazard level
+// Register TildeDiagnosticStatus to TildeHazardStatus by each hazard level
 void TildeErrorMonitor::appendTildeHazardDiag(
-  const TildeDiagConfig & required_path, const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_hazard_diag,
-    watchdog_system_msgs::msg::TildeHazardStatus * tilde_hazard_status) const
+  const TildeDiagConfig & required_path,
+  const watchdog_system_msgs::msg::TildeDiagnosticStatus & tilde_hazard_diag,
+  watchdog_system_msgs::msg::TildeHazardStatus * tilde_hazard_status) const
 {
   const auto tilde_hazard_level = getTildeHazardLevel(required_path, tilde_hazard_diag.level);
 
-  //Get target tilde diagnostic array ref
-  auto & target_tilde_diagnostics_ref = getTargetTildeDiagnosticsRef(tilde_hazard_level, tilde_hazard_status);
-  //Regiter to ref
+  // Get target tilde diagnostic array ref
+  auto & target_tilde_diagnostics_ref =
+    getTargetTildeDiagnosticsRef(tilde_hazard_level, tilde_hazard_status);
+  // Regiter to ref
   target_tilde_diagnostics_ref.push_back(tilde_hazard_diag);
 
   tilde_hazard_status->level = std::max(tilde_hazard_status->level, tilde_hazard_level);
-
 }
 
 watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazardStatus() const
 {
-  using watchdog_system_msgs::msg::TildeHazardStatus;
   using watchdog_system_msgs::msg::TildeDiagnosticStatus;
+  using watchdog_system_msgs::msg::TildeHazardStatus;
 
   TildeHazardStatus tilde_hazard_status;
-
 
   for (const auto & required_path : required_paths_map_.at(current_mode_)) {
     const auto & diag_start_point = required_path.start_point;
@@ -306,7 +301,7 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
     const std::string diag_path_name = getPathName(diag_start_point, diag_end_point);
     const auto latest_tilde_diag = getLatestTildeDiag(diag_path_name);
 
-    //no diag found
+    // no diag found
     if (!latest_tilde_diag) {
       if (!params_.ignore_missing_tilde_diagnostics) {
         TildeDiagnosticStatus missing_tilde_diag;
@@ -321,13 +316,13 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
       continue;
     }
 
-    //diag level high
+    // diag level high
     {
       appendTildeHazardDiag(required_path, latest_tilde_diag->status, &tilde_hazard_status);
     }
 
-    //diag timeout
-    {
+    // diag timeout
+    /*{
       const auto time_diff = this->now() - latest_tilde_diag->header.stamp;
       if (time_diff.seconds() > params_.tilde_diag_timeout_sec) {
         TildeDiagnosticStatus timeout_tilde_diag = latest_tilde_diag->status;
@@ -336,39 +331,38 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
 
         appendTildeHazardDiag(required_path, timeout_tilde_diag, &tilde_hazard_status);
       }
-    }
-
+    }*/
   }
 
   return tilde_hazard_status;
-
 }
-
 
 void TildeErrorMonitor::updateTildeHazardStatus()
 {
-  //const bool prev_emergency_status = hazard_status_.emergency;
+  // const bool prev_emergency_status = hazard_status_.emergency;
 
   // Create hazard status based on diagnostics
   const auto current_tilde_hazard_status = judgeTildeHazardStatus();
   tilde_hazard_status_.level = current_tilde_hazard_status.level;
-  tilde_hazard_status_.tilde_diag_no_fault= current_tilde_hazard_status.tilde_diag_no_fault;
-  tilde_hazard_status_.tilde_diag_safe_fault= current_tilde_hazard_status.tilde_diag_safe_fault;
-  tilde_hazard_status_.tilde_diag_latent_fault= current_tilde_hazard_status.tilde_diag_latent_fault;
-  tilde_hazard_status_.tilde_diag_single_point_fault= current_tilde_hazard_status.tilde_diag_single_point_fault;
+  tilde_hazard_status_.tilde_diag_no_fault = current_tilde_hazard_status.tilde_diag_no_fault;
+  tilde_hazard_status_.tilde_diag_safe_fault = current_tilde_hazard_status.tilde_diag_safe_fault;
+  tilde_hazard_status_.tilde_diag_latent_fault =
+    current_tilde_hazard_status.tilde_diag_latent_fault;
+  tilde_hazard_status_.tilde_diag_single_point_fault =
+    current_tilde_hazard_status.tilde_diag_single_point_fault;
 
   // Update emergency status
   {
-    tilde_hazard_status_.emergency = tilde_hazard_status_.level >= params_.emergency_tilde_hazard_level;
+    tilde_hazard_status_.emergency =
+      tilde_hazard_status_.level >= params_.emergency_tilde_hazard_level;
   }
-
 }
 
 void TildeErrorMonitor::publishTildeHazardStatus(
-    const watchdog_system_msgs::msg::TildeHazardStatus & tilde_hazard_status)
+  const watchdog_system_msgs::msg::TildeHazardStatus & tilde_hazard_status)
 {
   watchdog_system_msgs::msg::TildeHazardStatusStamped tilde_hazard_status_stamped;
   tilde_hazard_status_stamped.stamp = this->now();
-  tilde_hazard_status_stamped.status= tilde_hazard_status;
+  tilde_hazard_status_stamped.status = tilde_hazard_status;
   pub_tilde_hazard_status_->publish(tilde_hazard_status_stamped);
 }

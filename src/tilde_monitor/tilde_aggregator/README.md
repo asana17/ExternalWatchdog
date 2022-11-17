@@ -14,8 +14,7 @@ message tracking tagのsub : topic名をどう取得するのか？
 一旦pathを登録して、レイテンシ計算を行う
 その後判定
 
-1. 計算したlatencyをtilde_diag_statusに含める。
-
+1. clock(steady time)に置き換え
 ## 実装
 
 pathの登録

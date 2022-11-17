@@ -23,7 +23,7 @@
 
       test_sensing:
         /sensing/lidar/concatenated/pointcloud :
-          /sensing/lidar/left/pointcloud_raw_ex : {deadline : "1.0", level : error}
-          /sensing/lidar/right/pointcloud_raw_ex : {deadline : "1000.0", level : error}
-          /sensing/lidar/top/pointcloud_raw_ex : {deadline : "1000.0", level : error}
+          /sensing/lidar/left/pointcloud_raw_ex : {deadline : "0.50000000", level : error}
+          /sensing/lidar/right/pointcloud_raw_ex : {deadline : "1.0", level : error}
+          /sensing/lidar/top/pointcloud_raw_ex : {deadline : "1.0", level : error}
 

@@ -7,5 +7,6 @@ uint8 STALE = 3
 uint8 level
 string start_point # a start point topic name of path
 string end_point # an end point topic name of path
+builtin_interfaces/Duration response_time
 string message # a description of the status
 

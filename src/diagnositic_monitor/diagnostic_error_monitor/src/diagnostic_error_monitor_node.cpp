@@ -1,6 +1,6 @@
 #include "diagnostic_error_monitor/diagnostic_error_monitor_core.hpp"
 
-#include<memory>
+#include <memory>
 
 int main(int argc, char ** argv)
 {
