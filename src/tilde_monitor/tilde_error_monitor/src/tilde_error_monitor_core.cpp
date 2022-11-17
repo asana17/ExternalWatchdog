@@ -126,7 +126,11 @@ TildeErrorMonitor::TildeErrorMonitor()
 
   // Subscriber
   sub_tilde_diag_array_ = create_subscription<watchdog_system_msgs::msg::TildeDiagnosticArray>(
-    "<input name>", rclcpp::QoS{1}, std::bind(&TildeErrorMonitor::onDiagArray, this, _1));
+    "input/tilde_diag_array", rclcpp::QoS{1}, std::bind(&TildeErrorMonitor::onDiagArray, this, _1));
+
+  //Publisher
+  pub_tilde_hazard_status_ = create_publisher<watchdog_system_msgs::msg::TildeHazardStatusStamped>(
+    "~/output/tilde_hazard_status", rclcpp::QoS{1});
 
   initialized_time_ = this->now();
   const auto period_ns = rclcpp::Rate(params_.update_rate).period();
@@ -151,16 +155,16 @@ void TildeErrorMonitor::loadRequiredPaths(const std::string & key)
   RequiredPaths required_paths;
 
   for (const auto & param_name : param_names) {
-    // Example of param_name: required_paths.key.start_point.end_point
-    //                    or  required_paths.key.start_point.end_point.parameter
+    // Example of param_name: required_paths.key.end_point.start_point
+    //                    or  required_paths.key.end_point.start_point.parameter
     const auto split_names = split(param_name, '.');
     const auto & param_required_paths = split_names.at(0);
     const auto & param_key = split_names.at(1);
-    const auto & param_start_point = split_names.at(2);
-    const auto & param_end_point = split_names.at(3);
+    const auto & param_end_point = split_names.at(2);
+    const auto & param_start_point = split_names.at(3);
 
     const auto & path_name_with_prefix = fmt::format(
-      "{0}.{1}.{2}.{3}", param_required_paths, param_key, param_start_point, param_end_point);
+      "{0}.{1}.{2}.{3}", param_required_paths, param_key, param_end_point, param_start_point);
 
     if (path_names.count(path_name_with_prefix) != 0) {
       continue;  // Skip duprecated path
@@ -293,6 +297,7 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
   using watchdog_system_msgs::msg::TildeDiagnosticStatus;
   using watchdog_system_msgs::msg::TildeHazardStatus;
 
+
   TildeHazardStatus tilde_hazard_status;
 
   for (const auto & required_path : required_paths_map_.at(current_mode_)) {
@@ -356,6 +361,7 @@ void TildeErrorMonitor::updateTildeHazardStatus()
     tilde_hazard_status_.emergency =
       tilde_hazard_status_.level >= params_.emergency_tilde_hazard_level;
   }
+
 }
 
 void TildeErrorMonitor::publishTildeHazardStatus(

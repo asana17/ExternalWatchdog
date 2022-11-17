@@ -1,6 +1,6 @@
 # Description:
-#   start_point: start point of path
 #   end_point: end point of path
+#   start_point: start point of path
 #   sf_at: diag level where it becomes Safe Fault
 #   lf_at: diag level where it becomes Latent Fault
 #   spf_at: diag level where it becomes Single Point Fault
@@ -14,16 +14,16 @@
 ---
 /**:
   ros__parameters:
-    required_modules:
+    required_paths:
       autonomous_driving:
+        /sensing/lidar/concatenated/pointcloud :
+          /sensing/lidar/left/pointcloud_raw_ex : { sf_at: "warn", lf_at: "none", spf_at: "none" }
 
 
       test_sensing:
-        /sensing/lidar/left/pointcloud_ex :
-          /sensing/lidar/concatenated/pointcloud : { sf_at: "warn", lf_at: "none", spf_at: "none" }
+        /sensing/lidar/concatenated/pointcloud :
+          /sensing/lidar/left/pointcloud_raw_ex : { sf_at: "warn", lf_at: "none", spf_at: "none" }
 
-        /sensing/lidar/right/pointcloud_ex :
-          /sensing/lidar/concatenated/pointcloud : { sf_at: "none", lf_at: "warn", spf_at: "none" }
+          /sensing/lidar/right/pointcloud_raw_ex : { sf_at: "none", lf_at: "warn", spf_at: "none" }
 
-        /sensing/lidar/top/pointcloud_ex :
-          /sensing/lidar/concatenated/pointcloud : { sf_at: "none", lf_at: "warn", spf_at: "none" }
+          /sensing/lidar/top/pointcloud_raw_ex : { sf_at: "none", lf_at: "warn", spf_at: "none" }

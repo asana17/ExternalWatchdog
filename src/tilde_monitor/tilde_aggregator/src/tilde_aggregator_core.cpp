@@ -299,6 +299,7 @@ void TildeAggregator::getTildeDiagLevel(
 
   if (!response_time) {
     tilde_diagnostic_status.level = RESPONSE_TIME_CALC_ERROR;
+    return;
   }
 
   if ((response_time.value() > deadline)) {
