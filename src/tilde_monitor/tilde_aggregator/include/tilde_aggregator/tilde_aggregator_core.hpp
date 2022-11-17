@@ -71,6 +71,8 @@ private:
 
   Parameters params_{};
 
+  std::shared_ptr<rclcpp::Clock> clock_;
+
   rclcpp::Time initialized_time_;
   watchdog_system_msgs::msg::TildeDiagnosticArray tilde_diagnostic_array_{};
   std::unordered_map<std::string, RequiredTopics> required_topics_map_;
@@ -92,7 +94,6 @@ private:
 
   const size_t message_tracking_tag_buffer_size_ = 100;
   std::unordered_map<std::string, MessageTrackingTagBuffer> message_tracking_tag_buffer_map_;
-  // std::unordered_map<std::string, SubTopicTimeInfoBuffer> sub_topic_time_info_buffer_map_;
 
   // Publisher
   rclcpp::Publisher<watchdog_system_msgs::msg::TildeDiagnosticArray>::SharedPtr

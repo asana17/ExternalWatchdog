@@ -322,7 +322,7 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
     }
 
     // diag timeout
-    /*{
+    {
       const auto time_diff = this->now() - latest_tilde_diag->header.stamp;
       if (time_diff.seconds() > params_.tilde_diag_timeout_sec) {
         TildeDiagnosticStatus timeout_tilde_diag = latest_tilde_diag->status;
@@ -331,7 +331,7 @@ watchdog_system_msgs::msg::TildeHazardStatus TildeErrorMonitor::judgeTildeHazard
 
         appendTildeHazardDiag(required_path, timeout_tilde_diag, &tilde_hazard_status);
       }
-    }*/
+    }
   }
 
   return tilde_hazard_status;

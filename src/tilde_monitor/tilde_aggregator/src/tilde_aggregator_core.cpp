@@ -104,8 +104,9 @@ TildeAggregator::TildeAggregator()
   pub_tilde_diagnostic_ = create_publisher<watchdog_system_msgs::msg::TildeDiagnosticArray>(
     "~/output/tilde_agg", rclcpp::QoS{1});
 
+  clock_.reset(new rclcpp::Clock(RCL_ROS_TIME));
   // Timer
-  initialized_time_ = this->now();
+  initialized_time_ = clock_->now();
   const auto period_ns = rclcpp::Rate(params_.update_rate).period();
   timer_ =
     rclcpp::create_timer(this, get_clock(), period_ns, std::bind(&TildeAggregator::onTimer, this));
@@ -252,7 +253,7 @@ bool TildeAggregator::isDataReady()
 void TildeAggregator::onTimer()
 {
   if (!isDataReady()) {
-    if ((this->now() - initialized_time_).seconds() > params_.data_ready_timeout) {
+    if ((clock_->now() - initialized_time_).seconds() > params_.data_ready_timeout) {
       RCLCPP_WARN_THROTTLE(
         get_logger(), *get_clock(), std::chrono::milliseconds(1000).count(),
         "input data is timeout");
@@ -429,11 +430,10 @@ watchdog_system_msgs::msg::TildeDiagnosticArray TildeAggregator::judgeTildeDiagn
       appendTildeDiagnosticStatus(tilde_diagnostic_status, &tilde_diagnostic_array);
     }
 
-    // diag timeout
+    // diag timeout TODO: timestamp of message tracking tag
     /*{
-      const auto time_diff = this->now() - latest_message_tracking_tag.value().header.stamp;
+      const auto time_diff = clock_->now() - latest_message_tracking_tag.value().header.stamp;
       if (time_diff.seconds() > params_.message_tracking_tag_timeout_sec) {
-        std::cout << time_diff.seconds() << std::endl;
         TildeDiagnosticStatus timeout_tilde_diagnostic_status;
         timeout_tilde_diagnostic_status.level = TildeDiagnosticStatus::ERROR;
         timeout_tilde_diagnostic_status.message = "timeout";

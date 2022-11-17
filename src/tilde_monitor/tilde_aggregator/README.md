@@ -6,38 +6,19 @@
 4. configのlatency条件と比較
 5. configのerrorstatusを元にerror判定
 
-## TODO
+## easy test
 
-message tracking tagのsub : topic名をどう取得するのか？
-  message tracking tagの監視対象topicをリスト化したconfigが必要？
-
-一旦pathを登録して、レイテンシ計算を行う
-その後判定
-
-1. clock(steady time)に置き換え
-## 実装
-
-pathの登録
-messageのsubscribe
-レイテンシ計算
-
-## 現在
-
-onMessageTrackingTagでmessagetrackingtagを登録
-この登録がうまく行くかチェックする
-
-
-## test
-
-1. TILDEを動作させる
-2. TILDE_aggでmessage tracking tagを登録できているかチェック
+1. sensing部にTILDEを適用したautowareを用意
+1. lsimを起動
+1. ros2 launch tilde_aggregator tilde_aggregator.launch.xml
+1. ros2 topic echo /tilde_agg
 
 ## TODO
 
-aggregatorはtimerで起動するべきなのか
-各種エラー処理
-test
 
+1. message tracking tagのheader stampがおかしい気がする  
+これが理由でmessage tracking tagのtimeout判定ができない。
+1. topic subscribe用のconfigファイルの形式を修正
 
 ## message tracking tagの構造
 
@@ -88,7 +69,7 @@ outputinfoとinputinfoを一緒に登録する必要がある
 もしpath始点のtopic名が見つからずinput_infoの終点まで来た際は、std::optionalでnulloptを返す
 4. 3の返り値とpath終点のoutput_infoのsub_timeとの差を計算する
 
-## function
+## function (仮)
 
 1. getLatestMessageTrackingTag  
 path終点の最新のmessage tracking tagを取得

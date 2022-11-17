@@ -3,13 +3,16 @@
   <arg name="config_file_message_tracking_tag" default="$(find-pkg-share tilde_aggregator)/config/tilde_message_tracking_tag.param.yaml" />
 
   <arg name="data_ready_timeout" default="30.0" />
-  <arg name="tilde_diag_timeout_sec" default="1.0" />
+  <arg name="message_tracking_tag_timeout_sec" default="1.0" />
+  <arg name="update_rate" default="10" />
 
 
   <include file="$(find-pkg-share tilde_aggregator)/launch/tilde_aggregator_node.launch.xml">
+    <arg name="use_sim_time" value="true" />
     <arg name="config_file" value="$(var config_file)"/>
     <arg name="config_file_message_tracking_tag" value="$(var config_file_message_tracking_tag)"/>
     <arg name="data_ready_timeout" value="$(var data_ready_timeout)" />
-    <arg name="tilde_diag_timeout_sec" value="$(var tilde_diag_timeout_sec)" />
+    <arg name="message_tracking_tag_timeout_sec" value="$(var message_tracking_tag_timeout_sec)" />
+  <arg name="update_rate" value="$(var update_rate)"/>
   </include>
 </launch>
