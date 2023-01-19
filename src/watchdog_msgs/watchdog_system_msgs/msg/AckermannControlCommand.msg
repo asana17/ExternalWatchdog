@@ -1,0 +1,4 @@
+# Lateral and longitudinal control message for Ackermann-style platforms
+builtin_interfaces/Time stamp
+watchdog_system_msgs/AckermannLateralCommand lateral
+watchdog_system_msgs/LongitudinalCommand longitudinal
