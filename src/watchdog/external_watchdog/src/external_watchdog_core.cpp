@@ -34,7 +34,7 @@ ExternalWatchdog::ExternalWatchdog()
 
   /* parameters for emergency stop */
   emergency_brake_ = declare_parameter("emergency_brake", 0.7);
-  
+
   /* vehicle parameters */
   vgr_coef_a_ = declare_parameter("vgr_coef_a", 15.713);
   vgr_coef_b_ = declare_parameter("vgr_coef_b", 0.053);
@@ -56,24 +56,19 @@ ExternalWatchdog::ExternalWatchdog()
 
   using std::placeholders::_1;
 
-  // Subscriber
+  // Subscribers
   sub_hazard_status_ = create_subscription<watchdog_system_msgs::msg::HazardStatusStamped>(
-    "input/hazard_status", rclcpp::QoS{1}, std::bind(&ExternalWatchdog::onHazardStatus, this, _1));
-
-  sub_tilde_hazard_status_ = create_subscription<watchdog_system_msgs::msg::TildeHazardStatusStamped>(
-    "input/tilde_hazard_status", rclcpp::QoS{1}, std::bind(&ExternalWatchdog::onTildeHazardStatus, this, _1));
-
+    "~/input/hazard_status", rclcpp::QoS{1}, std::bind(&ExternalWatchdog::onHazardStatus, this, _1));
+  //sub_tilde_hazard_status_ = create_subscription<watchdog_system_msgs::msg::TildeHazardStatusStamped>(
+    //"~/input/tilde_hazard_status", rclcpp::QoS{1}, std::bind(&ExternalWatchdog::onTildeHazardStatus, this, _1));
  sub_prev_control_command_ =
     create_subscription<watchdog_system_msgs::msg::AckermannControlCommand>(
       "~/input/prev_control_command", rclcpp::QoS{1},
       std::bind(&ExternalWatchdog::onPrevControlCommand, this, _1));
-
  sub_odom_ = create_subscription<nav_msgs::msg::Odometry>(
     "~/input/odometry", rclcpp::QoS{1}, std::bind(&ExternalWatchdog::onOdometry, this, _1));
 
-
   // From pacmod
-
   steer_wheel_rpt_sub_ =
     std::make_unique<message_filters::Subscriber<pacmod3_msgs::msg::SystemRptFloat>>(
       this, "/pacmod/steering_rpt");
@@ -104,6 +99,7 @@ ExternalWatchdog::ExternalWatchdog()
     std::placeholders::_3, std::placeholders::_4, std::placeholders::_5, std::placeholders::_6,
     std::placeholders::_7, std::placeholders::_8));
 
+ // Publishers
  // To pacmod
   accel_cmd_pub_ =
     create_publisher<pacmod3_msgs::msg::SystemCmdFloat>("/pacmod/accel_cmd", rclcpp::QoS{1});
@@ -134,14 +130,13 @@ void ExternalWatchdog::onHazardStatus(const watchdog_system_msgs::msg::HazardSta
   judgeHazardStatus(hazard_status_level);
 }
 
-void ExternalWatchdog::onTildeHazardStatus(const watchdog_system_msgs::msg::TildeHazardStatusStamped::ConstSharedPtr msg)
+/*void ExternalWatchdog::onTildeHazardStatus(const watchdog_system_msgs::msg::TildeHazardStatusStamped::ConstSharedPtr msg)
 {
   tilde_hazard_status_ = msg;
   tilde_hazard_status_sub_time_ = this->now();
   const auto tilde_hazard_status_level = tilde_hazard_status_->status.level;
   judgeHazardStatus(tilde_hazard_status_level);
-
-}
+}*/
 
 
 void ExternalWatchdog::onPrevControlCommand(
@@ -163,9 +158,9 @@ void ExternalWatchdog::onTimer()
 {
   //check timeout
   const auto now_time = this->now();
-  if (((now_time - hazard_status_sub_time_).seconds() > params_.data_timeout) || (((now_time - tilde_hazard_status_sub_time_).seconds() > params_.data_timeout ))) {
-    callDirectMRM();
-  }
+  //if (((now_time - hazard_status_sub_time_).seconds() > params_.data_timeout) || (((now_time - tilde_hazard_status_sub_time_).seconds() > params_.data_timeout ))) {
+   // callDirectMRM();
+  //}
 }
 
 #define DIRECT_MRM_LEVEL 2

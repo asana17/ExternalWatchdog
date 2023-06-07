@@ -12,10 +12,7 @@
 
   <node pkg="diagnostic_error_monitor" exec="diagnostic_error_monitor" name="diagnostic_error_monitor" output="screen">
     <remap from="input/diag_array" to="/diagnostics_agg" />
-    <!--remap from="~/input/autoware_state" to="/autoware/state"/>
-    <remap from="~/input/current_gate_mode" to="/control/current_gate_mode"/>
-    <remap from="~/input/control_mode" to="/vehicle/status/control_mode"/-->
-      <remap from="~/output/diagnostic_hazard_status" to="/watchdog/emergency/diagnostic_hazard_status"/>
+    <remap from="~/output/diagnostic_hazard_status" to="/watchdog/emergency/diagnostic_hazard_status"/>
     <!--remap from="~/output/diagnostics_err" to="/diagnostics_err"/>
     <remap from="service/clear_emergency" to="/system/clear_emergency"/-->
 

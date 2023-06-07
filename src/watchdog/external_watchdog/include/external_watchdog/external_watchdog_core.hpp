@@ -51,7 +51,7 @@ private:
   Parameters params_{};
 
   watchdog_system_msgs::msg::HazardStatusStamped::ConstSharedPtr hazard_status_;
-  watchdog_system_msgs::msg::TildeHazardStatusStamped::ConstSharedPtr tilde_hazard_status_;
+  //watchdog_system_msgs::msg::TildeHazardStatusStamped::ConstSharedPtr tilde_hazard_status_;
   watchdog_system_msgs::msg::AckermannControlCommand::ConstSharedPtr control_cmd_ptr_;
   nav_msgs::msg::Odometry::ConstSharedPtr odom_;
 
@@ -62,14 +62,14 @@ private:
   // Subscriber
   rclcpp::Subscription<watchdog_system_msgs::msg::HazardStatusStamped>::SharedPtr
     sub_hazard_status_;
-  rclcpp::Subscription<watchdog_system_msgs::msg::TildeHazardStatusStamped>::SharedPtr
-    sub_tilde_hazard_status_;
+  /*rclcpp::Subscription<watchdog_system_msgs::msg::TildeHazardStatusStamped>::SharedPtr
+    sub_tilde_hazard_status_;*/
   rclcpp::Subscription<watchdog_system_msgs::msg::AckermannControlCommand>::SharedPtr
     sub_prev_control_command_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr sub_odom_;
 
   rclcpp::Time hazard_status_sub_time_;
-  rclcpp::Time tilde_hazard_status_sub_time_;
+  //rclcpp::Time tilde_hazard_status_sub_time_;
 
   // From Pacmod
   std::unique_ptr<message_filters::Subscriber<pacmod3_msgs::msg::SystemRptFloat>>
@@ -96,7 +96,7 @@ private:
   rclcpp::Publisher<pacmod3_msgs::msg::SystemCmdInt>::SharedPtr door_cmd_pub_;
   rclcpp::Publisher<pacmod3_msgs::msg::SteeringCmd>::SharedPtr
     raw_steer_cmd_pub_;  // only for debug
-  
+
 
   /* ros param */
   std::string base_frame_id_;

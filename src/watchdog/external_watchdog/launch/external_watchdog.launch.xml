@@ -1,0 +1,9 @@
+<launch>
+  <arg name="update_rate" default="10" />
+  <arg name="data_timeout" default="0.10" />
+
+  <include file="$(find-pkg-share external_watchdog)/launch/external_watchdog_node.launch.xml">
+    <arg name="update_rate" value="$(update_rate)" />
+    <arg name="diag_timeout" value="$(var diag_timeout)" />
+  </include>
+</launch>

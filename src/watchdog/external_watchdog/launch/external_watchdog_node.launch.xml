@@ -1,0 +1,14 @@
+<launch>
+  <arg name="update_rate" />
+  <arg name="data_timeout" />
+
+  <node pkg="external_watchdog" exec="external_watchdog" name="external_watchdog" output="screen">
+    <remap from="~/input/hazard_status" to="/watchdog/emergency/diagnostics_hazard_status" />
+    <remap from="~/input/tilde_hazard_status" to="/watchdog/emergency/tilde_hazard_status" />
+    <remap from="~/input/prev_control_command" to="/control/command/control_command" />
+    <remap from="~/input/odometry" to="/localization/kinematic_state" />
+
+    <param name="update_rate" value="$(var update_rate)" />
+    <param name="data_timeout" value="$(var data_timeout)" />
+  </node>
+</launch>

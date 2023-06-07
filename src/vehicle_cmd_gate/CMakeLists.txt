@@ -1,28 +1,27 @@
 cmake_minimum_required(VERSION 3.8)
-project(external_watchdog)
+project(vehicle_cmd_gate)
 
+### Compile options
 if(NOT CMAKE_CXX_STANDARD)
   set(CMAKE_CXX_STANDARD 14)
   set(CMAKE_CXX_STANDARD_REQUIRED ON)
   set(CMAKE_CXX_EXTENSIONS OFF)
 endif()
-
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-# find dependencies
+### Dependencies
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
-# Target
-set(EXTERNAL_WATCHDOG_SRC
-  src/external_watchdog_core.cpp
+ament_auto_add_library(vehicle_cmd_gate_node SHARED
+  src/vehicle_cmd_gate.cpp
 )
 
-ament_auto_add_executable(${PROJECT_NAME}
-  src/external_watchdog_node.cpp
-  ${EXTERNAL_WATCHDOG_SRC}
+rclcpp_components_register_node(vehicle_cmd_gate_node
+  PLUGIN "vehicle_cmd_gate::VehicleCmdGate"
+  EXECUTABLE vehicle_cmd_gate
 )
 
 if(BUILD_TESTING)
@@ -30,6 +29,9 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
+# Install
+## executables and libraries
 ament_auto_package(INSTALL_TO_SHARE
   launch
+  config
 )

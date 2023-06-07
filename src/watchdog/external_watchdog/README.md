@@ -45,3 +45,15 @@ emergencyの`AckermanControlCommand`, `HazardLightsCommand`, `GearCommand`をsub
 ## vehicle_interfaceの改変
 external_watchdogからpacmodにtopicをpublishする場合, vehicle_interfaceからはpublishされないようにしたい。  
 watchdogからis_direct_mrm_operatedというtopicをpublishし、vehicle_interface内で判定する。
+
+
+## refactoring on 3/8
+pacmod依存になっている部分を修正  
+emergency_handler→ vehicle_cmd_gateまでをExternal watchdogに実装 直接CANに出すためのinterfaceは別で実装することにする。  
+最終的に以下のtopicに相当するものをwatchdogからpublishできればよい
+1. /control/command/control_cmd
+1. /control/command/gear_cmd
+1. /control/command/emergency_cmd
+1. /control/command/actuation_cmd
+1. /control/command/turn_indicators_cmd
+1. /control/command/hazard_lights_cmd
