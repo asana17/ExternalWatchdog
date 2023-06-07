@@ -10,6 +10,7 @@
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
   <depend>rclcpp</depend>
   <depend>watchdog_system_msgs</depend>
+  <depend>autoware_auto_control_msgs</depend>
   <depend>nav_msgs</depend>
   <depend>message_filters</depend>
   <depend>pacmod3_msgs</depend>

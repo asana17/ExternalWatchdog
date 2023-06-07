@@ -6,7 +6,7 @@
 
 #include "watchdog_system_msgs/msg/hazard_status_stamped.hpp"
 #include "watchdog_system_msgs/msg/tilde_hazard_status_stamped.hpp"
-#include "watchdog_system_msgs/msg/ackermann_control_command.hpp"
+#include <autoware_auto_control_msgs/msg/ackermann_control_command.hpp>
 
 
 #include <nav_msgs/msg/odometry.hpp>
@@ -27,6 +27,7 @@
 #include <optional>
 
 
+using autoware_auto_control_msgs::msg::AckermannControlCommand;
 
 class ExternalWatchdog : public rclcpp::Node
 {
@@ -52,7 +53,7 @@ private:
 
   watchdog_system_msgs::msg::HazardStatusStamped::ConstSharedPtr hazard_status_;
   //watchdog_system_msgs::msg::TildeHazardStatusStamped::ConstSharedPtr tilde_hazard_status_;
-  watchdog_system_msgs::msg::AckermannControlCommand::ConstSharedPtr control_cmd_ptr_;
+  AckermannControlCommand::ConstSharedPtr control_cmd_ptr_;
   nav_msgs::msg::Odometry::ConstSharedPtr odom_;
 
   // Timer
@@ -64,7 +65,7 @@ private:
     sub_hazard_status_;
   /*rclcpp::Subscription<watchdog_system_msgs::msg::TildeHazardStatusStamped>::SharedPtr
     sub_tilde_hazard_status_;*/
-  rclcpp::Subscription<watchdog_system_msgs::msg::AckermannControlCommand>::SharedPtr
+  rclcpp::Subscription<AckermannControlCommand>::SharedPtr
     sub_prev_control_command_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr sub_odom_;
 
@@ -146,7 +147,7 @@ private:
   void onHazardStatus(const watchdog_system_msgs::msg::HazardStatusStamped::ConstSharedPtr msg);
   void onTildeHazardStatus(const watchdog_system_msgs::msg::TildeHazardStatusStamped::ConstSharedPtr msg);
   void onPrevControlCommand(
-    const watchdog_system_msgs::msg::AckermannControlCommand::ConstSharedPtr msg);
+    const AckermannControlCommand::ConstSharedPtr msg);
   void onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg);
 
   void judgeHazardStatus(const uint8_t hazard_status_level);
@@ -177,7 +178,7 @@ private:
     const rclcpp::Time & current_steer_time, const rclcpp::Time & prev_steer_time,
     const double steer_rate, const double current_steer_output, const bool engage);
 
-  //watchdog_system_msgs::msg::AckermannControlCommand getEmergencyControlCommand();
+  //AckermannControlCommand getEmergencyControlCommand();
 };
 
 #endif  // EXTERNAL_WATCHDOG__EXTERNAL_WATCHDOG_CORE_HPP_

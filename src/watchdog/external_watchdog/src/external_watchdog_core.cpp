@@ -62,7 +62,7 @@ ExternalWatchdog::ExternalWatchdog()
   //sub_tilde_hazard_status_ = create_subscription<watchdog_system_msgs::msg::TildeHazardStatusStamped>(
     //"~/input/tilde_hazard_status", rclcpp::QoS{1}, std::bind(&ExternalWatchdog::onTildeHazardStatus, this, _1));
  sub_prev_control_command_ =
-    create_subscription<watchdog_system_msgs::msg::AckermannControlCommand>(
+    create_subscription<AckermannControlCommand>(
       "~/input/prev_control_command", rclcpp::QoS{1},
       std::bind(&ExternalWatchdog::onPrevControlCommand, this, _1));
  sub_odom_ = create_subscription<nav_msgs::msg::Odometry>(
@@ -140,12 +140,12 @@ void ExternalWatchdog::onHazardStatus(const watchdog_system_msgs::msg::HazardSta
 
 
 void ExternalWatchdog::onPrevControlCommand(
-  const watchdog_system_msgs::msg::AckermannControlCommand::ConstSharedPtr msg)
+  const AckermannControlCommand::ConstSharedPtr msg)
 {
-  auto control_command = new watchdog_system_msgs::msg::AckermannControlCommand(*msg);
+  auto control_command = new AckermannControlCommand(*msg);
   control_command->stamp = msg->stamp;
   control_cmd_ptr_ =
-    watchdog_system_msgs::msg::AckermannControlCommand::ConstSharedPtr(control_command);
+    AckermannControlCommand::ConstSharedPtr(control_command);
 }
 
 
@@ -190,9 +190,9 @@ bool ExternalWatchdog::isStopped()
   return false;
 }
 
-/*watchdog_system_msgs::msg::AckermannControlCommand ExternalWatchdog::getEmergencyControlCommand()
+/*AckermannControlCommand ExternalWatchdog::getEmergencyControlCommand()
 {
-  watchdog_system_msgs::msg::AckermannControlCommand emergency_stop_cmd;
+  AckermannControlCommand emergency_stop_cmd;
   emergency_stop_cmd.lateral = control_cmd_ptr_->lateral;
   emergency_stop_cmd.longitudinal.speed = 0.0;
   emergency_stop_cmd.longitudinal.acceleration = -2.5;

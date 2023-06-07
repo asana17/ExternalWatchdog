@@ -15,5 +15,7 @@ log/
 # Python
 *.pyc
 
-#TILDE
+#build_depends
 src/TILDE/
+src/autoware/
+src/vendor/

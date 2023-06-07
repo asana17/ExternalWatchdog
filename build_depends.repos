@@ -1,5 +1,29 @@
 repositories:
-  TILDE:
+  autoware/common:
     type: git
-    url: https://github.com/tier4/TILDE.git
-    version: master
+    url: https://github.com/tier4/autoware_common.git
+    version: beta/x2/v2.1.0
+  autoware/auto_msgs:
+    type: git
+    url: https://github.com/tier4/autoware_auto_msgs.git
+    version: 6b5bc4365f9a2fc913bc11afa74ec21ffa2dbf32
+  autoware/tier4_msgs:
+    type: git
+    url: https://github.com/tier4/tier4_autoware_msgs.git
+    version: beta/x2/v2.1.0
+  autoware/autoware_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_msgs.git
+    version: f33ed6d53869db47fe24aac43df59c6cf2fbf93c
+  autoware/autoware_adapi_msgs:
+    type: git
+    url: https://github.com/autowarefoundation/autoware_adapi_msgs.git
+    version: d049f403698749eaf2dccfad37a2e586fd916200
+  vendor/gsm8_interface:
+    type: git
+    url: git@github.com:tier4/gsm8_interface.git
+    version: 638d2190f52c715ba317269c2bb7fe27280d0509
+#  TILDE:
+#    type: git
+#    url: https://github.com/tier4/TILDE.git
+#    version: master
