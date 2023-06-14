@@ -12,6 +12,7 @@
 #   lf_at: "warn"
 #   spf_at: "error"
 #   auto_recovery: "true"
+#   self_recoverable: "true"
 ---
 /**:
   ros__parameters:

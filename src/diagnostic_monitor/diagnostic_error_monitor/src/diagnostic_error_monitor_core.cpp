@@ -121,6 +121,7 @@ watchdog_system_msgs::msg::HazardStatus createTimeoutHazardStatus()
   hazard_status.level = watchdog_system_msgs::msg::HazardStatus::SINGLE_POINT_FAULT;
   hazard_status.emergency = true;
   hazard_status.emergency_holding = false;
+  hazard_status.self_recoverable = false;
   diagnostic_msgs::msg::DiagnosticStatus diag;
   diag.name = "diagnostic_error_monitor/input_data_timeout";
   diag.hardware_id = "diagnostic_error_monitor";
@@ -220,9 +221,16 @@ void DiagnosticErrorMonitor::loadRequiredModules(const std::string & key)
     // convert str to bool
     bool auto_recovery_approval{};
     std::istringstream(auto_recovery_approval_str) >> std::boolalpha >> auto_recovery_approval;
+    // self_recoverable
+    const auto self_recoverable_key = module_name_with_prefix + std::string(".self_recoverable");
+    std::string self_recoverable_str;
+    this->get_parameter_or(self_recoverable_key, self_recoverable_str, std::string("true"));
+    // convert str to bool
+    bool self_recoverable{};
+    std::istringstream(self_recoverable_str) >> std::boolalpha >> self_recoverable;
 
     // Register each module
-    required_modules.push_back({param_module, sf_at, lf_at, spf_at, auto_recovery_approval});
+    required_modules.push_back({param_module, sf_at, lf_at, spf_at, auto_recovery_approval, self_recoverable});
   }
 
   required_modules_map_.insert(std::make_pair(key, required_modules));
@@ -314,12 +322,22 @@ uint8_t DiagnosticErrorMonitor::getHazardLevel(
   return HazardStatus::NO_FAULT;
 }
 
+bool DiagnosticErrorMonitor::isSelfRecoverable(const DiagConfig & required_module) const
+{
+  if (required_module.self_recoverable) {
+    return true;
+  }
+  return false;
+}
+
 // Register DiagnosticStatus to HazardStatus by each hazard level
 void DiagnosticErrorMonitor::appendHazardDiag(
   const DiagConfig & required_module, const diagnostic_msgs::msg::DiagnosticStatus & hazard_diag,
   watchdog_system_msgs::msg::HazardStatus * hazard_status) const
 {
   const auto hazard_level = getHazardLevel(required_module, hazard_diag.level);
+
+  bool is_self_recoverable = isSelfRecoverable(required_module);
 
   // Get target diagnostic array ref
   auto & target_diagnostics_ref = getTargetDiagnosticsRef(hazard_level, hazard_status);
@@ -335,6 +353,9 @@ void DiagnosticErrorMonitor::appendHazardDiag(
   }
 
   hazard_status->level = std::max(hazard_status->level, hazard_level);
+  if (!is_self_recoverable) {
+    hazard_status->self_recoverable = false;
+  }
 }
 
 watchdog_system_msgs::msg::HazardStatus DiagnosticErrorMonitor::judgeHazardStatus() const
@@ -343,6 +364,7 @@ watchdog_system_msgs::msg::HazardStatus DiagnosticErrorMonitor::judgeHazardStatu
   using watchdog_system_msgs::msg::HazardStatus;
 
   HazardStatus hazard_status;
+  hazard_status.self_recoverable = true;
 
   for (const auto & required_module : required_modules_map_.at(current_mode_)) {
     const auto & diag_name = required_module.name;
@@ -392,6 +414,7 @@ void DiagnosticErrorMonitor::updateHazardStatus()
   if (!hazard_status_.emergency_holding) {
     const auto current_hazard_status = judgeHazardStatus();
     hazard_status_.level = current_hazard_status.level;
+    hazard_status_.self_recoverable = current_hazard_status.self_recoverable;
     hazard_status_.diag_no_fault = current_hazard_status.diag_no_fault;
     hazard_status_.diag_safe_fault = current_hazard_status.diag_safe_fault;
     hazard_status_.diag_latent_fault = current_hazard_status.diag_latent_fault;

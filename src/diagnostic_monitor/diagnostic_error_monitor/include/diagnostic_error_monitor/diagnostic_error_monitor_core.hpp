@@ -28,6 +28,7 @@ struct DiagConfig
   std::string lf_at;
   std::string spf_at;
   bool auto_recovery;
+  bool self_recoverable;
 };
 
 using RequiredModules = std::vector<DiagConfig>;
@@ -87,6 +88,7 @@ private:
 
   std::optional<DiagStamped> getLatestDiag(const std::string & diag_name) const;
   uint8_t getHazardLevel(const DiagConfig & required_module, const int diag_level) const;
+  bool isSelfRecoverable(const DiagConfig & required_module) const;
   void appendHazardDiag(
     const DiagConfig & required_module, const diagnostic_msgs::msg::DiagnosticStatus & diag,
     watchdog_system_msgs::msg::HazardStatus * hazard_status) const;

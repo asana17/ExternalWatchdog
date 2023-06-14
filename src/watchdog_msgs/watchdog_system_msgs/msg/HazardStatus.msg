@@ -6,6 +6,7 @@ uint8 SINGLE_POINT_FAULT = 3
 uint8 level
 bool emergency
 bool emergency_holding
+bool self_recoverable
 diagnostic_msgs/DiagnosticStatus[] diag_no_fault
 diagnostic_msgs/DiagnosticStatus[] diag_safe_fault
 diagnostic_msgs/DiagnosticStatus[] diag_latent_fault
