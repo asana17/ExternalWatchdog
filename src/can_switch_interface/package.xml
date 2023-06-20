@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>can_switch_interface</name>
+  <version>0.1.0</version>
+  <description>The can_switch_interface package</description>
+  <maintainer email="akihiro.sakurai@tier4.co.jp">Akihiro Sakurai</maintainer>
+  <author email="akihiro.sakurai@tier4.jp">Akihiro Sakurai</author>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <depend>can_msgs</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>std_msgs</depend>
+  <depend>watchdog_system_msgs</depend>
+
+  <exec_depend>ros2_socketcan</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

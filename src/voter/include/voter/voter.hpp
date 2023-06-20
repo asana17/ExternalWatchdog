@@ -160,4 +160,4 @@ private:
 
 }
 
-#endif
+#endif //VOTER__VOTER_HPP_

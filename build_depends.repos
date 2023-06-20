@@ -19,6 +19,10 @@ repositories:
     type: git
     url: https://github.com/autowarefoundation/autoware_adapi_msgs.git
     version: d049f403698749eaf2dccfad37a2e586fd916200
+  autoware/ros2_socketcan:
+    type: git
+    url: https://github.com/autowarefoundation/ros2_socketcan.git
+    version: main
   vendor/gsm8_interface:
     type: git
     url: git@github.com:tier4/gsm8_interface.git
