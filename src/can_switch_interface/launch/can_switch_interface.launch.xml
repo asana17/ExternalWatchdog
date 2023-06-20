@@ -9,12 +9,12 @@
     <push-ros-namespace namespace="can0"/>
     <include file="$(find-pkg-share ros2_socketcan)/launch/socket_can_bridge.launch.xml">
       <arg name="interface" value="$(var can_device_main)"/>
-      <arg name="receiver_interval_sec" value="1.0"/>
-      <arg name="sender_timeout_sec" value="0.02"/>
+      <arg name="receiver_interval_sec" value="10.0"/>
+      <arg name="sender_timeout_sec" value="200.0"/>
     </include>
   </group>
 
-  <group>
+  <!--group>
     <push-ros-namespace namespace="can1"/>
     <include file="$(find-pkg-share ros2_socketcan)/launch/socket_can_bridge.launch.xml">
       <arg name="interface" value="$(var can_device_sub)"/>
@@ -30,9 +30,9 @@
       <arg name="receiver_interval_sec" value="1.0"/>
       <arg name="sender_timeout_sec" value="0.02"/>
     </include>
-  </group>
+  </group-->
 
-  <node pkg="can_switch_interface" name="can_switch_interface" exec="can_switch_interface" output="screen">
+  <node pkg="can_switch_interface" name="can_switch_interface" exec="can_switch_interface_node" output="screen">
     <param name="frame_id" value="$(var frame_id)"/>
   </node>
 </launch>

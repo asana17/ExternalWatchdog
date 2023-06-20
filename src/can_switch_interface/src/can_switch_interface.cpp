@@ -80,7 +80,7 @@ void CanSwitchInterface::onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr m
 
 can_msgs::msg::Frame::ConstSharedPtr CanSwitchInterface::selectCanMsg() const
 {
-  if (switch_status_->ecu == watchdog_system_msgs::msg::SwitchStatus::MAIN) {
+  /*if (switch_status_->ecu == watchdog_system_msgs::msg::SwitchStatus::MAIN) {
     return Main_.can_msg_;
   }
   if (switch_status_->ecu == watchdog_system_msgs::msg::SwitchStatus::SUB) {
@@ -91,8 +91,13 @@ can_msgs::msg::Frame::ConstSharedPtr CanSwitchInterface::selectCanMsg() const
   }
 
   const auto msg = "invalid SwitchStatus: " + std::to_string(switch_status_->ecu);
-  throw std::runtime_error(msg);
+  throw std::runtime_error(msg);*/
+
+  return Main_.can_msg_;
 
 }
 
 } // namespace CanSwitchInterface
+
+#include <rclcpp_components/register_node_macro.hpp>
+RCLCPP_COMPONENTS_REGISTER_NODE(CanSwitchInterface::CanSwitchInterface)
