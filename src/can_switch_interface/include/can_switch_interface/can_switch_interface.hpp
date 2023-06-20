@@ -60,10 +60,9 @@ private:
   // Publisher
   rclcpp::Publisher<can_msgs::msg::Frame>::SharedPtr can_pub_;
 
-  void onSwitchStatus(const watchdog_system_msgs::msg::SwitchStatus::ConstSharedPtr msg, Ecu* ecu);
+  void onSwitchStatus(const watchdog_system_msgs::msg::SwitchStatus::ConstSharedPtr msg);
   void onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu);
 
-  void registerCanMsg(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu);
   can_msgs::msg::Frame::ConstSharedPtr selectCanMsg() const;
 };
 
