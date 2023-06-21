@@ -32,7 +32,7 @@
     </include>
   </group>
 
-  <node pkg="can_switch_interface" name="can_switch_interface" exec="can_switch_interface" output="screen">
+  <node pkg="can_switch_interface" name="can_switch_interface" exec="can_switch_interface_node" output="screen">
     <param name="frame_id" value="$(var frame_id)"/>
   </node>
 </launch>

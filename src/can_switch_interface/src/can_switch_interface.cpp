@@ -96,3 +96,6 @@ can_msgs::msg::Frame::ConstSharedPtr CanSwitchInterface::selectCanMsg() const
 }
 
 } // namespace CanSwitchInterface
+
+#include <rclcpp_components/register_node_macro.hpp>
+RCLCPP_COMPONENTS_REGISTER_NODE(CanSwitchInterface::CanSwitchInterface)
