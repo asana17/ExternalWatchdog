@@ -2,7 +2,7 @@
 #include <tier4_system_msgs/msg/detail/mrm_behavior_status__struct.hpp>
 #include <vector>
 
-namespace voter
+namespace Voter
 {
 
 Voter::Voter()
@@ -12,7 +12,7 @@ Voter::Voter()
   param_.update_rate = declare_parameter<int>("update_rate", 10);
   param_.timeout_hazard_status = declare_parameter<double>("timeout_hazard_status", 0.5);
 
-  // Subscriber
+  //Subscriber
   using std::placeholders::_1;
 
   sub_odom_ = create_subscription<nav_msgs::msg::Odometry>(
@@ -688,4 +688,8 @@ bool Voter::isStopped()
   return false;
 }
 
-}
+} // namespace Voter
+
+
+#include <rclcpp_components/register_node_macro.hpp>
+RCLCPP_COMPONENTS_REGISTER_NODE(Voter::Voter);

@@ -17,7 +17,7 @@
 #include <vector>
 
 
-namespace voter{
+namespace Voter{
 
 using autoware_adapi_v1_msgs::msg::MrmState;
 using tier4_system_msgs::msg::MrmBehaviorStatus;
@@ -161,6 +161,6 @@ private:
 
 };
 
-}
+} // namespace Voter
 
 #endif //VOTER__VOTER_HPP_

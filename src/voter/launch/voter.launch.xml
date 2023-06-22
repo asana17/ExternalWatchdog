@@ -1,0 +1,13 @@
+<launch>
+  <include file="$(find-pkg-share can_switch_interface)/launch/can_switch_interface.launch.xml">
+    <arg name="can_device_main" value="can0"/>
+    <arg name="can_device_sub" value="can1"/>
+    <arg name="can_device_supervisor" value="can2"/>
+    <arg name="frame_id" value="base_link"/>
+  </include>
+
+  <node pkg="voter" name="voter" exec="voter_node" output="screen">
+    <arg name="update_rate" value="10.0"/>
+    <arg name="timeout_hazard_status" value="0.5"/>
+  </node>
+</launch>
