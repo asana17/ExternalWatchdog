@@ -18,6 +18,10 @@ Voter::Voter()
   sub_odom_ = create_subscription<nav_msgs::msg::Odometry>(
     "~/input/odometry", rclcpp::QoS{1}, std::bind(&Voter::onOdometry, this, _1));
 
+
+  // Publisher
+  switch_status_pub_ = create_publisher<SwitchStatus>("~/output/switch_status", rclcpp::QoS(500));
+
   // Initialize
   switch_status_.ecu = SwitchStatus::MAIN;
   switch_status_.initial_ecu = SwitchStatus::MAIN;
@@ -147,18 +151,29 @@ void Voter::onSelfMonitoringStamped(
 
   ecu->self_hazard_status_stamped_ = msg;
   ecu->stamp_self_hazard_status_ = this->now();
+  updateSelfErrorStatus();
+  judgeMrmOperation();
+  updateVoterState();
+  operateMrm();
 }
 void Voter::onExternalMonitoringStamped(
     const HazardStatusStamped::ConstSharedPtr msg, Ecu* ecu) {
 
   ecu->external_hazard_status_stamped_ = msg;
   ecu->stamp_external_hazard_status_ = this->now();
+  updateExternalErrorStatus();
+  judgeMrmOperation();
+  updateVoterState();
+  operateMrm();
 }
 void Voter::onAnotherExternalMonitoringStamped(
     const HazardStatusStamped::ConstSharedPtr msg, Ecu* ecu) {
-
   ecu->another_external_hazard_status_stamped_ = msg;
   ecu->stamp_another_external_hazard_status_ = this->now();
+  updateExternalErrorStatus();
+  judgeMrmOperation();
+  updateVoterState();
+  operateMrm();
 }
 void Voter::onMrmComfortableStopStatus(
   const MrmBehaviorStatus::ConstSharedPtr msg, Ecu* ecu)
@@ -175,6 +190,11 @@ void Voter::onMrmSuddenStopStatus(
 void Voter::onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg)
 {
   odom_ = msg;
+}
+
+void Voter::onSwitchStatus(const SwitchStatus::ConstSharedPtr msg)
+{
+  switch_status_ = *msg;
 }
 
 void Voter::callMrmBehavior(
@@ -282,12 +302,6 @@ void Voter::onTimer()
   }
   // TODO check hazard_status timeout
 
-  updateExternalErrorStatus();
-  updateSelfErrorStatus();
-  judgeMrmOperation();
-  updateVoterState();
-  operateMrm();
-
 }
 
 
@@ -324,7 +338,6 @@ void Voter::transitionTo(const int new_state)
 
 void Voter::transitionSwitchTo(const int new_ecu)
 {
-
   const auto ecu2string = [](const int ecu) {
     if (ecu == SwitchStatus::MAIN) {
       return "Main";
@@ -340,10 +353,12 @@ void Voter::transitionSwitchTo(const int new_ecu)
   };
 
   RCLCPP_INFO(
-    this->get_logger(), "Switch Status changed: %s -> %s", ecu2string(switch_status_.ecu),
+    this->get_logger(), "Switch Status changing: %s -> %s", ecu2string(switch_status_.ecu),
     ecu2string(new_ecu));
 
-  //TODO select CAN communication
+  SwitchStatus status;
+  status.ecu = new_ecu;
+  switch_status_pub_->publish(status);
   switch_status_.ecu = new_ecu;
 }
 

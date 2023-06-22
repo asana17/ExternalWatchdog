@@ -11,9 +11,6 @@
 #include "watchdog_system_msgs/msg/switch_status.hpp"
 #include "watchdog_system_msgs/msg/voter_state.hpp"
 
-
-#include "voter/switch.hpp"
-
 #include <functional>
 #include <map>
 #include <string>
@@ -109,6 +106,12 @@ private:
   void onMrmSuddenStopStatus(
     const MrmBehaviorStatus::ConstSharedPtr msg, Ecu* ecu);
   void onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg);
+
+  void onSwitchStatus(
+      const SwitchStatus::ConstSharedPtr msg);
+
+  // Publisher
+  rclcpp::Publisher<SwitchStatus>::SharedPtr switch_status_pub_;
 
   VoterState voter_state_;
   MrmOperation mrm_operation_;
