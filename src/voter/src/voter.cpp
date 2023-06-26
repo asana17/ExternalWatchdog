@@ -5,8 +5,8 @@
 namespace Voter
 {
 
-Voter::Voter()
-  : Node("voter")
+Voter::Voter(const rclcpp::NodeOptions & node_options)
+  : Node("voter", node_options)
 {
 
   param_.update_rate = declare_parameter<int>("update_rate", 10);

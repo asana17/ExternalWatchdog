@@ -80,7 +80,7 @@ class Voter : public rclcpp::Node
 {
 
 public:
-  Voter();
+  explicit Voter(const rclcpp::NodeOptions & node_options);
 
 private:
 
