@@ -76,6 +76,7 @@ void CanSwitchInterface::onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr m
   const auto selected_can_msg_ = selectCanMsg();
 
   ecu->can_pub_->publish(*selected_can_msg_);
+  can_pub_->publish(*selected_can_msg_);
 }
 
 can_msgs::msg::Frame::ConstSharedPtr CanSwitchInterface::selectCanMsg() const
@@ -93,7 +94,7 @@ can_msgs::msg::Frame::ConstSharedPtr CanSwitchInterface::selectCanMsg() const
   const auto msg = "invalid SwitchStatus: " + std::to_string(switch_status_->ecu);
   throw std::runtime_error(msg);*/
 
-  return Main_.can_msg_;
+  return Sub_.can_msg_;
 
 }
 
