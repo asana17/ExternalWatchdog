@@ -1,6 +1,6 @@
 <launch>
   <arg name="can_device_main" default="can0"/>
-  <arg name="can_device_sub" default="can1"/>
+  <arg name="can_device_sub" default="pcan1"/>
   <arg name="can_device_supervisor" default="can2"/>
   <arg name="frame_id" default="base_link"/>
 
@@ -15,7 +15,7 @@
   </group>
 
   <group>
-    <push-ros-namespace namespace="can1"/>
+    <push-ros-namespace namespace="pcan1"/>
     <include file="$(find-pkg-share ros2_socketcan)/launch/socket_can_bridge.launch.xml">
       <arg name="interface" value="$(var can_device_sub)"/>
       <arg name="receiver_interval_sec" value="1.0"/>
@@ -34,5 +34,8 @@
 
   <node pkg="can_switch_interface" name="can_switch_interface" exec="can_switch_interface_node" output="screen">
     <param name="frame_id" value="$(var frame_id)"/>
+    <remap from="~/main/from_can_bus" to="/$(var can_device_main)/from_can_bus"/>
+    <remap from="~/sub/from_can_bus" to="/$(var can_device_sub)/from_can_bus"/>
+    <remap from="~/supervisor/from_can_bus" to="/$(var can_device_supervisor)/from_can_bus"/>
   </node>
 </launch>

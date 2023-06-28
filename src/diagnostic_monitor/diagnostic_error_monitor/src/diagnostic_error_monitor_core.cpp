@@ -88,7 +88,7 @@ std::vector<diagnostic_msgs::msg::DiagnosticStatus> & getTargetDiagnosticsRef(
   throw std::runtime_error(fmt::format("invalid hazard level: {}", hazard_level));
 }
 
-/*std::set<std::string> getErrorModules(
+std::set<std::string> getErrorModules(
     const watchdog_system_msgs::msg::HazardStatus & hazard_status,
     const int emergency_hazard_level)
 {
@@ -112,7 +112,7 @@ std::vector<diagnostic_msgs::msg::DiagnosticStatus> & getTargetDiagnosticsRef(
   }
 
   return error_modules;
-}*/
+}
 
 // Timeout error message
 watchdog_system_msgs::msg::HazardStatus createTimeoutHazardStatus()
@@ -143,6 +143,7 @@ DiagnosticErrorMonitor::DiagnosticErrorMonitor()
   get_parameter_or<bool>("add_leaf_diagnostics", params_.add_leaf_diagnostics, true);
   get_parameter_or<double>("data_ready_timeout", params_.data_ready_timeout, 30.0);
   get_parameter_or<double>("diag_timeout_sec", params_.diag_timeout_sec, 1.0);
+  get_parameter_or<double>("hazard_recovery_timeout", params_.hazard_recovery_timeout, 5.0);
   get_parameter_or<int>(
     "emergency_hazard_level", params_.emergency_hazard_level,
     watchdog_system_msgs::msg::HazardStatus::LATENT_FAULT);
@@ -408,7 +409,7 @@ watchdog_system_msgs::msg::HazardStatus DiagnosticErrorMonitor::judgeHazardStatu
 
 void DiagnosticErrorMonitor::updateHazardStatus()
 {
-  // const bool prev_emergency_status = hazard_status_.emergency;
+  const bool prev_emergency_status = hazard_status_.emergency;
 
   // Create hazard status based on diagnostics
   if (!hazard_status_.emergency_holding) {
@@ -425,17 +426,19 @@ void DiagnosticErrorMonitor::updateHazardStatus()
   {
     hazard_status_.emergency = hazard_status_.level >= params_.emergency_hazard_level;
 
-    // Emergency hold related
-    /*if (hazard_status_.emergency != prev_emergency_status) {
-      emergency_state_swich_time_ = this->now();
-    }*/
+    if (hazard_status_.emergency != prev_emergency_status) {
+      emergency_state_switch_time_ = this->now();
+    }
   }
 
-  // TODO emergency_holding condition?
+  // Update emergency_holding condition
+  if (params_.use_emergency_hold) {
+    hazard_status_.emergency_holding = isEmergencyHoldingRequired();
+  }
+
 }
 
-// Emergency hold related function
-/*bool DiagnosticErrorMonitor::canAutoRecovery() const
+bool DiagnosticErrorMonitor::canAutoRecovery() const
 {
   const auto error_modules = getErrorModules(hazard_status_, params_.emergency_hazard_level);
 
@@ -444,12 +447,33 @@ void DiagnosticErrorMonitor::updateHazardStatus()
       continue;
     }
     // if cannot auto recovery
-    if (error_modules.count(requred_module.name) != 0) {
+    if (error_modules.count(required_module.name) != 0) {
       return false;
     }
   }
   return true;
-}*/
+}
+
+bool DiagnosticErrorMonitor::isEmergencyHoldingRequired() const
+{
+  // Does not change holding status until emergency_holding is cleared by service call
+  if (hazard_status_.emergency_holding) {
+    return true;
+  }
+
+  if (!hazard_status_.emergency) {
+    return false;
+  }
+
+  // Don't hold status if emergency duration within recovery timeout
+  const auto emergency_duration = (this->now() - emergency_state_switch_time_).seconds();
+  const auto within_recovery_timeout = emergency_duration < params_.hazard_recovery_timeout;
+  if (within_recovery_timeout && canAutoRecovery()) {
+    return false;
+  }
+
+  return true;
+}
 
 void DiagnosticErrorMonitor::publishHazardStatus(
   const watchdog_system_msgs::msg::HazardStatus & hazard_status)

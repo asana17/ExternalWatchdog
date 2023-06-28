@@ -51,13 +51,14 @@ private:
     bool add_leaf_diagnostics;
     double data_ready_timeout;
     double diag_timeout_sec;
+    double hazard_recovery_timeout;
     int emergency_hazard_level;
     bool use_emergency_hold;
   };
 
   Parameters params_{};
 
-  rclcpp::Time emergency_state_swich_time_;
+  rclcpp::Time emergency_state_switch_time_;
   rclcpp::Time initialized_time_;
   watchdog_system_msgs::msg::HazardStatus hazard_status_{};
   std::unordered_map<std::string, RequiredModules> required_modules_map_;
@@ -94,7 +95,8 @@ private:
     watchdog_system_msgs::msg::HazardStatus * hazard_status) const;
   watchdog_system_msgs::msg::HazardStatus judgeHazardStatus() const;
   void updateHazardStatus();
-  // bool canAutoRecovery() const;
+  bool canAutoRecovery() const;
+  bool isEmergencyHoldingRequired() const;
 };
 
 #endif  // DIAGNOSTIC_ERROR_MONITOR__DIAGNOSTIC_ERROR_MONITOR_CORE_HPP_
