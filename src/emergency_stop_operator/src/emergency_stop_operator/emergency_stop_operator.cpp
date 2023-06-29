@@ -71,6 +71,7 @@ void EmergencyStopOperator::publishControlCommand(const AckermannControlCommand 
 
 void EmergencyStopOperator::onTimer()
 {
+  // TODO not publish by timer
   if (status_.state == MrmBehaviorStatus::OPERATING) {
     auto control_cmd = calcTargetAcceleration(prev_control_cmd_);
     publishControlCommand(control_cmd);

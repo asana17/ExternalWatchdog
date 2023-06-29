@@ -22,6 +22,8 @@
 #include <autoware_auto_vehicle_msgs/msg/turn_indicators_command.hpp>
 #include <rclcpp/rclcpp.hpp>
 
+#include "vehicle_cmd_filter.hpp"
+
 namespace SupervisorVehicleCmdGate {
 
 using autoware_auto_control_msgs::msg::AckermannControlCommand;
@@ -69,9 +71,20 @@ private:
 
   void onEmergencyCtrlCmd(AckermannControlCommand::ConstSharedPtr msg);
 
+  rclcpp::Subscription<SteeringReport>::SharedPtr steer_sub_;
+  void onSteering(SteeringReport::ConstSharedPtr msg);
+
+  double current_steer_ = 0;
   Parameters params_;
 
   void publishEmergencyStopControlCommands();
+  AckermannControlCommand createEmergencyStopControlCmd();
+
+  VehicleCmdFilter filter_;
+  AckermannControlCommand filterControlCommand(const AckermannControlCommand & in);
+
+  std::shared_ptr<rclcpp::Time> prev_time_;
+  double getDt();
 
 
 };

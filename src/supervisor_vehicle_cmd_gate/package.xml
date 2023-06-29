@@ -7,6 +7,10 @@
   <maintainer email="akihiro.sakurai@tier4.jp">Akihiro Sakurai</maintainer>
   <license>Apache License 2.0</license>
 
+  <author email="akihiro.sakurai@tier4.jp">Akihiro Sakurai</author>
+  <author email="hiroki.ota@tier4.jp">Hiroki OTA</author>
+
+
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <build_depend>autoware_cmake</build_depend>
