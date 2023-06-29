@@ -27,6 +27,7 @@ CanSwitchInterface::CanSwitchInterface(const rclcpp::NodeOptions & node_options)
   // Subscriber
   switch_status_sub_ = create_subscription<watchdog_system_msgs::msg::SwitchStatus>(
     "~/input/switch_status", rclcpp::QoS(1), std::bind(&CanSwitchInterface::onSwitchStatus, this, _1));
+  can_sub_ = create_subscription<can_msgs::msg::Frame>("/gsm8/from_can_bus", rclcpp::QoS(500), std::bind(&CanSwitchInterface::onCanFrame, this, _1));
 
   // Publisher
   can_pub_ = create_publisher<can_msgs::msg::Frame>("/gsm8/to_can_bus", rclcpp::QoS(500));
@@ -37,15 +38,13 @@ CanSwitchInterface::CanSwitchInterface(const rclcpp::NodeOptions & node_options)
   Sub_.name = Sub;
   Supervisor_.name = Supervisor;
 
-  for (auto ecu : {&Main_, &Sub_, &Supervisor_}) {
+  for (auto ecu : {&Main_, &Sub_}) {
     std::string topic_prefix;
 
     if (ecu->name == Main) {
       topic_prefix = "~/main";
     } else if (ecu->name == Sub) {
       topic_prefix = "~/sub";
-    } else if (ecu->name == Supervisor) {
-      topic_prefix = "~/supervisor";
     }
 
     // Subscriber
@@ -54,7 +53,7 @@ CanSwitchInterface::CanSwitchInterface(const rclcpp::NodeOptions & node_options)
       create_subscription<can_msgs::msg::Frame>(
         topic_prefix + "/from_can_bus", rclcpp::QoS{500},
         [ecu, this](const can_msgs::msg::Frame::ConstSharedPtr msg) {
-          CanSwitchInterface::onCanFrame(msg, ecu);
+          CanSwitchInterface::onEcuCanFrame(msg, ecu);
         });
 
     // Publisher
@@ -63,36 +62,63 @@ CanSwitchInterface::CanSwitchInterface(const rclcpp::NodeOptions & node_options)
 
   }
 
+  Supervisor_.can_sub_ =
+    create_subscription<can_msgs::msg::Frame>(
+        "~/supervisor/from_can_bus", rclcpp::QoS(500), std::bind(&CanSwitchInterface::onSupervisorCanFrame, this,
+          std::placeholders::_1));
+  Supervisor_.can_pub_= this->create_publisher<can_msgs::msg::Frame>(
+        "~/supervisor/to_can_bus", rclcpp::QoS(500));
+
 }
 
-void CanSwitchInterface::onSwitchStatus(const watchdog_system_msgs::msg::SwitchStatus::ConstSharedPtr msg)
+void CanSwitchInterface::onSwitchStatus(const SwitchStatus::SharedPtr msg)
 {
   switch_status_ = msg;
 }
 
-void CanSwitchInterface::onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu)
-{
-  ecu->can_msg_ = msg;
-  const auto selected_can_msg_ = selectCanMsg();
 
-  ecu->can_pub_->publish(*selected_can_msg_);
+ecu_name CanSwitchInterface::convertSwitchEcu(const SwitchStatus::_ecu_type ecu) const
+{
+
+  if (ecu == SwitchStatus::MAIN) {
+    return Main;
+  } else if (ecu == SwitchStatus::SUB) {
+    return Sub;
+  } else if (ecu == SwitchStatus::SUPERVISOR) {
+    return Supervisor;
+  }
+
+  const auto msg = "invalid SwitchStatus: " + std::to_string(ecu);
+  throw std::runtime_error(msg);
 }
 
-can_msgs::msg::Frame::ConstSharedPtr CanSwitchInterface::selectCanMsg() const
+
+void CanSwitchInterface::onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg)
 {
-  if (switch_status_->ecu == watchdog_system_msgs::msg::SwitchStatus::MAIN) {
-    return Main_.can_msg_;
+  can_msg_ = msg;
+
+  for (auto ecu : {&Main_, &Sub_, &Supervisor_}) {
+    ecu->can_pub_->publish(*can_msg_);
   }
-  if (switch_status_->ecu == watchdog_system_msgs::msg::SwitchStatus::SUB) {
-    return Sub_.can_msg_;
-  }
-  if (switch_status_->ecu == watchdog_system_msgs::msg::SwitchStatus::SUPERVISOR) {
-    return Supervisor_.can_msg_;
+}
+
+
+// Main or Sub
+void CanSwitchInterface::onEcuCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu)
+{
+  ecu->can_msg_ = msg;
+
+  if (convertSwitchEcu(switch_status_->ecu) == ecu->name) {
+    can_pub_->publish(*msg);
   }
 
-  const auto msg = "invalid SwitchStatus: " + std::to_string(switch_status_->ecu);
-  throw std::runtime_error(msg);
+}
 
+// Supervisor
+void CanSwitchInterface::onSupervisorCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg) {
+  Supervisor_.can_msg_ = msg;
+  switch_status_->ecu = SwitchStatus::SUPERVISOR;
+  can_pub_->publish(*msg);
 }
 
 } // namespace CanSwitchInterface

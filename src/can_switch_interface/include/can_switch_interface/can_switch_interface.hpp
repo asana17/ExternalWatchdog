@@ -24,6 +24,8 @@
 
 namespace CanSwitchInterface {
 
+using watchdog_system_msgs::msg::SwitchStatus;
+
 enum ecu_name {
   Main, Sub, Supervisor
 };
@@ -53,17 +55,21 @@ private:
   can_msgs::msg::Frame::ConstSharedPtr selected_can_frame_;
 
   // Subscriber
-  rclcpp::Subscription<watchdog_system_msgs::msg::SwitchStatus>::SharedPtr switch_status_sub_;
+  rclcpp::Subscription<SwitchStatus>::SharedPtr switch_status_sub_;
+  rclcpp::Subscription<can_msgs::msg::Frame>::SharedPtr can_sub_;
 
-  watchdog_system_msgs::msg::SwitchStatus::ConstSharedPtr switch_status_;
+  SwitchStatus::SharedPtr switch_status_;
+  can_msgs::msg::Frame::ConstSharedPtr can_msg_;
 
   // Publisher
   rclcpp::Publisher<can_msgs::msg::Frame>::SharedPtr can_pub_;
 
-  void onSwitchStatus(const watchdog_system_msgs::msg::SwitchStatus::ConstSharedPtr msg);
-  void onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu);
+  ecu_name convertSwitchEcu(const SwitchStatus::_ecu_type ecu) const;
+  void onSwitchStatus(const SwitchStatus::SharedPtr msg);
+  void onCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg);
+  void onEcuCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu);
+  void onSupervisorCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg);
 
-  can_msgs::msg::Frame::ConstSharedPtr selectCanMsg() const;
 };
 
 } // namespace CanSwitchInterface

@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<launch>
+  <arg name="input_control_cmd" default="/control/command/control_cmd"/>
+  <arg name="output_actuation_cmd" default="/control/command/actuation_cmd"/>
+
+  <node pkg="raw_vehicle_cmd_converter" exec="raw_vehicle_cmd_converter_node" name="raw_vehicle_cmd_converter" output="screen">
+    <remap from="~/input/control_cmd" to="$(var input_control_cmd)"/>
+    <remap from="~/output/actuation_cmd" to="$(var output_actuation_cmd)"/>
+  </node>
+</launch>
