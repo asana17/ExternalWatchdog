@@ -9,7 +9,7 @@ uint16 MRM_FAILED = 5
 
 uint16 state
 
-# For Stop Operator ECU
+# For ECU
 uint16 MAIN = 1
 uint16 SUB = 2
 uint16 SUPERVISOR = 3
