@@ -23,12 +23,14 @@
 #include <string>
 #include <vector>
 
+#include <autoware_auto_vehicle_msgs/msg/velocity_report.hpp>
 #include "supervisor/ecu.hpp"
 #include "watchdog_system_msgs/msg/voter_state.hpp"
 
 
 namespace supervisor{
 
+using autoware_auto_vehicle_msgs::msg::VelocityReport;
 using watchdog_system_msgs::msg::VoterState;
 
 struct ErrorStatus {
@@ -52,7 +54,7 @@ public:
   ~Voter() = default;
   VoterState getVoterState() const;
   MrmOperation getMrmOperation() const;
-  void onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg);
+  void onVelocityReport(const VelocityReport::ConstSharedPtr msg);
 
   void updateSelfErrorStatus(Ecu* ecu, const ecu_name switch_selected_ecu);
   void updateExternalErrorStatus(Ecu* ecu, const ecu_name switch_selected_ecu);
@@ -67,8 +69,7 @@ private:
   std::map<ecu_name, ErrorStatus> external_error_status_;
 
   // Subscriber
-  nav_msgs::msg::Odometry::ConstSharedPtr odom_;
-
+  VelocityReport::ConstSharedPtr velocity_report_;
 
   VoterState voter_state_;
   MrmOperation mrm_operation_;

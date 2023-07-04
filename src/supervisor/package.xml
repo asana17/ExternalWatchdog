@@ -13,8 +13,8 @@
   <build_depend>autoware_cmake</build_depend>
 
   <depend>autoware_adapi_v1_msgs</depend>
+  <depend>autoware_auto_vehicle_msgs</depend>
   <depend>can_msgs</depend>
-  <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
   <depend>rclcpp_components</depend>
   <depend>tier4_system_msgs</depend>

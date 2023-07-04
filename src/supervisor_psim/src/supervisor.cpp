@@ -32,8 +32,8 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
   //Subscriber
   using std::placeholders::_1;
 
-  sub_odom_ = create_subscription<nav_msgs::msg::Odometry>(
-    "~/input/odometry", rclcpp::QoS{1}, std::bind(&SupervisorNode::onOdometry, this, _1));
+  sub_velocity_report_ = create_subscription<VelocityReport>(
+    "~/input/velocity_report", rclcpp::QoS{1}, std::bind(&SupervisorNode::onVelocityReport, this, _1));
 
 
   // Publisher
@@ -165,13 +165,10 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
     this, get_clock(), update_period_ns, std::bind(&SupervisorNode::onTimer, this));
 }
 
-
-
-void SupervisorNode::onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg)
+void SupervisorNode::onVelocityReport(const VelocityReport::ConstSharedPtr msg)
 {
-  Voter_.onOdometry(msg);
+  Voter_.onVelocityReport(msg);
 }
-
 
 void SupervisorNode::onSelfMonitoringStamped(
     const HazardStatusStamped::ConstSharedPtr msg, Ecu* ecu) {

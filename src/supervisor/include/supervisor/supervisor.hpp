@@ -20,7 +20,6 @@
 #include <autoware_adapi_v1_msgs/msg/mrm_state.hpp>
 #include <tier4_system_msgs/msg/mrm_behavior_status.hpp>
 #include <tier4_system_msgs/srv/operate_mrm.hpp>
-#include <nav_msgs/msg/odometry.hpp>
 #include "watchdog_system_msgs/msg/hazard_status_stamped.hpp"
 #include "watchdog_system_msgs/msg/switch_status.hpp"
 
@@ -66,7 +65,8 @@ private:
   CanSwitchInterface CanSwitchInterface_;
 
   // Subscriber
-  rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr sub_odom_;
+  rclcpp::Subscription<VelocityReport>::SharedPtr sub_velocity_report_;
+  void onVelocityReport(const VelocityReport::ConstSharedPtr msg);
 
 
   void onSelfMonitoringStamped(
@@ -79,7 +79,6 @@ private:
     const MrmBehaviorStatus::ConstSharedPtr msg, Ecu* ecu);
   void onMrmSuddenStopStatus(
     const MrmBehaviorStatus::ConstSharedPtr msg, Ecu* ecu);
-  void onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg);
 
   void onVehicleCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg);
   void onEcuCanFrame(const can_msgs::msg::Frame::ConstSharedPtr msg, Ecu* ecu);

@@ -44,13 +44,10 @@ MrmOperation Voter::getMrmOperation() const
   return mrm_operation_;
 }
 
-
-
-void Voter::onOdometry(const nav_msgs::msg::Odometry::ConstSharedPtr msg)
+void Voter::onVelocityReport(const VelocityReport::ConstSharedPtr msg)
 {
-  odom_ = msg;
+  velocity_report_ = msg;
 }
-
 
 void Voter::transitionTo(const int new_state)
 {
@@ -427,7 +424,7 @@ bool Voter::isStopped()
 {
   // TODO do not use odom
   constexpr auto th_stopped_velocity = 0.001;
-  if (odom_->twist.twist.linear.x < th_stopped_velocity) {
+  if (velocity_report_->longitudinal_velocity < th_stopped_velocity) {
     return true;
   }
 
