@@ -28,9 +28,9 @@ def launch_setup(context, *args, **kwargs):
         params = yaml.safe_load(f)["/**"]["ros__parameters"]
 
     component = ComposableNode(
-        package="mrm_emergency_stop_operator",
-        plugin="mrm_emergency_stop_operator::MrmEmergencyStopOperator",
-        name="mrm_emergency_stop_operator",
+        package="emergency_stop_operator",
+        plugin="emergency_stop_operator::EmergencyStopOperator",
+        name="emergency_stop_operator",
         parameters=[
             params,
         ],
@@ -46,8 +46,8 @@ def launch_setup(context, *args, **kwargs):
     )
 
     container = ComposableNodeContainer(
-        name="mrm_emergency_stop_operator_container",
-        namespace="mrm_emergency_stop_operator",
+        name="emergency_stop_operator_container",
+        namespace="emergency_stop_operator",
         package="rclcpp_components",
         executable="component_container",
         composable_node_descriptions=[
@@ -64,10 +64,10 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "config_file",
             default_value=[
-                FindPackageShare("mrm_emergency_stop_operator"),
-                "/config/mrm_emergency_stop_operator.param.yaml",
+                FindPackageShare("emergency_stop_operator"),
+                "/config/emergency_stop_operator.param.yaml",
             ],
-            description="path to the parameter file of mrm_emergency_stop_operator",
+            description="path to the parameter file of emergency_stop_operator",
         )
     ]
 

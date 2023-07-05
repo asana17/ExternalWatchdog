@@ -161,6 +161,10 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
 
   }
 
+  RCLCPP_INFO_THROTTLE(
+        this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+        "initialized");
+
 
   // Timer
   const auto update_period_ns = rclcpp::Rate(param_.update_rate).period();
@@ -179,8 +183,9 @@ void SupervisorNode::onSelfMonitoringStamped(
   ecu->self_hazard_status_stamped_ = msg;
   ecu->stamp_self_hazard_status_ = this->now();
   const auto selected_ecu = ControlSwitchInterface_.getSelectedEcu();
-  Voter_.updateSelfErrorStatus(ecu, selected_ecu);
+  //Voter_.updateSelfErrorStatus(ecu, selected_ecu);
   Voter_.prepareMrmOperation(selected_ecu);
+
   operateMrm();
 }
 
@@ -249,6 +254,11 @@ void SupervisorNode::onTimer()
 
   for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
     if (ecu->name == ControlSwitchInterface_.getSelectedEcu()) {
+      const auto ecu_name = convertEcuNameToString(ecu->name);
+      RCLCPP_INFO_THROTTLE(
+        this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+        "selected switch is: %s", ecu_name.c_str());
+
       ControlSwitchInterface_.publishControlToVehicle(ecu->control_cmd_);
       ControlSwitchInterface_.publishGearToVehicle(ecu->gear_cmd_);
       ControlSwitchInterface_.publishTurnIndicatorsToVehicle(ecu->turn_indicators_cmd_);
@@ -261,12 +271,13 @@ void SupervisorNode::onTimer()
 
 bool SupervisorNode::isDataReady()
 {
-  return isEcuDataReady();
+  //return isEcuDataReady() && isControlDataReady();
+  return isControlDataReady();
 }
 
 bool SupervisorNode::isEcuDataReady()
 {
-
+  bool is_data_ready = true;
   for (const auto ecu : {&Main_, &Sub_, &Supervisor_}) {
 
     const auto ecu_name = convertEcuNameToString(ecu->name);
@@ -275,7 +286,7 @@ bool SupervisorNode::isEcuDataReady()
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "waiting for self_hazard_status_stamped msg of %s ...", ecu_name.c_str());
-      return false;
+      is_data_ready = false;
     }
     if (!ecu->external_hazard_status_stamped_) {
       RCLCPP_INFO_THROTTLE(
@@ -289,7 +300,7 @@ bool SupervisorNode::isEcuDataReady()
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "waiting for mrm comfortable stop to become available on %s ...", ecu_name.c_str());
-      return false;
+      is_data_ready = false;
     }
 
     if (
@@ -297,11 +308,45 @@ bool SupervisorNode::isEcuDataReady()
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "waiting for mrm emergency stop to become available on %s ...", ecu_name.c_str());
-      return false;
+      is_data_ready = false;
     }
   }
+  return is_data_ready;
+}
 
-  return true;
+bool SupervisorNode::isControlDataReady()
+{
+  bool is_data_ready = true;
+  for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
+    if (ecu->name == ControlSwitchInterface_.getSelectedEcu()) {
+      const auto ecu_name = convertEcuNameToString(ecu->name);
+      if (!ecu->control_cmd_) {
+        RCLCPP_INFO_THROTTLE(
+          this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+          "waiting for control_cmd to become available on %s ...", ecu_name.c_str());
+        is_data_ready = false;
+      }
+      if (!ecu->gear_cmd_) {
+        RCLCPP_INFO_THROTTLE(
+          this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+          "waiting for gear_cmd to become available on %s ...", ecu_name.c_str());
+        is_data_ready = false;
+      }
+      if (!ecu->turn_indicators_cmd_) {
+        RCLCPP_INFO_THROTTLE(
+          this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+          "waiting for turn_indicators_cmd_to become available on %s ...", ecu_name.c_str());
+        is_data_ready = false;
+      }
+      if (!ecu->hazard_lights_cmd_) {
+        RCLCPP_INFO_THROTTLE(
+          this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+          "waiting for hazard_lights_cmd_ to become available on %s ...", ecu_name.c_str());
+        is_data_ready = false;
+      }
+    }
+  }
+  return is_data_ready;
 }
 
 

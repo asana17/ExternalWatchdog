@@ -92,6 +92,7 @@ private:
   void onTimer();
   bool isDataReady();
   bool isEcuDataReady();
+  bool isControlDataReady();
 
   //Paramters
   Param param_;

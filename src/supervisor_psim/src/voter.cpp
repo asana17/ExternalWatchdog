@@ -196,7 +196,12 @@ bool Voter::checkExternalMonitoring(Ecu * ecu) {
 }
 
 void Voter::prepareMrmOperation(ecu_name switch_selected_ecu) {
-  judgeMrmOperation(switch_selected_ecu);
+  //judgeMrmOperation(switch_selected_ecu);
+   if (switch_selected_ecu != SwitchStatus::MAIN) {
+
+   };
+
+  getNoMrmOperation();
   updateVoterState();
 }
 
