@@ -93,7 +93,7 @@ private:
   void getMrmOperationInternal(std::map<ecu_name, ErrorStatus> & error_status_, const ecu_name switch_selected_ecu);
   void getMrmOperationMultipleEcuError();
 
-  bool isStopped();
+  bool isStopped() const;
   bool isEmergency(const HazardStatusStamped::ConstSharedPtr hazard_status) const;
 
 };

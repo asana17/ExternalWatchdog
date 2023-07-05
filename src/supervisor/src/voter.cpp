@@ -420,7 +420,7 @@ void Voter::updateVoterState()
   throw std::runtime_error(msg);
 }
 
-bool Voter::isStopped()
+bool Voter::isStopped() const
 {
   constexpr auto th_stopped_velocity = 0.001;
   if (velocity_report_->longitudinal_velocity < th_stopped_velocity) {

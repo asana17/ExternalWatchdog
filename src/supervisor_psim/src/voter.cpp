@@ -420,7 +420,7 @@ void Voter::updateVoterState()
   throw std::runtime_error(msg);
 }
 
-bool Voter::isStopped()
+bool Voter::isStopped() const
 {
   // TODO do not use odom
   constexpr auto th_stopped_velocity = 0.001;

@@ -10,11 +10,15 @@ EmergencyStopOperator::EmergencyStopOperator(const rclcpp::NodeOptions & node_op
   params_.update_rate = static_cast<int>(declare_parameter<int>("update_rate", 30));
   params_.target_acceleration = declare_parameter<double>("target_acceleration", -2.5);
   params_.target_jerk = declare_parameter<double>("target_jerk", -1.5);
+  params_.use_parking_after_stopped = declare_parameter<bool>("use_parking_after_stopped", false);
 
   // Subscriber
   sub_control_cmd_ = create_subscription<AckermannControlCommand>(
     "~/input/control/control_cmd", 1,
     std::bind(&EmergencyStopOperator::onControlCommand, this, std::placeholders::_1));
+  sub_velocity_report_ = create_subscription<VelocityReport>(
+    "~/input/vehicle/velocity_report", 1,
+    std::bind(&EmergencyStopOperator::onVelocityReport, this, std::placeholders::_1));
 
   // Server
   service_operation_ = create_service<OperateMrm>(
@@ -26,6 +30,12 @@ EmergencyStopOperator::EmergencyStopOperator(const rclcpp::NodeOptions & node_op
   pub_status_ = create_publisher<MrmBehaviorStatus>("~/output/mrm/emergency_stop/status", 1);
   pub_control_cmd_ =
     create_publisher<AckermannControlCommand>("~/output/mrm/emergency_stop/control_cmd", 1);
+  pub_gear_cmd_ =
+    create_publisher<GearCommand>("~/output/mrm/emergency_stop/gear_cmd", 1);
+  pub_hazard_lights_cmd_ =
+    create_publisher<HazardLightsCommand>("~/output/mrm/emergency_stop/hazard_lights_cmd", 1);
+  pub_turn_indicators_cmd_ =
+    create_publisher<TurnIndicatorsCommand>("~/output/mrm/emergency_stop/turn_indicators_cmd", 1);
 
   // Timer
   const auto update_period_ns = rclcpp::Rate(params_.update_rate).period();
@@ -43,6 +53,11 @@ void EmergencyStopOperator::onControlCommand(AckermannControlCommand::ConstShare
     prev_control_cmd_ = *msg;
     is_prev_control_cmd_subscribed_ = true;
   }
+}
+
+void EmergencyStopOperator::onVelocityReport(VelocityReport::ConstSharedPtr msg)
+{
+  velocity_report_ = msg;
 }
 
 void EmergencyStopOperator::operateEmergencyStop(
@@ -63,6 +78,32 @@ void EmergencyStopOperator::publishStatus() const
   status.stamp = this->now();
   pub_status_->publish(status);
 }
+
+void EmergencyStopOperator::publishVehicleCommands() const
+{
+  const auto stamp = this->now();
+
+  GearCommand gear_cmd;
+  gear_cmd.stamp = stamp;
+  if (params_.use_parking_after_stopped && isStopped()) {
+    gear_cmd.command = GearCommand::PARK;
+  } else {
+    gear_cmd.command = GearCommand::DRIVE;
+  }
+
+  HazardLightsCommand hazard_lights_cmd;
+  hazard_lights_cmd.stamp = stamp;
+  hazard_lights_cmd.command = HazardLightsCommand::ENABLE;
+
+  TurnIndicatorsCommand turn_indicators_cmd;
+  turn_indicators_cmd.stamp = stamp;
+  turn_indicators_cmd.command = TurnIndicatorsCommand::NO_COMMAND;
+
+  pub_gear_cmd_->publish(gear_cmd);
+  pub_hazard_lights_cmd_->publish(hazard_lights_cmd);
+  pub_turn_indicators_cmd_->publish(turn_indicators_cmd);
+}
+
 
 void EmergencyStopOperator::publishControlCommand(const AckermannControlCommand & command) const
 {
@@ -116,6 +157,16 @@ AckermannControlCommand EmergencyStopOperator::calcTargetAcceleration(
   }
 
   return control_cmd;
+}
+
+bool EmergencyStopOperator::isStopped() const
+{
+  constexpr auto th_stopped_velocity = 0.001;
+  if (velocity_report_->longitudinal_velocity < th_stopped_velocity) {
+    return true;
+  }
+
+  return false;
 }
 
 }  // namespace emergency_stop_operator
