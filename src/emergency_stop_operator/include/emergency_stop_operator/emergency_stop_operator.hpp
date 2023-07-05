@@ -68,6 +68,7 @@ private:
   rclcpp::Publisher<TurnIndicatorsCommand>::SharedPtr pub_turn_indicators_cmd_;
 
   void publishStatus() const;
+  void publishMRMVehicleCommands() const;
   void publishVehicleCommands() const;
   void publishControlCommand(const AckermannControlCommand & command) const;
 

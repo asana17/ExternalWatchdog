@@ -1,0 +1,31 @@
+<launch>
+  <arg name="update_rate" default = "30.0"/>
+  <arg name="timeout_hazard_status" default="0.5"/>
+  <arg name="frame_id" default="base_link"/>
+
+  <node pkg="supervisor" name="supervisor" exec="supervisor_psim_node" output="screen">
+    <param name="frame_id" value="$(var frame_id)"/>
+    <remap from="~/input/velocity_report" to="/vehicle/status/velocity_status"/>
+    <remap from="~/input/main/self_monitoring" to=""/>
+    <remap from="~/input/sub/self_monitoring" to=""/>
+    <remap from="~/input/supervisor/self_monitoring" to=""/>
+    <remap from="~/input/sub/external_monitoring/main" to=""/>
+    <remap from="~/input/supervisor/external_monitoring/main" to=""/>
+    <remap from="~/input/main/external_monitoring/sub" to=""/>
+    <remap from="~/input/supervisor/external_monitoring/sub" to=""/>
+    <remap from="~/input/main/external_monitoring/supervisor" to=""/>
+    <remap from="~/input/sub/external_monitoring/supervisor" to=""/>
+    <remap from="~/input/main/control_cmd" to="/control/command/control_cmd"/>
+    <remap from="~/input/main/gear_cmd" to="/control/command/gear_cmd"/>
+    <remap from="~/input/main/turn_indicators_cmd" to="/control/command/turn_indicators_cmd"/>
+    <remap from="~/input/main/hazard_lights_cmd" to="/control/command/hazard_lights_cmd"/>
+    <remap from="~/input/sub/control_cmd" to="/sub/control/command/control_cmd"/>
+    <remap from="~/input/sub/gear_cmd" to="/sub/control/command/gear_cmd"/>
+    <remap from="~/input/sub/turn_indicators_cmd" to="/sub/control/command/turn_indicators_cmd"/>
+    <remap from="~/input/sub/hazard_lights_cmd" to="/sub/control/command/hazard_lights_cmd"/>
+    <remap from="~/input/supervisor/control_cmd" to="/supervisor/control/command/control_cmd"/>
+    <remap from="~/input/supervisor/gear_cmd" to="/supervisor/control/command/control_cmd"/>
+    <remap from="~/input/supervisor/turn_indicators_cmd" to="/supervisor/control/command/control_cmd"/>
+    <remap from="~/input/supervisor/hazard_lights_cmd" to="/supervisor/control/command/control_cmd"/>
+  </node>
+</launch>

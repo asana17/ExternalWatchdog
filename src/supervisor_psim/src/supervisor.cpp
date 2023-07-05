@@ -38,6 +38,9 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
 
   // Publisher
   ControlSwitchInterface_.vehicle_control_pub_ = create_publisher<AckermannControlCommand>("/control_switch_interface/control_cmd", rclcpp::QoS{1});
+  ControlSwitchInterface_.gear_pub_= create_publisher<GearCommand>("/control_switch_interface/gear_cmd", rclcpp::QoS{1});
+  ControlSwitchInterface_.turn_indicators_pub_= create_publisher<TurnIndicatorsCommand>("/control_switch_interface/turn_indicators_cmd", rclcpp::QoS{1});
+  ControlSwitchInterface_.hazard_lights_pub_= create_publisher<HazardLightsCommand>("/control_switch_interface/hazard_lights_cmd", rclcpp::QoS{1});
 
   // Initialize each ECUs
   Main_.name = Main;

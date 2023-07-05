@@ -79,7 +79,7 @@ void EmergencyStopOperator::publishStatus() const
   pub_status_->publish(status);
 }
 
-void EmergencyStopOperator::publishVehicleCommands() const
+void EmergencyStopOperator::publishMRMVehicleCommands() const
 {
   const auto stamp = this->now();
 
@@ -104,6 +104,32 @@ void EmergencyStopOperator::publishVehicleCommands() const
   pub_turn_indicators_cmd_->publish(turn_indicators_cmd);
 }
 
+void EmergencyStopOperator::publishVehicleCommands() const
+{
+  const auto stamp = this->now();
+
+  GearCommand gear_cmd;
+  gear_cmd.stamp = stamp;
+  if (params_.use_parking_after_stopped && isStopped()) {
+    gear_cmd.command = GearCommand::PARK;
+  } else {
+    gear_cmd.command = GearCommand::DRIVE;
+  }
+
+  HazardLightsCommand hazard_lights_cmd;
+  hazard_lights_cmd.stamp = stamp;
+  hazard_lights_cmd.command = HazardLightsCommand::NO_COMMAND;
+
+  TurnIndicatorsCommand turn_indicators_cmd;
+  turn_indicators_cmd.stamp = stamp;
+  turn_indicators_cmd.command = TurnIndicatorsCommand::NO_COMMAND;
+
+  pub_gear_cmd_->publish(gear_cmd);
+  pub_hazard_lights_cmd_->publish(hazard_lights_cmd);
+  pub_turn_indicators_cmd_->publish(turn_indicators_cmd);
+}
+
+
 
 void EmergencyStopOperator::publishControlCommand(const AckermannControlCommand & command) const
 {
@@ -116,9 +142,11 @@ void EmergencyStopOperator::onTimer()
   if (status_.state == MrmBehaviorStatus::OPERATING) {
     auto control_cmd = calcTargetAcceleration(prev_control_cmd_);
     publishControlCommand(control_cmd);
+    publishMRMVehicleCommands();
     prev_control_cmd_ = control_cmd;
   } else {
     publishControlCommand(prev_control_cmd_);
+    publishVehicleCommands();
   }
   publishStatus();
 }
