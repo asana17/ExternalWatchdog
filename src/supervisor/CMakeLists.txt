@@ -11,7 +11,7 @@ ament_auto_add_library(supervisor_node SHARED
 )
 
 rclcpp_components_register_node(supervisor_node
-  PLUGIN "supervisor::Supervisor"
+  PLUGIN "supervisor::SupervisorNode"
   EXECUTABLE supervisor
 )
 
