@@ -20,24 +20,38 @@
 #include "watchdog_system_msgs/msg/hazard_status_stamped.hpp"
 #include <vector>
 
-namespace dummy_hazard_status_publisher {
+namespace dummy_hazard_status_publisher{
 
-class HazardStatusConverter : public rclcpp::Node
+struct Param
+{
+  int update_rate;
+};
+
+
+class DummyHazardStatusPublisher: public rclcpp::Node
 {
 public:
-  HazardStatusConverter();
+  explicit DummyHazardStatusPublisher(const rclcpp::NodeOptions & node_options);
 
 
 private:
 
+  Param params_;
+
   // Publisher
   rclcpp::Publisher<watchdog_system_msgs::msg::HazardStatusStamped>::SharedPtr pub_hazard_status_stamped_;
+
+  watchdog_system_msgs::msg::HazardStatus hazard_status_;
+
+  // Timer
+  rclcpp::TimerBase::SharedPtr timer_;
+  void onTimer();
+
+  void createDummyHazardStatus();
 
 };
 
 } // namespace dummy_hazard_status_publisher
-
-
 
 
 #endif //HAZARD_STATUS_CONVETER__HAZARD_STATUS_CONVETER_HPP_

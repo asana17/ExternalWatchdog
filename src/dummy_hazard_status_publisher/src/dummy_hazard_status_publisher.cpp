@@ -12,99 +12,47 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "hazard_status_converter/hazard_status_converter.hpp"
+#include "dummy_hazard_status_publisher/dummy_hazard_status_publisher.hpp"
 
 #include <functional>
 
-
-
-namespace hazard_status_converter
+namespace dummy_hazard_status_publisher
 {
 
-
-std::vector<std::string> split(const std::string & str, const char delim)
-{
-  std::vector<std::string> elems;
-  std::stringstream ss(str);
-  std::string item;
-  while (std::getline(ss, item, delim)) {
-    elems.push_back(item);
-  }
-  return elems;
-}
-
-HazardStatusConverter::HazardStatusConverter()
-  : Node("hazard_status_converter", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+DummyHazardStatusPublisher::DummyHazardStatusPublisher(const rclcpp::NodeOptions & node_options)
+  : Node("dummy_hazard_status_publisher", node_options)
 {
 
-  loadModules();
+  params_.update_rate = declare_parameter<int>("update_rate", 10);
 
-  using std::placeholders::_1;
+  pub_hazard_status_stamped_ = this->create_publisher<watchdog_system_msgs::msg::HazardStatusStamped>(
+      "~/output/hazard_status", rclcpp::QoS(1));
 
-  sub_hazard_status_stamped_ = create_subscription<autoware_auto_system_msgs::msg::HazardStatusStamped>(
-    "~/input/hazard_status_stamped", rclcpp::QoS{1}, std::bind(&HazardStatusConverter::onHazardStatusStamped, this, _1));
-
-  pub_hazard_status_stamped_ = create_publisher<watchdog_system_msgs::msg::HazardStatusStamped>("~/output/hazard_status_stamped", rclcpp::QoS{1});
-
+  const auto update_period_ns = rclcpp::Rate(params_.update_rate).period();
+  timer_ = rclcpp::create_timer(
+    this, get_clock(), update_period_ns, std::bind(&DummyHazardStatusPublisher::onTimer, this));
 
 }
 
-void HazardStatusConverter::loadModules()
+void DummyHazardStatusPublisher::onTimer()
 {
-  const uint64_t depth = 3;
-  const auto module_names = this->list_parameters({"non_self_recoverable_modules"}, depth).names;
+  watchdog_system_msgs::msg::HazardStatusStamped hazard_status_stamped;
+  hazard_status_stamped.stamp = this->now();
+  hazard_status_stamped.status = hazard_status_;
 
-  if (module_names.empty()) {
-    RCLCPP_INFO(this->get_logger(), "no module in config: all self_recoverable flag is set to true");
-    return;
-  }
-
-  for (const auto & module_name: module_names) {
-    const auto split_names = split(module_name, '.');
-    const auto & param_module_name = split_names.at(1);
-    non_self_recoverable_modules_.push_back(param_module_name);
-    RCLCPP_INFO(this->get_logger(), "non self_recoverable module: %s", param_module_name.c_str());
-  }
+  pub_hazard_status_stamped_->publish(hazard_status_stamped);
 
 }
 
-
-void HazardStatusConverter::onHazardStatusStamped(const autoware_auto_system_msgs::msg::HazardStatusStamped::ConstSharedPtr msg) {
-  watchdog_system_msgs::msg::HazardStatusStamped watchdog_hazard_status_stamped;
-  watchdog_hazard_status_stamped.stamp = msg->stamp;
-  watchdog_hazard_status_stamped.status.level = msg->status.level;
-  watchdog_hazard_status_stamped.status.emergency = msg->status.emergency;
-  watchdog_hazard_status_stamped.status.emergency_holding = msg->status.emergency_holding;
-  watchdog_hazard_status_stamped.status.diag_no_fault = msg->status.diag_no_fault;
-  watchdog_hazard_status_stamped.status.diag_safe_fault = msg->status.diag_safe_fault;
-  watchdog_hazard_status_stamped.status.diag_latent_fault = msg->status.diag_latent_fault;
-  watchdog_hazard_status_stamped.status.diag_single_point_fault = msg->status.diag_single_point_fault;
-  watchdog_hazard_status_stamped.status.self_recoverable = SelfRecoverableFromConfig(msg);
-
-  pub_hazard_status_stamped_->publish(watchdog_hazard_status_stamped);
+void DummyHazardStatusPublisher::createDummyHazardStatus()
+{
+  hazard_status_.level = 0;
+  hazard_status_.emergency = false;
+  hazard_status_.emergency_holding = false;
+  hazard_status_.self_recoverable = false;
 }
 
-bool HazardStatusConverter::SelfRecoverableFromConfig(autoware_auto_system_msgs::msg::HazardStatusStamped::ConstSharedPtr msg) {
 
-  if (non_self_recoverable_modules_.empty()) {
-    return true;
-  }
-
-  for (const auto & diagnostic_status : msg->status.diag_latent_fault) {
-    for (const auto & non_self_recoverable_module: non_self_recoverable_modules_) {
-      if (diagnostic_status.name.find(non_self_recoverable_module) != std::string::npos) {
-        return false;
-      }
-    }
-  }
-  for (const auto & diagnostic_status : msg->status.diag_single_point_fault) {
-    for (const auto & non_self_recoverable_module: non_self_recoverable_modules_) {
-      if (diagnostic_status.name.find(non_self_recoverable_module) != std::string::npos) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-
-} // namespace hazard_status_converter
+} // namespace dummy_hazard_status_publisher
+#include <rclcpp_components/register_node_macro.hpp>
+RCLCPP_COMPONENTS_REGISTER_NODE(dummy_hazard_status_publisher::DummyHazardStatusPublisher);

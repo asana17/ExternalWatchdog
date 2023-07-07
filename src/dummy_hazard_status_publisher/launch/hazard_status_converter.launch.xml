@@ -1,9 +1,0 @@
-<launch>
-  <arg name="config_file" default="$(find-pkg-share hazard_status_converter)/config/hazard_status_converter.param.yaml" />
-
-  <node pkg="hazard_status_converter" name="hazard_status_converter" exec="hazard_status_converter" output="screen">
-    <remap from="~/input/hazard_status_stamped" to="/system/emergency/hazard_status"/>
-    <remap from="~/output/hazard_status_stamped" to="/main/self_monitoring/hazard_status"/>
-    <param from="$(var config_file)"/>
-  </node>
-</launch>
