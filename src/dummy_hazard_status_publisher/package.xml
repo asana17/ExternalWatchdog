@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>dummy_hazard_status_publisher</name>
+  <version>0.1.0</version>
+  <description>The dummy_hazard_status_publisher package</description>
+  <maintainer email="akihiro.sakurai@tier4.co.jp">Akihiro Sakurai</maintainer>
+  <author email="akihiro.sakurai@tier4.jp">Akihiro Sakurai</author>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <depend>rclcpp</depend>
+  <depend>std_msgs</depend>
+  <depend>watchdog_system_msgs</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>

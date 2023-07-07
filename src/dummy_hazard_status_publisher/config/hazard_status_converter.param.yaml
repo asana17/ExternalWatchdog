@@ -1,0 +1,8 @@
+# Description
+# add fault/error name to set paramter `self_recoverable` as false
+---
+/**:
+  ros__parameters:
+    non_self_recoverable_modules:
+      /autoware/control/autonomous_driving/performance_monitoring/lane_departure: default
+      /autoware/localization/performance_monitoring/localization_accuracy: default
