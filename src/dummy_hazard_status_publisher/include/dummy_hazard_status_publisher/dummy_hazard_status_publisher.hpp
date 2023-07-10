@@ -25,6 +25,7 @@ namespace dummy_hazard_status_publisher{
 struct Param
 {
   int update_rate;
+  std::vector<std::string> hazard_status_params;
 };
 
 
@@ -47,7 +48,15 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
   void onTimer();
 
-  void createDummyHazardStatus();
+
+  OnSetParametersCallbackHandle::SharedPtr set_param_res_;
+  rcl_interfaces::msg::SetParametersResult paramCallback(
+    const std::vector<rclcpp::Parameter> & parameters);
+  rcl_interfaces::msg::SetParametersResult updateDummyHazardStatus(
+      const std::vector<std::string> & hazard_status_params);
+  bool checkBoolParam(
+      rcl_interfaces::msg::SetParametersResult & result, std::string str, std::string err_param_name);
+  void getHazardStatusParam();
 
 };
 
