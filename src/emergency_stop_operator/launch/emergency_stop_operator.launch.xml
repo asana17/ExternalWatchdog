@@ -1,0 +1,13 @@
+<launch>
+  <arg name="config_file" default="/config/emergency_stop_operator.param.yaml"/>
+
+  <node pkg="emergency_stop_operator" name="emergency_stop_operator" exec="emergency_stop_operator" output="screen">
+    <remap from="~/output/hazard_status_stamped" to="$(var output_hazard_status)"/>
+    <remap from="~/input/mrm/emergency_stop/operate" to="/supervisor/system/mrm/emergency_stop/operate"/>
+    <remap from="~/input/control/control_cmd" to="/control/command/control_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/status" to="/supervisor/system/mrm/emergency_stop/status"/>
+    <remap from="~/output/mrm/emergency_stop/control_cmd", "/supervisor/control/control_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/gear_cmd", "/supervisor/control/gear_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/turn_indicators_cmd", "/supervisor/control/turn_indicators_cmd"/>
+  </node>
+</launch>

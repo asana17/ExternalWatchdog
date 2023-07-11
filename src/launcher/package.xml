@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package format="3">
+  <name>launcher</name>
+  <version>0.1.0</version>
+  <description>The launcher package</description>
+
+  <maintainer email="akihiro.sakurai@tier4.jp">Akihiro Sakurai</maintainer>
+  <license>Apache License 2.0</license>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+
+  <exec_depend>dummy_hazard_status_publisher</exec_depend>
+  <exec_depend>emergency_stop_operator</exec_depend>
+  <exec_depend>supervisor</exec_depend>
+  <exec_depend>supervisor_psim</exec_depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
