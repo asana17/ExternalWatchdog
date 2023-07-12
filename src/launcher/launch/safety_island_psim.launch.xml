@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
+  <arg name="hazard_status_converter_config_file" default="$(find-pkg-share hazard_status_converter)/config/hazard_status_converter.param.yaml" />
   <arg name="input_main_self_hazard_status" default="/system/emergency/hazard_status"/>
   <arg name="output_main_self_hazard_status" default="/main/self_monitoring/hazard_status"/>
   <arg name="output_sub_self_hazard_status" default="/sub/self_monitoring/hazard_status"/>
   <arg name="output_supervisor_self_hazard_status" default="/supervisor/self_monitoring/hazard_status"/>
-  <!--topic name /[monitoring ECU]/external_monitoring/hazard_status/[monitored ECU] -->
   <arg name="output_main_external_hazard_status_sub" default="/main/external_monitoring/hazard_status/sub"/>
   <arg name="output_main_external_hazard_status_supervisor" default="/main/external_monitoring/hazard_status/supervisor"/>
   <arg name="output_sub_external_hazard_status_main" default="/sub/external_monitoring/hazard_status/main"/>
@@ -14,30 +14,44 @@
   <arg name="output_supervisor_external_hazard_status_sub" default="/supervisor/external_monitoring/hazard_status/sub"/>
 
   <!-- supervisor -->
-  <include file = "($find-pkg-share supervisor_psim)/launch/supervisor_psim_node.launch.xml">
-  </include>
+  <include file="$(find-pkg-share supervisor_psim)/launch/supervisor_psim_node.launch.xml" />
 
   <!-- emergency_stop_operator -->
-  <include file = "($find-pkg-share emergency_stop_operator)/launch/emergency_stop_operator.launch.xml">
-  </include>
+  <include file="$(find-pkg-share emergency_stop_operator)/launch/emergency_stop_operator.launch.xml" />
 
   <!-- hazard_status_converter -->
-  <include file = "($find-pkg-share hazard_status_converter)/launch/hazard_status_converter.launch.xml">
-    <arg name="config_file" value="$(var config_file)"/>
-    <arg name="input_hazard_status" value = $"(var input_main_self_hazard_status)"/>
-    <arg name="output_hazard_status" value = $"(var output_main_self_hazard_status)"/>
+  <include file="$(find-pkg-share hazard_status_converter)/launch/hazard_status_converter.launch.xml">
+    <arg name="config_file" value="$(var hazard_status_converter_config_file)"/>
+    <arg name="input_hazard_status" value="$(var input_main_self_hazard_status)"/>
+    <arg name="output_hazard_status" value="$(var output_main_self_hazard_status)"/>
   </include>
 
   <!-- dummy_hazard_status_publisher -->
-  <node_containter pkg="rclcpp_components" exec="component_container" name="dummy_hazard_status_publisher_container" namespace="">
-    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="sub_self_monitoring"/>
-      <arg name="output_hazard_status" value=$"(var output_sub_self_hazard_status)"/>
+  <node_container pkg="rclcpp_components" exec="component_container" name="dummy_hazard_status_publisher_container" namespace="">
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="sub_self_monitoring">
+      <param name="output_hazard_status" value="$(var output_sub_self_hazard_status)"/>
     </composable_node>
-    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="supervisor_self_monitoring"/>
-      <arg name="output_hazard_status" value=$"(var output_supervisor_self_hazard_status)"/>
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="supervisor_self_monitoring">
+      <param name="output_hazard_status" value="$(var output_supervisor_self_hazard_status)"/>
     </composable_node>
-  </node_containter>
-
-
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="main_external_monitoring_sub">
+      <param name="output_hazard_status" value="$(var output_main_external_hazard_status_sub)"/>
+    </composable_node>
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="main_external_monitoring_supervisor">
+      <param name="output_hazard_status" value="$(var output_main_external_hazard_status_supervisor)"/>
+    </composable_node>
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="sub_external_monitoring_main">
+      <param name="output_hazard_status" value="$(var output_sub_external_hazard_status_main)"/>
+    </composable_node>
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="sub_external_monitoring_supervisor">
+      <param name="output_hazard_status" value="$(var output_sub_external_hazard_status_supervisor)"/>
+    </composable_node>
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="supervisor_external_monitoring_main">
+      <param name="output_hazard_status" value="$(var output_supervisor_external_hazard_status_main)"/>
+    </composable_node>
+    <composable_node pkg="dummy_hazard_status_publisher" plugin="dummy_hazard_status_publisher::DummyHazardStatusPublisher" name="dummy_hazard_status_publisher" namespace="supervisor_external_monitoring_sub">
+      <param name="output_hazard_status" value="$(var output_supervisor_external_hazard_status_sub)"/>
+    </composable_node>
+  </node_container>
 
 </launch>
