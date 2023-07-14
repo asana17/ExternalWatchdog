@@ -54,7 +54,7 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
     std::string external_input_prefix;
     std::string another_external_input_prefix;
     if (ecu->name == Main) {
-      topic_prefix = "main";
+      topic_prefix = "/main";
       input_prefix = "~/input/main";
       output_prefix = "~/output/main";
       external_input_prefix = "~/input/sub";
@@ -62,7 +62,7 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
       ecu->external_ecu_name = Sub;
       ecu->another_external_ecu_name = ecu_name::Supervisor;
     } else if (ecu->name == Sub) {
-      topic_prefix = "sub";
+      topic_prefix = "/sub";
       input_prefix = "~/input/sub";
       output_prefix = "~/output/sub";
       external_input_prefix = "~/input/main";
@@ -70,7 +70,7 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
       ecu->external_ecu_name = Main;
       ecu->another_external_ecu_name = ecu_name::Supervisor;
     } else if (ecu->name == ecu_name::Supervisor) {
-      topic_prefix = "supervisor";
+      topic_prefix = "/supervisor";
       input_prefix = "~/input/supervisor";
       output_prefix = "~/output/supervisor";
       external_input_prefix = "~/input/main";
@@ -90,13 +90,13 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
         });
     ecu->sub_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        external_input_prefix + "/external_monitoring_" + topic_prefix, rclcpp::QoS{1},
+        external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onExternalMonitoringStamped(msg, ecu);
         });
     ecu->sub_another_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        another_external_input_prefix + "/external_monitoring_" + topic_prefix, rclcpp::QoS{1},
+        another_external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onExternalMonitoringStamped(msg, ecu);
         });
@@ -285,7 +285,12 @@ bool SupervisorNode::isEcuDataReady()
         "waiting for external_hazard_status_stamped msg of %s ...", ecu_name.c_str());
       is_data_ready = false;
     }
-
+    if (!ecu->another_external_hazard_status_stamped_) {
+      RCLCPP_INFO_THROTTLE(
+        this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+        "waiting for external_hazard_status_stamped msg of %s ...", ecu_name.c_str());
+      is_data_ready = false;
+    }
     if (
       ecu->name != Supervisor && ecu->mrm_comfortable_stop_status_->state ==
                                        MrmBehaviorStatus::NOT_AVAILABLE) {
@@ -294,7 +299,6 @@ bool SupervisorNode::isEcuDataReady()
         "waiting for mrm comfortable stop to become available on %s ...", ecu_name.c_str());
       is_data_ready = false;
     }
-
     if (
       ecu->mrm_sudden_stop_status_->state == MrmBehaviorStatus::NOT_AVAILABLE) {
       RCLCPP_INFO_THROTTLE(

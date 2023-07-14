@@ -2,19 +2,42 @@
   <arg name="update_rate" default = "30.0"/>
   <arg name="timeout_hazard_status" default="0.5"/>
   <arg name="frame_id" default="base_link"/>
+  <!-- self monitoring -->
+  <arg name="main_self_hazard_status" default="/main/self_monitoring/hazard_status"/>
+  <arg name="sub_self_hazard_status" default="/sub/self_monitoring/hazard_status"/>
+  <arg name="supervisor_self_hazard_status" default="/supervisor/self_monitoring/hazard_status"/>
+  <!-- external monitoring: /<monitoring ECU>/external_monitoring/hazard_status/<monitored ecu>-->
+  <arg name="main_external_hazard_status_sub" default="/main/external_monitoring/hazard_status/sub"/>
+  <arg name="main_external_hazard_status_supervisor" default="/main/external_monitoring/hazard_status/supervisor"/>
+  <arg name="sub_external_hazard_status_main" default="/sub/external_monitoring/hazard_status/main"/>
+  <arg name="sub_external_hazard_status_supervisor" default="/sub/external_monitoring/hazard_status/supervisor"/>
+  <arg name="supervisor_external_hazard_status_main" default="/supervisor/external_monitoring/hazard_status/main"/>
+  <arg name="supervisor_external_hazard_status_sub" default="/supervisor/external_monitoring/hazard_status/sub"/>
+
+  <!-- TODO add MRM status subscription-->
+  <arg name="main_mrm_comfortable_stop_status" default="/system/mrm/comfortable_stop/status"/>
+  <arg name="sub_mrm_comfortable_stop_status" default="/sub/mrm/comfortable_stop/status"/>
+  <arg name="main_mrm_emergency_stop_status" default="/system/mrm/emergency_stop/status"/>
+  <arg name="sub_mrm_emergency_stop_status" default="/sub/mrm/emergency_stop/status"/>
+  <arg name="supervisor_mrm_emergency_stop_status" default="/supervisor/mrm/emergency_stop/status"/>
 
   <node pkg="supervisor_psim" name="supervisor" exec="supervisor_psim" output="screen">
     <param name="frame_id" value="$(var frame_id)"/>
     <remap from="~/input/velocity_report" to="/vehicle/status/velocity_status"/>
-    <!--remap from="~/input/main/self_monitoring" to=""/>
-    <remap from="~/input/sub/self_monitoring" to=""/>
-    <remap from="~/input/supervisor/self_monitoring" to=""/>
-    <remap from="~/input/sub/external_monitoring/main" to=""/>
-    <remap from="~/input/supervisor/external_monitoring/main" to=""/>
-    <remap from="~/input/main/external_monitoring/sub" to=""/>
-    <remap from="~/input/supervisor/external_monitoring/sub" to=""/>
-    <remap from="~/input/main/external_monitoring/supervisor" to=""/>
-    <remap from="~/input/sub/external_monitoring/supervisor" to=""/-->
+    <remap from="~/input/main/self_monitoring" to="$(var main_self_hazard_status)"/>
+    <remap from="~/input/sub/self_monitoring" to="$(var sub_self_hazard_status)"/>
+    <remap from="~/input/supervisor/self_monitoring" to="$(var supervisor_self_hazard_status)"/>
+    <remap from="~/input/main/external_monitoring/sub" to="$(var main_external_hazard_status_sub)"/>
+    <remap from="~/input/main/external_monitoring/supervisor" to="$(var main_external_hazard_status_sub)"/>
+    <remap from="~/input/sub/external_monitoring/main" to="$(var sub_external_hazard_status_main)"/>
+    <remap from="~/input/sub/external_monitoring/supervisor" to="$(var sub_external_hazard_status_supervisor)"/>
+    <remap from="~/input/supervisor/external_monitoring/main" to="$(var supervisor_external_hazard_status_main)"/>
+    <remap from="~/input/supervisor/external_monitoring/sub" to="$(var supervisor_external_hazard_status_sub)"/>
+    <remap from="~/input/main/mrm/comfortable_stop/status" to="$(var main_mrm_comfortable_stop_status)" />
+    <remap from="~/input/sub/mrm/comfortable_stop/status" to="$(var sub_mrm_comfortable_stop_status)" />
+    <remap from="~/input/main/mrm/emergency_stop/status" to="$(var main_mrm_emergency_stop_status)" />
+    <remap from="~/input/sub/mrm/emergency_stop/status" to="$(var sub_mrm_emergency_stop_status)" />
+    <remap from="~/input/supervisor/mrm/emergency_stop/status" to="$(var supervisor_mrm_emergency_stop_status)" />
     <remap from="~/input/main/control_cmd" to="/control/command/control_cmd"/>
     <remap from="~/input/main/gear_cmd" to="/control/command/gear_cmd"/>
     <remap from="~/input/main/turn_indicators_cmd" to="/control/command/turn_indicators_cmd"/>
