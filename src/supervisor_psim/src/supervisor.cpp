@@ -14,14 +14,13 @@
 
 #include "supervisor/supervisor.hpp"
 #include <tier4_system_msgs/msg/detail/mrm_behavior_status__struct.hpp>
-#include <rclcpp_components/register_node_macro.hpp>
 #include <vector>
 
 namespace supervisor
 {
 
-SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
-  : Node("supervisor", node_options)
+SupervisorNode::SupervisorNode()
+  : Node("supervisor")
 {
 
   param_.update_rate = declare_parameter<int>("update_rate", 30);
@@ -34,6 +33,7 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
 
   sub_velocity_report_ = create_subscription<VelocityReport>(
     "~/input/velocity_report", rclcpp::QoS{1}, std::bind(&SupervisorNode::onVelocityReport, this, _1));
+
 
 
   // Publisher
@@ -80,6 +80,9 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
     }
 
 
+    const auto callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    rclcpp::SubscriptionOptions options;
+    options.callback_group = callback_group;
 
     // Subscriber
     ecu->sub_self_monitoring_ =
@@ -87,32 +90,32 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
         input_prefix + "/self_monitoring", rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
         SupervisorNode::onSelfMonitoringStamped(msg, ecu);
-        });
+        }, options);
     ecu->sub_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
         external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onExternalMonitoringStamped(msg, ecu);
-        });
+        }, options);
     ecu->sub_another_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
         another_external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onExternalMonitoringStamped(msg, ecu);
-        });
+        }, options);
 
     if (ecu->name != ecu_name::Supervisor) {
     ecu->sub_mrm_comfortable_stop_status_ = create_subscription<tier4_system_msgs::msg::MrmBehaviorStatus>(
       input_prefix + "/mrm/comfortable_stop/status", rclcpp::QoS{1},
         [ecu, this](const MrmBehaviorStatus::ConstSharedPtr msg) {
           SupervisorNode::onMrmComfortableStopStatus(msg, ecu);
-        });
+        }, options);
     }
     ecu->sub_mrm_sudden_stop_status_ = create_subscription<tier4_system_msgs::msg::MrmBehaviorStatus>(
       input_prefix + "/mrm/emergency_stop/status", rclcpp::QoS{1},
         [ecu, this](const MrmBehaviorStatus::ConstSharedPtr msg) {
           SupervisorNode::onMrmSuddenStopStatus(msg, ecu);
-        });
+        }, options);
 
 
     // Client
@@ -125,31 +128,33 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
         output_prefix + "mrm/comfortable_stop/operate", rmw_qos_profile_services_default,
         ecu->client_mrm_comfortable_stop_group_);
 
+    const auto control_callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    options.callback_group = control_callback_group;
     // Control
     ecu->control_sub_ =
       create_subscription<AckermannControlCommand>(
         input_prefix + "/control_cmd", rclcpp::QoS{1},
         [ecu, this](const AckermannControlCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuControlCmd(msg, ecu);
-        });
+        }, options);
     ecu->gear_sub_ =
       create_subscription<GearCommand>(
         input_prefix + "/gear_cmd", rclcpp::QoS{1},
         [ecu, this](const GearCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuGearCmd(msg, ecu);
-        });
+        }, options);
     ecu->turn_indicators_sub_=
       create_subscription<TurnIndicatorsCommand>(
         input_prefix + "/turn_indicators_cmd", rclcpp::QoS{1},
         [ecu, this](const TurnIndicatorsCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuTurnIndicatorsCmd(msg, ecu);
-        });
+        }, options);
     ecu->hazard_lights_sub_=
       create_subscription<HazardLightsCommand>(
         input_prefix + "/hazard_lights_cmd", rclcpp::QoS{1},
         [ecu, this](const HazardLightsCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuHazardLightsCmd(msg, ecu);
-        });
+        }, options);
 
 
     // Initialize
@@ -160,7 +165,6 @@ SupervisorNode::SupervisorNode(const rclcpp::NodeOptions & node_options)
     ecu->mrm_sudden_stop_status_ = std::make_shared<MrmBehaviorStatus>();
 
   }
-
 
   // Timer
   const auto update_period_ns = rclcpp::Rate(param_.update_rate).period();
@@ -457,7 +461,3 @@ void SupervisorNode::cancelCurrentMrm()
 }
 
 } // namespace supervisor
-
-
-#include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(supervisor::SupervisorNode);

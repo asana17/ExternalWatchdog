@@ -10,10 +10,15 @@ ament_auto_add_library(supervisor_psim_node SHARED
   src/voter.cpp
 )
 
-rclcpp_components_register_node(supervisor_psim_node
-  PLUGIN "supervisor::SupervisorNode"
-  EXECUTABLE supervisor_psim
+ament_auto_add_executable(supervisor_psim
+  src/supervisor_node.cpp
+  src/supervisor.cpp
 )
+
+#rclcpp_components_register_node(supervisor_psim_node
+#  PLUGIN "supervisor::SupervisorNode"
+#  EXECUTABLE supervisor_psim
+#)
 
 ament_auto_package(INSTALL_TO_SHARE
   launch

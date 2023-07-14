@@ -53,7 +53,7 @@ class SupervisorNode : public rclcpp::Node
 {
 
 public:
-  explicit SupervisorNode(const rclcpp::NodeOptions & node_options);
+  SupervisorNode();
 
 private:
 
