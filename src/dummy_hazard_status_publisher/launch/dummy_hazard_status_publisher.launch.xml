@@ -2,6 +2,6 @@
   <arg name="output_hazard_status" default="/sub/self_monitoring/hazard_status"/>
 
   <node pkg="dummy_hazard_status_publisher" name="dummy_hazard_status_publisher" exec="dummy_hazard_status_publisher" output="screen">
-    <remap from="~/output/hazard_status_stamped" to="$(var output_hazard_status)"/>
+    <remap from="~/output/hazard_status" to="$(var output_hazard_status)"/>
   </node>
 </launch>

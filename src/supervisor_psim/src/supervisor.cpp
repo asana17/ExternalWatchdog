@@ -15,6 +15,7 @@
 #include "supervisor/supervisor.hpp"
 #include <tier4_system_msgs/msg/detail/mrm_behavior_status__struct.hpp>
 #include <vector>
+#include <iostream>
 
 namespace supervisor
 {
@@ -80,42 +81,45 @@ SupervisorNode::SupervisorNode()
     }
 
 
-    const auto callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     rclcpp::SubscriptionOptions options;
-    options.callback_group = callback_group;
 
     // Subscriber
+    const auto callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+    options.callback_group = callback_group;
     ecu->sub_self_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        input_prefix + "/self_monitoring", rclcpp::QoS{1},
+        input_prefix + "/self_monitoring", rclcpp::QoS{10},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
         SupervisorNode::onSelfMonitoringStamped(msg, ecu);
         }, options);
+
     ecu->sub_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
+        external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{10},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onExternalMonitoringStamped(msg, ecu);
         }, options);
+
     ecu->sub_another_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        another_external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
+        another_external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{10},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
-          SupervisorNode::onExternalMonitoringStamped(msg, ecu);
+          SupervisorNode::onAnotherExternalMonitoringStamped(msg, ecu);
         }, options);
+
 
     if (ecu->name != ecu_name::Supervisor) {
     ecu->sub_mrm_comfortable_stop_status_ = create_subscription<tier4_system_msgs::msg::MrmBehaviorStatus>(
       input_prefix + "/mrm/comfortable_stop/status", rclcpp::QoS{1},
         [ecu, this](const MrmBehaviorStatus::ConstSharedPtr msg) {
           SupervisorNode::onMrmComfortableStopStatus(msg, ecu);
-        }, options);
+        });
     }
     ecu->sub_mrm_sudden_stop_status_ = create_subscription<tier4_system_msgs::msg::MrmBehaviorStatus>(
       input_prefix + "/mrm/emergency_stop/status", rclcpp::QoS{1},
         [ecu, this](const MrmBehaviorStatus::ConstSharedPtr msg) {
           SupervisorNode::onMrmSuddenStopStatus(msg, ecu);
-        }, options);
+        });
 
 
     // Client
@@ -158,9 +162,6 @@ SupervisorNode::SupervisorNode()
 
 
     // Initialize
-    ecu->self_hazard_status_stamped_ = std::make_shared<HazardStatusStamped>();
-    ecu->external_hazard_status_stamped_ = std::make_shared<HazardStatusStamped>();
-    ecu->another_external_hazard_status_stamped_ = std::make_shared<HazardStatusStamped>();
     ecu->mrm_comfortable_stop_status_ = std::make_shared<MrmBehaviorStatus>();
     ecu->mrm_sudden_stop_status_ = std::make_shared<MrmBehaviorStatus>();
 
@@ -190,7 +191,6 @@ void SupervisorNode::onSelfMonitoringStamped(
 
 void SupervisorNode::onExternalMonitoringStamped(
     const HazardStatusStamped::ConstSharedPtr msg, Ecu* ecu) {
-
   ecu->external_hazard_status_stamped_ = msg;
   ecu->stamp_external_hazard_status_ = this->now();
   const auto selected_ecu = ControlSwitchInterface_.getSelectedEcu();
@@ -297,7 +297,7 @@ bool SupervisorNode::isEcuDataReady()
     if (!ecu->another_external_hazard_status_stamped_) {
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
-        "waiting for external_hazard_status_stamped msg of %s ...", ecu_name.c_str());
+        "waiting for another_external_hazard_status_stamped msg of %s ...", ecu_name.c_str());
       is_data_ready = false;
     }
     // temporarily checking Main only (without sub running)

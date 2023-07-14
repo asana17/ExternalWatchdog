@@ -36,7 +36,7 @@
     <remap from="~/input/sub/self_monitoring" to="$(var sub_self_hazard_status)"/>
     <remap from="~/input/supervisor/self_monitoring" to="$(var supervisor_self_hazard_status)"/>
     <remap from="~/input/main/external_monitoring/sub" to="$(var main_external_hazard_status_sub)"/>
-    <remap from="~/input/main/external_monitoring/supervisor" to="$(var main_external_hazard_status_sub)"/>
+    <remap from="~/input/main/external_monitoring/supervisor" to="$(var main_external_hazard_status_supervisor)"/>
     <remap from="~/input/sub/external_monitoring/main" to="$(var sub_external_hazard_status_main)"/>
     <remap from="~/input/sub/external_monitoring/supervisor" to="$(var sub_external_hazard_status_supervisor)"/>
     <remap from="~/input/supervisor/external_monitoring/main" to="$(var supervisor_external_hazard_status_main)"/>

@@ -14,6 +14,7 @@
 
 #include "supervisor/voter.hpp"
 #include <vector>
+#include <iostream>
 
 namespace supervisor{
 
@@ -76,6 +77,7 @@ void Voter::transitionTo(const int new_state)
 /*  RCLCPP_INFO(
     this->get_logger(), "Voter State changed: %s -> %s", state2string(voter_state_.state),
     state2string(new_state)); */
+  std::cout << "Voter State changed: " << state2string(voter_state_.state) << " -> " << state2string(new_state) << std::endl;
   state2string(new_state);
 
   voter_state_.state = new_state;
@@ -119,6 +121,9 @@ VoterState::_fault_ecu_type Voter::convertMrmEcuName(const ecu_name name) const
 void Voter::updateSelfErrorStatus(Ecu* ecu, const ecu_name switch_selected_ecu)
 {
   if (isEmergency(ecu->self_hazard_status_stamped_)) {
+    std::cout << "emergency!" << std::endl;
+    std::cout << "ecu_name " << ecu->name << std::endl;
+    std::cout << "switch_ecu_name " << switch_selected_ecu << std::endl;
 
     if (switch_selected_ecu == ecu->name) {
       const bool is_self_recoverable = ecu->self_hazard_status_stamped_->status.self_recoverable;
@@ -201,9 +206,21 @@ void Voter::prepareMrmOperation(ecu_name switch_selected_ecu) {
 }
 
 void Voter::judgeMrmOperation(ecu_name switch_selected_ecu) {
+  voter_state_.external_detected = false;
   getMrmOperationFromExternalMonitoring(switch_selected_ecu);
+  if (voter_state_.external_detected) {
+    std::cout << "external_detected!" << std::endl;
+  }
   if (!voter_state_.external_detected) {
     getMrmOperationFromSelfMonitoring(switch_selected_ecu);
+    if (mrm_operation_.mrm_ecu != VoterState::NONE) {
+      std::cout << "interal_detected!" << std::endl;
+      std::cout << "mrm_operation" << std::endl;
+      std::cout << "fault_ecu " << mrm_operation_.fault_ecu << std::endl;
+      std::cout << "mrm_ecu " << mrm_operation_.mrm_ecu << std::endl;
+      std::cout << "comfortable_stop_after_switch" << mrm_operation_.comfortable_stop_after_switch << std::endl;
+      std::cout << "mrm_operation_end" << std::endl;
+    }
   }
 }
 
@@ -224,7 +241,6 @@ void Voter::getMrmOperationFromExternalMonitoring(ecu_name switch_selected_ecu)
 {
   int external_monitoring_result = int(external_error_status_[Main].is_emergency_) + int(external_error_status_[Sub].is_emergency_) + int(external_error_status_[Supervisor].is_emergency_);
   if (external_monitoring_result == 0) {
-    voter_state_.external_detected = false;
     getNoMrmOperation();
   } else {
     voter_state_.external_detected = true;
@@ -239,7 +255,7 @@ void Voter::getMrmOperationFromExternalMonitoring(ecu_name switch_selected_ecu)
 void Voter::getNoMrmOperation()
 {
   mrm_operation_.fault_ecu = VoterState::NONE;
-  mrm_operation_.mrm_ecu = None;
+  mrm_operation_.mrm_ecu = VoterState::NONE;
   mrm_operation_.comfortable_stop_after_switch = false;
 }
 
@@ -269,7 +285,7 @@ void Voter::getMrmOperationMultipleEcuError()
 {
  // RCLCPP_ERROR(this->get_logger(), "Self error detection on multiple ECUs: operate MRM on Supervisor");
   mrm_operation_.fault_ecu = VoterState::UNKNOWN;
-  mrm_operation_.mrm_ecu = Supervisor;
+  mrm_operation_.mrm_ecu = VoterState::SUPERVISOR;
   mrm_operation_.comfortable_stop_after_switch = false;
 }
 
