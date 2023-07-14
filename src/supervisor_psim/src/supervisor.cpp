@@ -244,15 +244,20 @@ void SupervisorNode::onEcuHazardLightsCmd(const HazardLightsCommand::ConstShared
 void SupervisorNode::onTimer()
 {
   if (!isDataReady()) {
+    RCLCPP_INFO_THROTTLE(
+        this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
+        "data not ready for supervisor");
     return;
   }
 
-  for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
-    if (ecu->name == ControlSwitchInterface_.getSelectedEcu()) {
-      const auto ecu_name = convertEcuNameToString(ecu->name);
-      RCLCPP_INFO_THROTTLE(
+  const auto switch_selected_ecu = ControlSwitchInterface_.getSelectedEcu();
+  const auto ecu_name = convertEcuNameToString(switch_selected_ecu);
+  RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "selected switch is: %s", ecu_name.c_str());
+
+  for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
+    if (ecu->name == switch_selected_ecu) {
       ControlSwitchInterface_.publishControlToVehicle(ecu->control_cmd_);
       ControlSwitchInterface_.publishGearToVehicle(ecu->gear_cmd_);
       ControlSwitchInterface_.publishTurnIndicatorsToVehicle(ecu->turn_indicators_cmd_);
@@ -291,8 +296,9 @@ bool SupervisorNode::isEcuDataReady()
         "waiting for external_hazard_status_stamped msg of %s ...", ecu_name.c_str());
       is_data_ready = false;
     }
+    // temporarily checking Main only (without sub running)
     if (
-      ecu->name != Supervisor && ecu->mrm_comfortable_stop_status_->state ==
+      ecu->name == Main && ecu->mrm_comfortable_stop_status_->state ==
                                        MrmBehaviorStatus::NOT_AVAILABLE) {
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
@@ -300,7 +306,7 @@ bool SupervisorNode::isEcuDataReady()
       is_data_ready = false;
     }
     if (
-      ecu->mrm_sudden_stop_status_->state == MrmBehaviorStatus::NOT_AVAILABLE) {
+      ecu->name == Main && ecu->mrm_sudden_stop_status_->state == MrmBehaviorStatus::NOT_AVAILABLE) {
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "waiting for mrm emergency stop to become available on %s ...", ecu_name.c_str());

@@ -14,13 +14,21 @@
   <arg name="supervisor_external_hazard_status_main" default="/supervisor/external_monitoring/hazard_status/main"/>
   <arg name="supervisor_external_hazard_status_sub" default="/supervisor/external_monitoring/hazard_status/sub"/>
 
-  <!-- TODO add MRM status subscription-->
+  <!-- MRM status-->
   <arg name="main_mrm_comfortable_stop_status" default="/system/mrm/comfortable_stop/status"/>
   <arg name="sub_mrm_comfortable_stop_status" default="/sub/mrm/comfortable_stop/status"/>
   <arg name="main_mrm_emergency_stop_status" default="/system/mrm/emergency_stop/status"/>
   <arg name="sub_mrm_emergency_stop_status" default="/sub/mrm/emergency_stop/status"/>
   <arg name="supervisor_mrm_emergency_stop_status" default="/supervisor/mrm/emergency_stop/status"/>
+  <!-- MRM operate-->
+  <arg name="main_mrm_comfortable_stop_operate" default="/system/mrm/comfortable_stop/operate" />
+  <arg name="sub_mrm_comfortable_stop_operate" default="/sub/mrm/comfortable_stop/operate" />
+  <arg name="main_mrm_emergency_stop_operate" default="/system/mrm/emergency_stop/operate" />
+  <arg name="sub_mrm_emergency_stop_operate" default="/sub/mrm/emergency_stop/operate" />
+  <arg name="supervisor_mrm_emergency_stop_operate" default="/supervisor/mrm/emergency_stop/operate" />
 
+
+  <!-- supervisor_psim pkg -->
   <node pkg="supervisor_psim" name="supervisor" exec="supervisor_psim" output="screen">
     <param name="frame_id" value="$(var frame_id)"/>
     <remap from="~/input/velocity_report" to="/vehicle/status/velocity_status"/>
@@ -38,6 +46,11 @@
     <remap from="~/input/main/mrm/emergency_stop/status" to="$(var main_mrm_emergency_stop_status)" />
     <remap from="~/input/sub/mrm/emergency_stop/status" to="$(var sub_mrm_emergency_stop_status)" />
     <remap from="~/input/supervisor/mrm/emergency_stop/status" to="$(var supervisor_mrm_emergency_stop_status)" />
+    <remap from="~/output/main/mrm/comfortable_stop/operate" to="$(var main_mrm_comfortable_stop_operate)" />
+    <remap from="~/output/sub/mrm/comfortable_stop/operate" to="$(var sub_mrm_comfortable_stop_operate)" />
+    <remap from="~/output/main/mrm/emergency_stop/operate" to="$(var main_mrm_emergency_stop_operate)" />
+    <remap from="~/output/sub/mrm/emergency_stop/operate" to="$(var sub_mrm_emergency_stop_operate)" />
+    <remap from="~/output/supervisor/mrm/emergency_stop/operate" to="$(var supervisor_mrm_emergency_stop_operate)" />
     <remap from="~/input/main/control_cmd" to="/control/command/control_cmd"/>
     <remap from="~/input/main/gear_cmd" to="/control/command/gear_cmd"/>
     <remap from="~/input/main/turn_indicators_cmd" to="/control/command/turn_indicators_cmd"/>

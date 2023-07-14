@@ -35,9 +35,9 @@ def launch_setup(context, *args, **kwargs):
             params,
         ],
         remappings=[
-            ("~/input/mrm/emergency_stop/operate", "/supervisor/system/mrm/emergency_stop/operate"),
+            ("~/input/mrm/emergency_stop/operate", "/supervisor/mrm/emergency_stop/operate"),
             ("~/input/control/control_cmd", "/control/command/control_cmd"),
-            ("~/output/mrm/emergency_stop/status", "/supervisor/system/mrm/emergency_stop/status"),
+            ("~/output/mrm/emergency_stop/status", "/supervisor/mrm/emergency_stop/status"),
             ("~/output/mrm/emergency_stop/control_cmd", "/supervisor/control/control_cmd"),
             ("~/output/mrm/emergency_stop/gear_cmd", "/supervisor/control/gear_cmd"),
             ("~/output/mrm/emergency_stop/turn_indicators_cmd", "/supervisor/control/turn_indicators_cmd"),
