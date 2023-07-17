@@ -13,10 +13,11 @@
 // limitations under the License.
 
 #include "supervisor/supervisor.hpp"
+#include <rclcpp/callback_group.hpp>
+#include <rclcpp/timer.hpp>
 #include <tier4_system_msgs/msg/detail/mrm_behavior_status__struct.hpp>
 #include <vector>
 #include <iostream>
-
 namespace supervisor
 {
 
@@ -35,13 +36,13 @@ SupervisorNode::SupervisorNode()
   sub_velocity_report_ = create_subscription<VelocityReport>(
     "~/input/velocity_report", rclcpp::QoS{1}, std::bind(&SupervisorNode::onVelocityReport, this, _1));
 
-
-
   // Publisher
-  ControlSwitchInterface_.vehicle_control_pub_ = create_publisher<AckermannControlCommand>("/control_switch_interface/control_cmd", rclcpp::QoS{1});
-  ControlSwitchInterface_.gear_pub_= create_publisher<GearCommand>("/control_switch_interface/gear_cmd", rclcpp::QoS{1});
-  ControlSwitchInterface_.turn_indicators_pub_= create_publisher<TurnIndicatorsCommand>("/control_switch_interface/turn_indicators_cmd", rclcpp::QoS{1});
-  ControlSwitchInterface_.hazard_lights_pub_= create_publisher<HazardLightsCommand>("/control_switch_interface/hazard_lights_cmd", rclcpp::QoS{1});
+  rclcpp::QoS durable_qos{1};
+  durable_qos.transient_local();
+  ControlSwitchInterface_.vehicle_control_pub_ = create_publisher<AckermannControlCommand>("/control_switch_interface/control_cmd", durable_qos);
+  ControlSwitchInterface_.gear_pub_= create_publisher<GearCommand>("/control_switch_interface/gear_cmd", durable_qos);
+  ControlSwitchInterface_.turn_indicators_pub_= create_publisher<TurnIndicatorsCommand>("/control_switch_interface/turn_indicators_cmd", durable_qos);
+  ControlSwitchInterface_.hazard_lights_pub_= create_publisher<HazardLightsCommand>("/control_switch_interface/hazard_lights_cmd", durable_qos);
 
   // Initialize each ECUs
   Main_.name = Main;
@@ -81,31 +82,28 @@ SupervisorNode::SupervisorNode()
     }
 
 
-    rclcpp::SubscriptionOptions options;
 
     // Subscriber
-    const auto callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-    options.callback_group = callback_group;
     ecu->sub_self_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        input_prefix + "/self_monitoring", rclcpp::QoS{10},
+        input_prefix + "/self_monitoring", rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
         SupervisorNode::onSelfMonitoringStamped(msg, ecu);
-        }, options);
+        });
 
     ecu->sub_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{10},
+        external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onExternalMonitoringStamped(msg, ecu);
-        }, options);
+        });
 
     ecu->sub_another_external_monitoring_ =
       create_subscription<HazardStatusStamped>(
-        another_external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{10},
+        another_external_input_prefix + "/external_monitoring" + topic_prefix, rclcpp::QoS{1},
         [ecu, this](const HazardStatusStamped::ConstSharedPtr msg) {
           SupervisorNode::onAnotherExternalMonitoringStamped(msg, ecu);
-        }, options);
+        });
 
 
     if (ecu->name != ecu_name::Supervisor) {
@@ -132,33 +130,32 @@ SupervisorNode::SupervisorNode()
         output_prefix + "mrm/comfortable_stop/operate", rmw_qos_profile_services_default,
         ecu->client_mrm_comfortable_stop_group_);
 
-    const auto control_callback_group = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-    options.callback_group = control_callback_group;
     // Control
+
     ecu->control_sub_ =
       create_subscription<AckermannControlCommand>(
-        input_prefix + "/control_cmd", rclcpp::QoS{1},
+        input_prefix + "/control_cmd", 1,
         [ecu, this](const AckermannControlCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuControlCmd(msg, ecu);
-        }, options);
+        });
     ecu->gear_sub_ =
       create_subscription<GearCommand>(
-        input_prefix + "/gear_cmd", rclcpp::QoS{1},
+        input_prefix + "/gear_cmd", 1,
         [ecu, this](const GearCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuGearCmd(msg, ecu);
-        }, options);
+        });
     ecu->turn_indicators_sub_=
       create_subscription<TurnIndicatorsCommand>(
-        input_prefix + "/turn_indicators_cmd", rclcpp::QoS{1},
+        input_prefix + "/turn_indicators_cmd", 1,
         [ecu, this](const TurnIndicatorsCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuTurnIndicatorsCmd(msg, ecu);
-        }, options);
+        });
     ecu->hazard_lights_sub_=
       create_subscription<HazardLightsCommand>(
-        input_prefix + "/hazard_lights_cmd", rclcpp::QoS{1},
+        input_prefix + "/hazard_lights_cmd", 1,
         [ecu, this](const HazardLightsCommand::ConstSharedPtr msg) {
           SupervisorNode::onEcuHazardLightsCmd(msg, ecu);
-        }, options);
+        });
 
 
     // Initialize
@@ -183,30 +180,18 @@ void SupervisorNode::onSelfMonitoringStamped(
 
   ecu->self_hazard_status_stamped_ = msg;
   ecu->stamp_self_hazard_status_ = this->now();
-  const auto selected_ecu = ControlSwitchInterface_.getSelectedEcu();
-  Voter_.updateSelfErrorStatus(ecu, selected_ecu);
-  Voter_.prepareMrmOperation(selected_ecu);
-  operateMrm();
 }
 
 void SupervisorNode::onExternalMonitoringStamped(
     const HazardStatusStamped::ConstSharedPtr msg, Ecu* ecu) {
   ecu->external_hazard_status_stamped_ = msg;
   ecu->stamp_external_hazard_status_ = this->now();
-  const auto selected_ecu = ControlSwitchInterface_.getSelectedEcu();
-  Voter_.updateExternalErrorStatus(ecu, selected_ecu);
-  Voter_.prepareMrmOperation(selected_ecu);
-  operateMrm();
 }
 
 void SupervisorNode::onAnotherExternalMonitoringStamped(
     const HazardStatusStamped::ConstSharedPtr msg, Ecu* ecu) {
   ecu->another_external_hazard_status_stamped_ = msg;
   ecu->stamp_another_external_hazard_status_ = this->now();
-  const auto selected_ecu = ControlSwitchInterface_.getSelectedEcu();
-  Voter_.updateExternalErrorStatus(ecu, selected_ecu);
-  Voter_.prepareMrmOperation(selected_ecu);
-  operateMrm();
 }
 
 void SupervisorNode::onMrmComfortableStopStatus(
@@ -224,12 +209,9 @@ void SupervisorNode::onMrmSuddenStopStatus(
 
 void SupervisorNode::onEcuControlCmd(const AckermannControlCommand::ConstSharedPtr msg, Ecu* ecu)
 {
-
   ecu->control_cmd_ = msg;
-  /*if (ControlSwitchInterface_.getSelectedEcu() == ecu->name) {
-    ControlSwitchInterface_.publishControlToVehicle(msg);
-  }*/
 }
+
 void SupervisorNode::onEcuGearCmd(const GearCommand::ConstSharedPtr msg, Ecu* ecu)
 {
   ecu->gear_cmd_ = msg;
@@ -247,21 +229,34 @@ void SupervisorNode::onEcuHazardLightsCmd(const HazardLightsCommand::ConstShared
 
 void SupervisorNode::onTimer()
 {
-  if (!isDataReady()) {
+
+  if (!is_data_ready_ && !isDataReady()) {
     RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "data not ready for supervisor");
     return;
   }
+  is_data_ready_ = true;
 
-  const auto switch_selected_ecu = ControlSwitchInterface_.getSelectedEcu();
-  const auto ecu_name = convertEcuNameToString(switch_selected_ecu);
-  RCLCPP_INFO_THROTTLE(
-        this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
-        "selected switch is: %s", ecu_name.c_str());
+  switch_selected_ecu_ = ControlSwitchInterface_.getSelectedEcu();
 
   for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
-    if (ecu->name == switch_selected_ecu) {
+    Voter_.updateSelfErrorStatus(ecu, switch_selected_ecu_);
+    Voter_.updateExternalErrorStatus(ecu, switch_selected_ecu_);
+  }
+
+  Voter_.prepareMrmOperation(switch_selected_ecu_);
+  //operateMrm();
+
+  publishControlCommands();
+}
+
+void SupervisorNode::publishControlCommands()
+{
+
+  switch_selected_ecu_ = ControlSwitchInterface_.getSelectedEcu();
+  for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
+    if (ecu->name == switch_selected_ecu_) {
       ControlSwitchInterface_.publishControlToVehicle(ecu->control_cmd_);
       ControlSwitchInterface_.publishGearToVehicle(ecu->gear_cmd_);
       ControlSwitchInterface_.publishTurnIndicatorsToVehicle(ecu->turn_indicators_cmd_);

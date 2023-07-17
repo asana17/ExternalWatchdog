@@ -4,6 +4,7 @@
   <arg name="hazard_status_converter_config_file" default="$(find-pkg-share hazard_status_converter)/config/hazard_status_converter.param.yaml" />
   <!-- hazard_status from autoware system_error_monitor -->
   <arg name="main_self_system_emergency_hazard_status" default="/system/emergency/hazard_status"/>
+  <arg name="dummy_hazard_status_publisher_config_file" default="$(find-pkg-share dummy_hazard_status_publisher)/config/dummy_hazard_status_publisher.param.yaml" />
 
   <!-- self monitoring -->
   <arg name="main_self_hazard_status" default="/main/self_monitoring/hazard_status"/>
@@ -55,28 +56,7 @@
 
   <!-- dummy_hazard_status_publisher -->
   <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var sub_self_hazard_status)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var supervisor_self_hazard_status)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var main_external_hazard_status_sub)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var main_external_hazard_status_supervisor)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var sub_external_hazard_status_main)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var sub_external_hazard_status_supervisor)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var supervisor_external_hazard_status_main)"/>
-  </include>
-  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
-    <arg name="output_hazard_status" value="$(var supervisor_external_hazard_status_sub)"/>
+    <arg name="config_file" value="$(var dummy_hazard_status_publisher_config_file)"/>
   </include>
 
 </launch>

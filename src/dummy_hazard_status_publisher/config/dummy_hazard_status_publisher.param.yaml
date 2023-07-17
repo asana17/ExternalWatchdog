@@ -5,12 +5,12 @@
 /**:
   ros__parameters:
     monitoring_topics:
-      /main/self_monitoring/hazard_status: default
+      #/main/self_monitoring/hazard_status: default
       /sub/self_monitoring/hazard_status: {level: "0", emergency: "false", emergency_holding: "false", self_recoverable: "true", fault_time_after_engage: "10.0"}
       /supervisor/self_monitoring/hazard_status: default
-      /main/external_monitoring/hazard_statu/sub: default
-      /main/external_monitoring/hazard_statu/supervisor: default
+      /main/external_monitoring/hazard_status/sub: default
+      /main/external_monitoring/hazard_status/supervisor: default
       /sub/external_monitoring/hazard_status/main: default
-      /sub/external_monitoring/hazard_statu/supervisor: default
+      /sub/external_monitoring/hazard_status/supervisor: default
       /supervisor/external_monitoring/hazard_status/main: default
-      /supervisor/external_monitoring/hazard_statu/sub: default
+      /supervisor/external_monitoring/hazard_status/sub: default

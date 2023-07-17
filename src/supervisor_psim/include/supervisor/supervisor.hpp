@@ -64,6 +64,8 @@ private:
   Voter Voter_;
   ControlSwitchInterface ControlSwitchInterface_;
 
+  ecu_name switch_selected_ecu_;
+
   // Subscriber
   rclcpp::Subscription<VelocityReport>::SharedPtr sub_velocity_report_;
   void onVelocityReport(const VelocityReport::ConstSharedPtr msg);
@@ -86,11 +88,13 @@ private:
 
 
   // Publisher
+  void publishControlCommands();
 
   // Timer
   rclcpp::TimerBase::SharedPtr timer_;
   void onTimer();
   bool isDataReady();
+  bool is_data_ready_;
   bool isEcuDataReady();
   bool isControlDataReady();
 
