@@ -38,22 +38,21 @@ std::vector<std::string> split(const std::string & str, const char delim)
   return elems;
 }
 
-DummyHazardStatusPublisher::DummyHazardStatusPublisher(const rclcpp::NodeOptions & node_options)
-  : Node("dummy_hazard_status_publisher", node_options)
+DummyHazardStatusPublisher::DummyHazardStatusPublisher()
+  : Node("dummy_hazard_status_publisher", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
 {
 
   params_.update_rate = declare_parameter<int>("update_rate", 10);
-  params_.hazard_status_params = declare_parameter<std::vector<std::string>>("hazard_status_params", std::vector<std::string>(4, ""));
-  hazard_status_.level = 0;
-  hazard_status_.emergency = false;
-  hazard_status_.emergency_holding = false;
-  hazard_status_.self_recoverable = false;
 
-  pub_hazard_status_stamped_ = this->create_publisher<watchdog_system_msgs::msg::HazardStatusStamped>(
-      "~/output/hazard_status", rclcpp::QoS(1));
+  loadMonitoringTopics();
 
   set_param_res_ = this->add_on_set_parameters_callback(
     std::bind(&DummyHazardStatusPublisher::paramCallback, this, std::placeholders::_1));
+
+  using std::placeholders::_1;
+
+  sub_engage_ = create_subscription<EngageMsg>(
+    "~/input/engage", rclcpp::QoS{1}, std::bind(&DummyHazardStatusPublisher::onEngage, this, _1));
 
   const auto update_period_ns = rclcpp::Rate(params_.update_rate).period();
   timer_ = rclcpp::create_timer(
@@ -61,88 +60,189 @@ DummyHazardStatusPublisher::DummyHazardStatusPublisher(const rclcpp::NodeOptions
 
 }
 
+void DummyHazardStatusPublisher::loadMonitoringTopics()
+{
+  const auto param_key = std::string("monitoring_topics");
+  const uint64_t depth = 3;
+  const auto param_names = this->list_parameters({param_key}, depth).names;
+
+  if (param_names.empty()) {
+    RCLCPP_INFO(this->get_logger(), "no param in config: %s", param_key.c_str());
+    return;
+  }
+
+  std::set<std::string> topic_names;
+
+  for (const auto & param_name: param_names) {
+    const auto split_names = split(param_name, '.');
+    const auto & key_name = split_names.at(0);
+    const auto & topic_name = split_names.at(1);
+
+    const auto topic_name_with_prefix = fmt::format("{0}.{1}", key_name, topic_name);
+
+    if (topic_names.count(topic_name_with_prefix) != 0) {
+      continue; // duplicated param
+    }
+
+    topic_names.insert(topic_name_with_prefix);
+
+    const auto level_key = topic_name_with_prefix + std::string(".level");
+    std::string level_str, emergency_str, emergency_holding_str, self_recoverable_str, fault_time_after_engage_str;
+    const auto emergency_key = topic_name_with_prefix + std::string(".emergency");
+    const auto emergency_holding_key = topic_name_with_prefix + std::string(".emergency_holding");
+    const auto self_recoverable_key = topic_name_with_prefix + std::string(".self_recoverable");
+    const auto fault_time_after_engage_key = topic_name_with_prefix + std::string(".fault_time_after_engage");
+
+    this->get_parameter_or(level_key, level_str, std::string("0"));
+    this->get_parameter_or(emergency_key, emergency_str, std::string("false"));
+    this->get_parameter_or(emergency_holding_key, emergency_holding_str, std::string("false"));
+    this->get_parameter_or(self_recoverable_key, self_recoverable_str, std::string("true"));
+    this->get_parameter_or(fault_time_after_engage_key, fault_time_after_engage_str, std::string("0.0"));
+
+    int level = std::stoi(level_str);
+    bool emergency{}, emergency_holding{}, self_recoverable{};
+    std::istringstream(emergency_str) >> std::boolalpha >> emergency;
+    std::istringstream(emergency_holding_str) >> std::boolalpha >> emergency_holding;
+    std::istringstream(self_recoverable_str) >> std::boolalpha >> self_recoverable;
+    double fault_time_after_engage = std::stod(fault_time_after_engage_str);
+
+    monitoring_topics_.push_back({topic_name, {level, emergency, emergency_holding, self_recoverable, fault_time_after_engage}, this->create_publisher<HazardStatusStamped>(topic_name, rclcpp::QoS(1))});
+  }
+
+}
+
+void DummyHazardStatusPublisher::onEngage(EngageMsg::ConstSharedPtr msg) {
+  is_engaged_ = msg->engage;
+  if (msg->engage == true) {
+    engaged_time_ = this->now();
+  }
+}
+
 void DummyHazardStatusPublisher::onTimer()
 {
   watchdog_system_msgs::msg::HazardStatusStamped hazard_status_stamped;
   hazard_status_stamped.stamp = this->now();
-  hazard_status_stamped.status = hazard_status_;
 
-  pub_hazard_status_stamped_->publish(hazard_status_stamped);
-
+  for (const auto &monitoring_topic: monitoring_topics_) {
+    double engaged_duration = 0.0;
+    if (is_engaged_) {
+      engaged_duration = (this->now() - engaged_time_).seconds();
+    }
+    if (monitoring_topic.hazard_status_params.fault_time_after_engage > engaged_duration) {
+      createDefaultDummyHazardStatus(hazard_status_stamped.status);
+    } else {
+      hazard_status_stamped.status.level = monitoring_topic.hazard_status_params.level;
+      hazard_status_stamped.status.emergency= monitoring_topic.hazard_status_params.emergency;
+      hazard_status_stamped.status.emergency_holding= monitoring_topic.hazard_status_params.emergency_holding;
+      hazard_status_stamped.status.self_recoverable= monitoring_topic.hazard_status_params.self_recoverable;
+    }
+    monitoring_topic.pub_hazard_status_stamped_->publish(hazard_status_stamped);
+  }
 }
 
-
+void DummyHazardStatusPublisher::createDefaultDummyHazardStatus(HazardStatus & hazard_status)
+{
+  hazard_status.level = 0;
+  hazard_status.emergency = false;
+  hazard_status.emergency_holding = false;
+  hazard_status.self_recoverable = true;
+}
 
 rcl_interfaces::msg::SetParametersResult DummyHazardStatusPublisher::paramCallback(
   const std::vector<rclcpp::Parameter> & parameters)
 {
   rcl_interfaces::msg::SetParametersResult result;
 
-  const auto param_str = "hazard_status_params";
-
   for (const auto & param : parameters) {
-    const auto param_name = param.get_name();
-    if (param_name != param_str) {
-      result.set__successful(false);
-      result.set__reason("invalid parameter name");
+    const auto & param_name = param.get_name();
+    const auto split_names = split(param_name, '.');
+    const auto topic_name = split_names.at(0);
+
+    auto it = std::find_if(
+        std::begin(monitoring_topics_), std::end(monitoring_topics_),
+        [&topic_name](MonitoringTopic monitoring_topic){ return monitoring_topic.name == topic_name;});
+    if (it == std::end(monitoring_topics_)) {
+      result.successful = false;
+      result.reason = "no matching topic name";
       return result;
     }
+    const auto level_with_prefix_str = topic_name + std::string(".level");
+    const auto emergency_with_prefix_str = topic_name + std::string(".emergency");
+    const auto emergency_holding_with_prefix_str = topic_name + std::string(".emergency_holding");
+    const auto self_recoverable_with_prefix_str = topic_name + std::string(".self_recoverable");
+    std::string level_str, emergency_str, emergency_holding_str, self_recoverable_str;
+
     try {
-      if (!tier4_autoware_utils::updateParam(parameters, param_name, params_.hazard_status_params)) {
-      result.set__successful(false);
-      result.set__reason("cannot set parameter by updateParam");
-      };
+      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, level_str);
+      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, emergency_str);
+      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, emergency_holding_str);
+      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, self_recoverable_str);
     } catch (const rclcpp::exceptions::InvalidParametersException & e) {
         result.set__successful(false);
         result.set__reason(e.what());
         return result;
     }
 
-    result = updateDummyHazardStatus(params_.hazard_status_params);
+    HazardStatusParams hazard_status_params;
+
+    convertStrParamsToHazardStatusParams(result, hazard_status_params,{level_str, emergency_str, emergency_holding_str, self_recoverable_str});
+    if (result.successful == false) {
+      return result;
+    }
+
+    it->hazard_status_params.level = hazard_status_params.level;
+    it->hazard_status_params.emergency = hazard_status_params.emergency;
+    it->hazard_status_params.emergency_holding = hazard_status_params.emergency_holding;
+    it->hazard_status_params.self_recoverable = hazard_status_params.self_recoverable;
+    it->hazard_status_params.fault_time_after_engage = 0.0;
+
+    RCLCPP_INFO(this->get_logger(), "changing hazard_status of %s, ...level: %s, emergency: %s, emergency_holding: %s, self_recoverable: %s", topic_name.c_str(), level_str.c_str(), emergency_str.c_str(), emergency_holding_str.c_str(), self_recoverable_str.c_str());
+    result.set__successful(true);
   }
   return result;
 }
 
-rcl_interfaces::msg::SetParametersResult DummyHazardStatusPublisher::updateDummyHazardStatus(
-    const std::vector<std::string> & hazard_status_params
-    )
+void DummyHazardStatusPublisher::convertStrParamsToHazardStatusParams(
+    rcl_interfaces::msg::SetParametersResult & result, HazardStatusParams & hazard_status_params, const std::vector<std::string> & str_params)
 {
-  rcl_interfaces::msg::SetParametersResult result;
-
-  if (hazard_status_params.size() != 4) {
+  if (str_params.size() != 4) {
     result.set__successful(false);
-    result.set__reason("invalid parameter length, please set string param as follows: {level, emergency, emergency_holding, is_self_recoverable}");
-    return result;
+    result.set__reason("invalid parameter length, please set string param as follows: {level, emergency, emergency_holding, self_recoverable}");
+    return;
   }
 
   // check level argument
+  int level;
   try {
-    const auto level_int = stoi(hazard_status_params[0]);
-    if (0 > level_int || level_int > 3) {
+    level = stoi(str_params[0]);
+    if (0 > level || level > 3) {
       result.set__successful(false);
       result.set__reason("invalid level argument: level param must be from 0 to 3");
-      return result;
+      return;
     }
-  }
-  catch (const std::invalid_argument & e) {
+  } catch (const std::invalid_argument & e) {
     result.set__successful(false);
     result.set__reason("invalid level argument: cannot convert to int");
-    return result;
+    return;
   }
+
   // check other arguments
-  std::map<int, std::string>indexes{{ 1, "emergency" }, { 2, "emergency_holding" }, { 3, "is_self_recoverable" }};
+  std::map<int, std::string>indexes{{ 1, "emergency" }, { 2, "emergency_holding" }, { 3, "self_recoverable" }};
   for (const auto & index : indexes) {
-    if (!checkBoolParam(result, params_.hazard_status_params[index.first], index.second)) {
-      return result;
-    };
+    checkBoolParam(result, str_params[index.first], index.second);
+    if (result.successful == false) {
+      return;
+    }
   }
-  getHazardStatusParam();
-  RCLCPP_INFO(this->get_logger(), "setting parameters...level: %s, emergency: %s, emergency_holding: %s, is_self_recoverable: %s", hazard_status_params[0].c_str(), hazard_status_params[1].c_str(), hazard_status_params[2].c_str(), hazard_status_params[3].c_str());
-  result.set__successful(true);
-  return result;
+
+  hazard_status_params.level = level;
+  std::istringstream(str_params[1]) >> std::boolalpha >> hazard_status_params.emergency;
+  std::istringstream(str_params[2]) >> std::boolalpha >> hazard_status_params.emergency_holding;
+  std::istringstream(str_params[3]) >> std::boolalpha >> hazard_status_params.self_recoverable;
+  return;
 }
 
-bool DummyHazardStatusPublisher::checkBoolParam(
+void DummyHazardStatusPublisher::checkBoolParam(
     rcl_interfaces::msg::SetParametersResult & result, std::string str, std::string err_param_name
 )
 {
@@ -151,22 +251,9 @@ bool DummyHazardStatusPublisher::checkBoolParam(
     result.set__successful(false);
     const auto err_msg = "invalid" + err_param_name + "argument: param must be bool";
     result.set__reason(err_msg);
-    return false;
+    return;
   }
-  return true;
+  return;
 }
-
-void DummyHazardStatusPublisher::getHazardStatusParam() {
-
-  hazard_status_.level = std::stoi(params_.hazard_status_params[0]);
-  hazard_status_.emergency = params_.hazard_status_params[1] == "true";
-  hazard_status_.emergency_holding = params_.hazard_status_params[2] == "true";
-  hazard_status_.self_recoverable = params_.hazard_status_params[3] == "true";
-
-}
-
-
 
 } // namespace dummy_hazard_status_publisher
-#include <rclcpp_components/register_node_macro.hpp>
-RCLCPP_COMPONENTS_REGISTER_NODE(dummy_hazard_status_publisher::DummyHazardStatusPublisher);

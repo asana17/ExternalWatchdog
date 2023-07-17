@@ -17,46 +17,74 @@
 
 #include <rclcpp/rclcpp.hpp>
 
-#include "watchdog_system_msgs/msg/hazard_status_stamped.hpp"
+#include <autoware_auto_vehicle_msgs/msg/engage.hpp>
+#include <watchdog_system_msgs/msg/hazard_status_stamped.hpp>
+#include <watchdog_system_msgs/msg/detail/hazard_status_stamped__struct.hpp>
+#include <string>
+#include <unordered_map>
 #include <vector>
 
 namespace dummy_hazard_status_publisher{
 
+using EngageMsg = autoware_auto_vehicle_msgs::msg::Engage;
+
+using watchdog_system_msgs::msg::HazardStatus;
+using watchdog_system_msgs::msg::HazardStatusStamped;
+
 struct Param
 {
   int update_rate;
-  std::vector<std::string> hazard_status_params;
+};
+
+struct HazardStatusParams{
+  int level;
+  bool emergency;
+  bool emergency_holding;
+  bool self_recoverable;
+  double fault_time_after_engage;
+};
+
+struct MonitoringTopic {
+  std::string name;
+  HazardStatusParams hazard_status_params;
+  rclcpp::Publisher<HazardStatusStamped>::SharedPtr pub_hazard_status_stamped_;
 };
 
 
 class DummyHazardStatusPublisher: public rclcpp::Node
 {
 public:
-  explicit DummyHazardStatusPublisher(const rclcpp::NodeOptions & node_options);
+  DummyHazardStatusPublisher();
 
 
 private:
 
   Param params_;
+  std::vector<MonitoringTopic> monitoring_topics_;
+
+  // Subscriber
+  rclcpp::Subscription<EngageMsg>::SharedPtr sub_engage_;
+  bool is_engaged_;
+  void onEngage(EngageMsg::ConstSharedPtr msg);
+  rclcpp::Time engaged_time_;
 
   // Publisher
-  rclcpp::Publisher<watchdog_system_msgs::msg::HazardStatusStamped>::SharedPtr pub_hazard_status_stamped_;
-
-  watchdog_system_msgs::msg::HazardStatus hazard_status_;
+  void loadMonitoringTopics();
 
   // Timer
   rclcpp::TimerBase::SharedPtr timer_;
   void onTimer();
 
 
+  void createDefaultDummyHazardStatus(HazardStatus & hazard_status);
+
   OnSetParametersCallbackHandle::SharedPtr set_param_res_;
   rcl_interfaces::msg::SetParametersResult paramCallback(
     const std::vector<rclcpp::Parameter> & parameters);
-  rcl_interfaces::msg::SetParametersResult updateDummyHazardStatus(
-      const std::vector<std::string> & hazard_status_params);
-  bool checkBoolParam(
+  void convertStrParamsToHazardStatusParams(
+      rcl_interfaces::msg::SetParametersResult & result, HazardStatusParams & hazard_status_params, const std::vector<std::string> & str_params);
+  void checkBoolParam(
       rcl_interfaces::msg::SetParametersResult & result, std::string str, std::string err_param_name);
-  void getHazardStatusParam();
 
 };
 

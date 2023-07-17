@@ -1,7 +1,9 @@
 <launch>
-  <arg name="output_hazard_status" default="/sub/self_monitoring/hazard_status"/>
+  <arg name="input_engage" default="/input/engage"/>
+  <arg name="config_file" default="$(find-pkg-share dummy_hazard_status_publisher)/config/dummy_hazard_status_publisher.param.yaml" />
 
   <node pkg="dummy_hazard_status_publisher" name="dummy_hazard_status_publisher" exec="dummy_hazard_status_publisher" output="screen">
-    <remap from="~/output/hazard_status" to="$(var output_hazard_status)"/>
+    <remap from="~/input/engage" to="$(var input_engage)"/>
+    <param from="$(var config_file)"/>
   </node>
 </launch>

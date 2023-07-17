@@ -13,13 +13,9 @@ endif()
 find_package(ament_cmake_auto REQUIRED)
 ament_auto_find_build_dependencies()
 
-ament_auto_add_library(dummy_hazard_status_publisher_node SHARED
+ament_auto_add_executable(dummy_hazard_status_publisher
   src/dummy_hazard_status_publisher.cpp
-)
-
-rclcpp_components_register_node(dummy_hazard_status_publisher_node
-  PLUGIN "dummy_hazard_status_publisher::DummyHazardStatusPublisher"
-  EXECUTABLE dummy_hazard_status_publisher
+  src/dummy_hazard_status_publisher_node.cpp
 )
 
 ament_auto_package(
