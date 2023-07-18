@@ -23,6 +23,13 @@
   <arg name="main_mrm_emergency_stop_status" default="/system/mrm/emergency_stop/status"/>
   <arg name="sub_mrm_emergency_stop_status" default="/sub/mrm/emergency_stop/status"/>
   <arg name="supervisor_mrm_emergency_stop_status" default="/supervisor/mrm/emergency_stop/status"/>
+  <!-- mrm operate -->
+  <arg name="main_mrm_comfortable_stop_operate" default="/system/mrm/comfortable_stop/operate" />
+  <arg name="sub_mrm_comfortable_stop_operate" default="/sub/mrm/comfortable_stop/operate" />
+  <arg name="main_mrm_emergency_stop_operate" default="/system/mrm/emergency_stop/operate" />
+  <arg name="sub_mrm_emergency_stop_operate" default="/sub/mrm/emergency_stop/operate" />
+  <arg name="supervisor_mrm_emergency_stop_operate" default="/supervisor/mrm/emergency_stop/operate" />
+
 
 
   <!-- supervisor -->
@@ -42,6 +49,11 @@
     <arg name="main_mrm_emergency_stop_status" value="$(var main_mrm_emergency_stop_status)"/>
     <arg name="sub_mrm_emergency_stop_status" value="$(var sub_mrm_emergency_stop_status)"/>
     <arg name="supervisor_mrm_emergency_stop_status" value="$(var supervisor_mrm_emergency_stop_status)"/>
+    <arg name="main_mrm_comfortable_stop_operate" value="$(var main_mrm_comfortable_stop_operate)"/>
+    <arg name="sub_mrm_comfortable_stop_operate" value="$(var sub_mrm_comfortable_stop_operate)"/>
+    <arg name="main_mrm_emergency_stop_operate" value="$(var main_mrm_emergency_stop_operate)"/>
+    <arg name="sub_mrm_emergency_stop_operate" value="$(var sub_mrm_emergency_stop_operate)"/>
+    <arg name="supervisor_mrm_emergency_stop_operate" value="$(var supervisor_mrm_emergency_stop_operate)"/>
   </include>
 
   <!-- emergency_stop_operator -->

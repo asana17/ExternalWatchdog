@@ -27,6 +27,7 @@
 #include <nav_msgs/msg/odometry.hpp>
 #include "watchdog_system_msgs/msg/hazard_status_stamped.hpp"
 #include "watchdog_system_msgs/msg/switch_status.hpp"
+#include "watchdog_system_msgs/msg/voter_state.hpp"
 
 namespace supervisor{
 
@@ -40,6 +41,7 @@ using tier4_system_msgs::srv::OperateMrm;
 using watchdog_system_msgs::msg::HazardStatus;
 using watchdog_system_msgs::msg::HazardStatusStamped;
 using watchdog_system_msgs::msg::SwitchStatus;
+using watchdog_system_msgs::msg::VoterState;
 
 const SwitchStatus::_ecu_type initial_selected_ecu_ = SwitchStatus::MAIN;
 
@@ -115,7 +117,23 @@ inline ecu_name convertSwitchEcu(const SwitchStatus::_ecu_type ecu) {
     return Supervisor;
   }
 
-  const auto msg = "invalid SwitchStatus: " + std::to_string(ecu);
+  const auto msg = "invalid Switch ECU: " + std::to_string(ecu);
+  throw std::runtime_error(msg);
+}
+
+inline ecu_name convertMrmEcu(const VoterState::_mrm_ecu_type ecu) {
+  if (ecu == VoterState::NONE) {
+    return None;
+  } else if (ecu == VoterState::MAIN) {
+    return Main;
+  } else if (ecu == VoterState::SUB) {
+    return Sub;
+  } else if (ecu == VoterState::SUPERVISOR) {
+    return Supervisor;
+  } else if (ecu == VoterState::UNKNOWN) {
+    return Unknown;
+  }
+  const auto msg = "invalid Mrm ECU: " + std::to_string(ecu);
   throw std::runtime_error(msg);
 }
 

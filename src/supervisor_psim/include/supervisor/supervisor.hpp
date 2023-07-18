@@ -109,7 +109,7 @@ private:
       const MrmState::_behavior_type & mrm_behavior, Ecu* ecu) const;
 
   void operateMrm();
-  void cancelCurrentMrm();
+  void cancelCurrentMrm(VoterState::_mrm_ecu_type & mrm_ecu);
 
 };
 

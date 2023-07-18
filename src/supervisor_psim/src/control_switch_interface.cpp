@@ -14,6 +14,7 @@
 
 #include "supervisor/control_switch_interface.hpp"
 #include <string>
+#include <iostream>
 
 namespace supervisor{
 
@@ -70,6 +71,7 @@ void ControlSwitchInterface::changeSwitchTo(const SwitchStatus::_ecu_type ecu)
   /*RCLCPP_INFO(
     this->get_logger(), "Switch Status changing: %s -> %s", ecu2string(switch_status_.ecu),
     ecu2string(new_ecu));*/
+  std::cout << "Switch Status changed: " << ecu2string(switch_status_.ecu) << " -> " << ecu2string(ecu) << std::endl;
 
   switch_status_.ecu = ecu;
 }

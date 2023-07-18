@@ -5,8 +5,9 @@
     <remap from="~/input/mrm/emergency_stop/operate" to="/supervisor/mrm/emergency_stop/operate"/>
     <remap from="~/input/control/control_cmd" to="/control/command/control_cmd"/>
     <remap from="~/output/mrm/emergency_stop/status" to="/supervisor/mrm/emergency_stop/status"/>
-    <remap from="~/output/mrm/emergency_stop/control_cmd" to="/supervisor/control/control_cmd"/>
-    <remap from="~/output/mrm/emergency_stop/gear_cmd" to="/supervisor/control/gear_cmd"/>
-    <remap from="~/output/mrm/emergency_stop/turn_indicators_cmd" to="/supervisor/control/turn_indicators_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/control_cmd" to="/supervisor/control/command/control_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/gear_cmd" to="/supervisor/control/command/gear_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/hazard_lights_cmd" to="/supervisor/control/command/hazard_lights_cmd"/>
+    <remap from="~/output/mrm/emergency_stop/turn_indicators_cmd" to="/supervisor/control/command/turn_indicators_cmd"/>
   </node>
 </launch>

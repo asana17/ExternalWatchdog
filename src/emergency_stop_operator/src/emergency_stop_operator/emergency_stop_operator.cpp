@@ -1,4 +1,5 @@
 #include "emergency_stop_operator/emergency_stop_operator.hpp"
+#include <iostream>
 
 namespace emergency_stop_operator
 {
@@ -64,6 +65,7 @@ void EmergencyStopOperator::operateEmergencyStop(
   const OperateMrm::Request::SharedPtr request, const OperateMrm::Response::SharedPtr response)
 {
   if (request->operate == true) {
+    std::cout << "operateEmergencyStop on stop_operator" << std::endl;
     status_.state = MrmBehaviorStatus::OPERATING;
     response->response.success = true;
   } else {

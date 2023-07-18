@@ -121,9 +121,6 @@ VoterState::_fault_ecu_type Voter::convertMrmEcuName(const ecu_name name) const
 void Voter::updateSelfErrorStatus(Ecu* ecu, const ecu_name switch_selected_ecu)
 {
   if (isEmergency(ecu->self_hazard_status_stamped_)) {
-    std::cout << "emergency!" << std::endl;
-    std::cout << "ecu_name " << ecu->name << std::endl;
-    std::cout << "switch_ecu_name " << switch_selected_ecu << std::endl;
 
     if (switch_selected_ecu == ecu->name) {
       const bool is_self_recoverable = ecu->self_hazard_status_stamped_->status.self_recoverable;
@@ -171,28 +168,28 @@ void Voter::updateExternalErrorStatus(Ecu* ecu, const ecu_name switch_selected_e
   if (is_emergency) {
     if (switch_selected_ecu == ecu->name) {
       //switch and emergency stop in supervisor
-      self_error_status_[ecu->name].is_emergency_ = true;
-      self_error_status_[ecu->name].is_emergency_ = true;
-      self_error_status_[ecu->name].stop_operation_needed_ = true;
-      self_error_status_[ecu->name].switch_needed_ = true;
+      external_error_status_[ecu->name].is_emergency_ = true;
+      external_error_status_[ecu->name].is_emergency_ = true;
+      external_error_status_[ecu->name].stop_operation_needed_ = true;
+      external_error_status_[ecu->name].switch_needed_ = true;
     } else {
       if (switch_selected_ecu != initial_selected_ecu_) {
         // already switched: switch needed fault already occuredand called stop operator
         // do nothing
-        self_error_status_[ecu->name].is_emergency_ = true;
-        self_error_status_[ecu->name].stop_operation_needed_ = false;
-        self_error_status_[ecu->name].switch_needed_ = false;
+        external_error_status_[ecu->name].is_emergency_ = true;
+        external_error_status_[ecu->name].stop_operation_needed_ = false;
+        external_error_status_[ecu->name].switch_needed_ = false;
       } else {
         // comfortable stop in selected_ecu
-        self_error_status_[ecu->name].is_emergency_ = true;
-        self_error_status_[ecu->name].stop_operation_needed_ = true;
-        self_error_status_[ecu->name].switch_needed_ = false;
+        external_error_status_[ecu->name].is_emergency_ = true;
+        external_error_status_[ecu->name].stop_operation_needed_ = true;
+        external_error_status_[ecu->name].switch_needed_ = false;
       }
     }
   } else { // is_emergency == false
-    self_error_status_[ecu->name].is_emergency_ = false;
-    self_error_status_[ecu->name].stop_operation_needed_ = false;
-    self_error_status_[ecu->name].switch_needed_ = false;
+    external_error_status_[ecu->name].is_emergency_ = false;
+    external_error_status_[ecu->name].stop_operation_needed_ = false;
+    external_error_status_[ecu->name].switch_needed_ = false;
   }
 }
 
@@ -209,17 +206,10 @@ void Voter::judgeMrmOperation(ecu_name switch_selected_ecu) {
   voter_state_.external_detected = false;
   getMrmOperationFromExternalMonitoring(switch_selected_ecu);
   if (voter_state_.external_detected) {
-    std::cout << "external_detected!" << std::endl;
   }
   if (!voter_state_.external_detected) {
     getMrmOperationFromSelfMonitoring(switch_selected_ecu);
     if (mrm_operation_.mrm_ecu != VoterState::NONE) {
-      std::cout << "interal_detected!" << std::endl;
-      std::cout << "mrm_operation" << std::endl;
-      std::cout << "fault_ecu " << mrm_operation_.fault_ecu << std::endl;
-      std::cout << "mrm_ecu " << mrm_operation_.mrm_ecu << std::endl;
-      std::cout << "comfortable_stop_after_switch" << mrm_operation_.comfortable_stop_after_switch << std::endl;
-      std::cout << "mrm_operation_end" << std::endl;
     }
   }
 }
