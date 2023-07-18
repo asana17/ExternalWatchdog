@@ -3,9 +3,5 @@
     <include file="$(find-pkg-share supervisor_psim)/launch/supervisor_psim_node.launch.xml">
     </include>
   </group>
-  <group>
-    <include file="$(find-pkg-share emergency_stop_operator)/launch/emergency_stop_operator.launch.py">
-    </include>
-  </group>
 
 </launch>

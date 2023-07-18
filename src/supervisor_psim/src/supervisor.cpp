@@ -302,15 +302,14 @@ bool SupervisorNode::isEcuDataReady()
     }
     // temporarily checking Main only (without sub running)
     if (
-      ecu->name == Main && ecu->mrm_comfortable_stop_status_->state ==
+      ecu->name != Supervisor && ecu->mrm_comfortable_stop_status_->state ==
                                        MrmBehaviorStatus::NOT_AVAILABLE) {
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "waiting for mrm comfortable stop to become available on %s ...", ecu_name.c_str());
       is_data_ready = false;
     }
-    if (
-      (ecu->name == Main || ecu->name == Supervisor) && ecu->mrm_sudden_stop_status_->state == MrmBehaviorStatus::NOT_AVAILABLE) {
+    if (ecu->mrm_sudden_stop_status_->state == MrmBehaviorStatus::NOT_AVAILABLE) {
       RCLCPP_INFO_THROTTLE(
         this->get_logger(), *this->get_clock(), std::chrono::milliseconds(5000).count(),
         "waiting for mrm emergency stop to become available on %s ...", ecu_name.c_str());

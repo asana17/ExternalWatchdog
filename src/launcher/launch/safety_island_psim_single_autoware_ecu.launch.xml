@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+  <!-- control cmd : use main control cmd for sub-->
+  <arg name="main_control_cmd" default="/control/command/control_cmd"/>
+  <arg name="main_gear_cmd" default="/control/command/gear_cmd"/>
+  <arg name="main_turn_indicators_cmd" default="/control/command/turn_indicators_cmd"/>
+  <arg name="main_hazard_lights_cmd" default="/control/command/hazard_lights_cmd"/>
+  <arg name="sub_control_cmd" default="/control/command/control_cmd"/>
+  <arg name="sub_gear_cmd" default="/control/command/gear_cmd"/>
+  <arg name="sub_turn_indicators_cmd" default="/control/command/turn_indicators_cmd"/>
+  <arg name="sub_hazard_lights_cmd" default="/control/command/hazard_lights_cmd"/>
+  <arg name="supervisor_control_cmd" default="/supervisor/control/command/control_cmd"/>
+  <arg name="supervisor_gear_cmd" default="/supervisor/control/command/gear_cmd"/>
+  <arg name="supervisor_turn_indicators_cmd" default="/supervisor/control/command/turn_indicators_cmd"/>
+  <arg name="supervisor_hazard_lights_cmd" default="/supervisor/control/command/hazard_lights_cmd"/>
+
+  <arg name="hazard_status_converter_config_file" default="$(find-pkg-share hazard_status_converter)/config/hazard_status_converter.param.yaml" />
+  <!-- hazard_status from autoware system_error_monitor -->
+  <arg name="main_self_system_emergency_hazard_status" default="/system/emergency/hazard_status"/>
+  <arg name="dummy_hazard_status_publisher_config_file" default="$(find-pkg-share dummy_hazard_status_publisher)/config/dummy_hazard_status_publisher.param.yaml" />
+
+  <!-- self monitoring -->
+  <arg name="main_self_hazard_status" default="/main/self_monitoring/hazard_status"/>
+  <arg name="sub_self_hazard_status" default="/sub/self_monitoring/hazard_status"/>
+  <arg name="supervisor_self_hazard_status" default="/supervisor/self_monitoring/hazard_status"/>
+  <!-- external monitoring: /<monitoring ECU>/external_monitoring/hazard_status/<monitored ecu>-->
+  <arg name="main_external_hazard_status_sub" default="/main/external_monitoring/hazard_status/sub"/>
+  <arg name="main_external_hazard_status_supervisor" default="/main/external_monitoring/hazard_status/supervisor"/>
+  <arg name="sub_external_hazard_status_main" default="/sub/external_monitoring/hazard_status/main"/>
+  <arg name="sub_external_hazard_status_supervisor" default="/sub/external_monitoring/hazard_status/supervisor"/>
+  <arg name="supervisor_external_hazard_status_main" default="/supervisor/external_monitoring/hazard_status/main"/>
+  <arg name="supervisor_external_hazard_status_sub" default="/supervisor/external_monitoring/hazard_status/sub"/>
+  <!-- mrm status use main mrm for sub-->
+  <arg name="main_mrm_comfortable_stop_status" default="/system/mrm/comfortable_stop/status"/>
+  <arg name="sub_mrm_comfortable_stop_status" default="/system/mrm/comfortable_stop/status"/>
+  <arg name="main_mrm_emergency_stop_status" default="/system/mrm/emergency_stop/status"/>
+  <arg name="sub_mrm_emergency_stop_status" default="/system/mrm/emergency_stop/status"/>
+  <arg name="supervisor_mrm_emergency_stop_status" default="/supervisor/mrm/emergency_stop/status"/>
+  <!-- mrm operate -->
+  <arg name="main_mrm_comfortable_stop_operate" default="/system/mrm/comfortable_stop/operate" />
+  <arg name="sub_mrm_comfortable_stop_operate" default="/system/mrm/comfortable_stop/operate" />
+  <arg name="main_mrm_emergency_stop_operate" default="/system/mrm/emergency_stop/operate" />
+  <arg name="sub_mrm_emergency_stop_operate" default="/system/mrm/emergency_stop/operate" />
+  <arg name="supervisor_mrm_emergency_stop_operate" default="/supervisor/mrm/emergency_stop/operate" />
+
+
+
+  <!-- supervisor -->
+  <include file="$(find-pkg-share supervisor_psim)/launch/supervisor_psim_node.launch.xml" >
+    <arg name="main_self_hazard_status" value="$(var main_self_hazard_status)"/>
+    <arg name="sub_self_hazard_status" value="$(var sub_self_hazard_status)"/>
+    <arg name="supervisor_self_hazard_status" value="$(var supervisor_self_hazard_status)"/>
+
+    <arg name="main_external_hazard_status_sub" value="$(var main_external_hazard_status_sub)"/>
+    <arg name="main_external_hazard_status_supervisor" value="$(var main_external_hazard_status_supervisor)"/>
+    <arg name="sub_external_hazard_status_main" value="$(var sub_external_hazard_status_main)"/>
+    <arg name="sub_external_hazard_status_supervisor" value="$(var sub_external_hazard_status_supervisor)"/>
+    <arg name="supervisor_external_hazard_status_main" value="$(var supervisor_external_hazard_status_main)"/>
+    <arg name="supervisor_external_hazard_status_sub" value="$(var supervisor_external_hazard_status_sub)"/>
+    <arg name="main_mrm_comfortable_stop_status" value="$(var main_mrm_comfortable_stop_status)"/>
+    <arg name="sub_mrm_comfortable_stop_status" value="$(var sub_mrm_comfortable_stop_status)"/>
+    <arg name="main_mrm_emergency_stop_status" value="$(var main_mrm_emergency_stop_status)"/>
+    <arg name="sub_mrm_emergency_stop_status" value="$(var sub_mrm_emergency_stop_status)"/>
+    <arg name="supervisor_mrm_emergency_stop_status" value="$(var supervisor_mrm_emergency_stop_status)"/>
+    <arg name="main_mrm_comfortable_stop_operate" value="$(var main_mrm_comfortable_stop_operate)"/>
+    <arg name="sub_mrm_comfortable_stop_operate" value="$(var sub_mrm_comfortable_stop_operate)"/>
+    <arg name="main_mrm_emergency_stop_operate" value="$(var main_mrm_emergency_stop_operate)"/>
+    <arg name="sub_mrm_emergency_stop_operate" value="$(var sub_mrm_emergency_stop_operate)"/>
+    <arg name="supervisor_mrm_emergency_stop_operate" value="$(var supervisor_mrm_emergency_stop_operate)"/>
+    <arg name="main_control_cmd" value="$(var main_control_cmd)"/>
+    <arg name="main_gear_cmd" value="$(var main_gear_cmd)"/>
+    <arg name="main_turn_indicators_cmd" value="$(var main_turn_indicators_cmd)"/>
+    <arg name="main_hazard_lights_cmd" value="$(var main_hazard_lights_cmd)"/>
+    <arg name="sub_control_cmd" value="$(var sub_control_cmd)"/>
+    <arg name="sub_gear_cmd" value="$(var sub_gear_cmd)"/>
+    <arg name="sub_turn_indicators_cmd" value="$(var sub_turn_indicators_cmd)"/>
+    <arg name="sub_hazard_lights_cmd" value="$(var sub_hazard_lights_cmd)"/>
+    <arg name="supervisor_control_cmd" value="$(var supervisor_control_cmd)"/>
+    <arg name="supervisor_gear_cmd" value="$(var supervisor_gear_cmd)"/>
+    <arg name="supervisor_turn_indicators_cmd" value="$(var supervisor_turn_indicators_cmd)"/>
+    <arg name="supervisor_hazard_lights_cmd" value="$(var supervisor_hazard_lights_cmd)"/>
+
+  </include>
+
+  <!-- emergency_stop_operator -->
+  <include file="$(find-pkg-share emergency_stop_operator)/launch/emergency_stop_operator.launch.xml" />
+
+  <!-- hazard_status_converter -->
+  <include file="$(find-pkg-share hazard_status_converter)/launch/hazard_status_converter.launch.xml">
+    <arg name="config_file" value="$(var hazard_status_converter_config_file)"/>
+    <arg name="input_hazard_status" value="$(var main_self_system_emergency_hazard_status)"/>
+    <arg name="output_hazard_status" value="$(var main_self_hazard_status)"/>
+  </include>
+
+  <!-- dummy_hazard_status_publisher -->
+  <include file="$(find-pkg-share dummy_hazard_status_publisher)/launch/dummy_hazard_status_publisher.launch.xml">
+    <arg name="config_file" value="$(var dummy_hazard_status_publisher_config_file)"/>
+  </include>
+
+</launch>
