@@ -14,7 +14,7 @@
   <arg name="supervisor_control_cmd" default="/supervisor/control/command/control_cmd"/>
   <arg name="supervisor_gear_cmd" default="/supervisor/control/command/gear_cmd"/>
   <arg name="supervisor_turn_indicators_cmd" default="/supervisor/control/command/turn_indicators_cmd"/>
-  <arg name="supervisor/hazard_lights_cmd" default="/supervisor/control/command/hazard_lights_cmd"/>
+  <arg name="supervisor_hazard_lights_cmd" default="/supervisor/control/command/hazard_lights_cmd"/>
 
   <!-- self monitoring -->
   <arg name="main_self_hazard_status" default="/main/self_monitoring/hazard_status"/>

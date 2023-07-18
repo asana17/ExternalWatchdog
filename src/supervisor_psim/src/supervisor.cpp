@@ -122,10 +122,12 @@ SupervisorNode::SupervisorNode()
 
 
     // Client
-    ecu->client_mrm_comfortable_stop_group_ = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
-    ecu->client_mrm_comfortable_stop_ = create_client<OperateMrm>(
-        output_prefix + "/mrm/comfortable_stop/operate", rmw_qos_profile_services_default,
-        ecu->client_mrm_comfortable_stop_group_);
+    if (ecu->name != ecu_name::Supervisor) {
+      ecu->client_mrm_comfortable_stop_group_ = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
+      ecu->client_mrm_comfortable_stop_ = create_client<OperateMrm>(
+          output_prefix + "/mrm/comfortable_stop/operate", rmw_qos_profile_services_default,
+          ecu->client_mrm_comfortable_stop_group_);
+    }
     ecu->client_mrm_sudden_stop_group_ = create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);
     ecu->client_mrm_sudden_stop_ = create_client<OperateMrm>(
         output_prefix + "/mrm/emergency_stop/operate", rmw_qos_profile_services_default,
@@ -431,7 +433,6 @@ void SupervisorNode::operateMrm()
     std::cout << "operateMrm SUPERVISOR_STOP" << std::endl;
     if (CurrentMrmStatus_.mrm_ecu != VoterState::SUPERVISOR) {
       cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
-      std::cout << "MRM canceled" << std::endl;
       ControlSwitchInterface_.changeSwitchTo(SwitchStatus::SUPERVISOR);
       CurrentMrmStatus_.mrm_ecu = VoterState::SUPERVISOR;
       callMrmBehavior(MrmState::EMERGENCY_STOP, &Supervisor_);
@@ -440,14 +441,20 @@ void SupervisorNode::operateMrm()
     return;
   }
   if (voter_state.state == VoterState::COMFORTABLE_STOP) {
+    std::cout << "operateMrm COMFORTABLE_STOP" << std::endl;
     if (CurrentMrmStatus_.mrm_ecu != voter_state.mrm_ecu) {
       cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
       if (voter_state.mrm_ecu == VoterState::MAIN) {
         ControlSwitchInterface_.changeSwitchTo(SwitchStatus::MAIN);
+        CurrentMrmStatus_.mrm_ecu = VoterState::MAIN;
+        callMrmBehavior(MrmState::COMFORTABLE_STOP, &Main_);
+        std::cout << "MRM called on Main" << std::endl;
       } else if (voter_state.mrm_ecu == VoterState::SUB) {
         ControlSwitchInterface_.changeSwitchTo(SwitchStatus::SUB);
+        CurrentMrmStatus_.mrm_ecu = VoterState::SUB;
+        callMrmBehavior(MrmState::COMFORTABLE_STOP, &Sub_);
       }
-      CurrentMrmStatus_.mrm_ecu = voter_state.mrm_ecu;
+      std::cout << "MRM called" << std::endl;
     }
   }
 }

@@ -1,5 +1,5 @@
 <launch>
-  <arg name="input_engage" default="/input/engage"/>
+  <arg name="input_engage" default="/api/autoware/get/engage"/>
   <arg name="config_file" default="$(find-pkg-share dummy_hazard_status_publisher)/config/dummy_hazard_status_publisher.param.yaml" />
 
   <node pkg="dummy_hazard_status_publisher" name="dummy_hazard_status_publisher" exec="dummy_hazard_status_publisher" output="screen">

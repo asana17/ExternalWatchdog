@@ -112,9 +112,12 @@ void DummyHazardStatusPublisher::loadMonitoringTopics()
 }
 
 void DummyHazardStatusPublisher::onEngage(EngageMsg::ConstSharedPtr msg) {
-  is_engaged_ = msg->engage;
-  if (msg->engage == true) {
+  if (!is_engaged_ && msg->engage == true) {
     engaged_time_ = this->now();
+    is_engaged_ = true;
+  }
+  if (is_engaged_ && msg->engage == false) {
+    is_engaged_ = false;
   }
 }
 

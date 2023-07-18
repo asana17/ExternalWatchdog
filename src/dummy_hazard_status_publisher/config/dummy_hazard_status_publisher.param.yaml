@@ -1,12 +1,14 @@
 # Description
 # set dummy monitoring name
 # monitoring_nodes: output topic name : hazard_status param
+# default: {level: "0", emergency: "false", emergency_holding: "false", self_recoverable: "true", fault_time_after_engage: "0.0"}
 ---
 /**:
   ros__parameters:
     monitoring_topics:
       #/main/self_monitoring/hazard_status: default
-      /sub/self_monitoring/hazard_status: {level: "0", emergency: "false", emergency_holding: "false", self_recoverable: "true", fault_time_after_engage: "10.0"}
+      /sub/self_monitoring/hazard_status: default
+      #/sub/self_monitoring/hazard_status: {level: "3", emergency: "true", emergency_holding: "false", self_recoverable: "true", fault_time_after_engage: "5.0"}
       /supervisor/self_monitoring/hazard_status: default
       /main/external_monitoring/hazard_status/sub: default
       /main/external_monitoring/hazard_status/supervisor: default
