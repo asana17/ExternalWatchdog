@@ -25,7 +25,7 @@ EmergencyStopOperator::EmergencyStopOperator(const rclcpp::NodeOptions & node_op
   service_operation_ = create_service<OperateMrm>(
     "~/input/mrm/emergency_stop/operate", std::bind(
                                             &EmergencyStopOperator::operateEmergencyStop, this,
-                                            std::placeholders::_1, std::placeholders::_2));
+                                            std::placeholders::_1, std::placeholders::_2), rmw_qos_profile_services_default);
 
   // Publisher
   pub_status_ = create_publisher<MrmBehaviorStatus>("~/output/mrm/emergency_stop/status", 1);
@@ -65,7 +65,6 @@ void EmergencyStopOperator::operateEmergencyStop(
   const OperateMrm::Request::SharedPtr request, const OperateMrm::Response::SharedPtr response)
 {
   if (request->operate == true) {
-    std::cout << "operateEmergencyStop on stop_operator" << std::endl;
     status_.state = MrmBehaviorStatus::OPERATING;
     response->response.success = true;
   } else {

@@ -28,6 +28,7 @@ SupervisorNode::SupervisorNode()
 
   param_.update_rate = declare_parameter<int>("update_rate", 30);
   param_.timeout_hazard_status = declare_parameter<double>("timeout_hazard_status", 0.5);
+  param_.service_timeout = declare_parameter<double>("service_timeout", 0.01);
 
   param_.frame_id = declare_parameter("frame_id", "base_link");
 
@@ -242,6 +243,8 @@ void SupervisorNode::onTimer()
   }
   is_data_ready_ = true;
 
+  publishControlCommands();
+
   switch_selected_ecu_ = ControlSwitchInterface_.getSelectedEcu();
 
   for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
@@ -251,8 +254,6 @@ void SupervisorNode::onTimer()
 
   Voter_.prepareMrmOperation(switch_selected_ecu_);
   operateMrm();
-
-  publishControlCommands();
 }
 
 void SupervisorNode::publishControlCommands()
@@ -361,27 +362,32 @@ bool SupervisorNode::isControlDataReady()
 void SupervisorNode::callMrmBehavior(
     const MrmState::_behavior_type & mrm_behavior, Ecu* ecu) const
 {
-  const auto ecu_name = convertEcuNameToString(ecu->name);
   auto request = std::make_shared<OperateMrm::Request>();
   request->operate = true;
+
+  service_result result;
+  std::string mrm_behavior_str;
+
    if (mrm_behavior == MrmState::COMFORTABLE_STOP) {
-    auto result = ecu->client_mrm_comfortable_stop_->async_send_request(request).get();
-    if (result->response.success == true) {
-      RCLCPP_WARN(this->get_logger(), "Comfortable stop is operated on: %s", ecu_name.c_str());
-    } else {
-      RCLCPP_ERROR(this->get_logger(), "Comfortable stop is failed to operate on: %s", ecu_name.c_str());
-    }
-    return;
+    result = NONE;
+    mrm_behavior_str = "comfortable_stop";
+    result = callMrmService(request, ecu->client_mrm_comfortable_stop_);
   }
   if (mrm_behavior == MrmState::EMERGENCY_STOP) {
     std::cout << "calling emergency stop on: " << convertEcuNameToString(ecu->name) << std::endl;
-    auto result = ecu->client_mrm_sudden_stop_->async_send_request(request).get();
-    if (result->response.success == true) {
-      RCLCPP_WARN(this->get_logger(), "Sudden stop is operated on: %s",ecu_name.c_str());
-    } else {
-      RCLCPP_ERROR(this->get_logger(), "Sudden stop is failed to operate on: %s", ecu_name.c_str());
-    }
-    return;
+    result = NONE;
+    mrm_behavior_str = "emergency_stop";
+    result = callMrmService(request, ecu->client_mrm_sudden_stop_);
+  }
+  const auto ecu_name = convertEcuNameToString(ecu->name);
+  if (result == Success) {
+    RCLCPP_WARN(this->get_logger(), "%s stop is canceled on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+  } else if (result == Failure) {
+    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+  } else if (result == Timeout) {
+      RCLCPP_ERROR(this->get_logger(), "MRM Service did not respond on: %s", ecu_name.c_str());
+  } else if (result) {
+    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel for unknown reason on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
   }
   RCLCPP_WARN(this->get_logger(), "invalid MRM behavior: %d", mrm_behavior);
 }
@@ -390,29 +396,49 @@ void SupervisorNode::cancelMrmBehavior(
   const MrmState::_behavior_type & mrm_behavior, Ecu* ecu) const
 {
 
-  const auto ecu_name = convertEcuNameToString(ecu->name);
   auto request = std::make_shared<OperateMrm::Request>();
   request->operate = false;
 
+  service_result result;
+  std::string mrm_behavior_str;
+
   if (mrm_behavior == MrmState::COMFORTABLE_STOP) {
-    auto result = ecu->client_mrm_comfortable_stop_->async_send_request(request).get();
-    if (result->response.success == true) {
-      RCLCPP_WARN(this->get_logger(), "Comfortable stop is canceled on: %s", ecu_name.c_str());
-    } else {
-      RCLCPP_ERROR(this->get_logger(), "Comfortable stop is failed to cancel on: %s", ecu_name.c_str());
-    }
-    return;
+    result = NONE;
+    mrm_behavior_str = "comfortable_stop";
+    result = callMrmService(request, ecu->client_mrm_comfortable_stop_);
   }
   if (mrm_behavior == MrmState::EMERGENCY_STOP) {
-    auto result = ecu->client_mrm_sudden_stop_->async_send_request(request).get();
-    if (result->response.success == true) {
-      RCLCPP_WARN(this->get_logger(), "Emergency stop is canceled on: %s", ecu_name.c_str());
-    } else {
-      RCLCPP_ERROR(this->get_logger(), "Emergency stop is failed to cancel on: %s", ecu_name.c_str());
-    }
-    return;
+    result = NONE;
+    mrm_behavior_str = "emergency_stop";
+    result = callMrmService(request, ecu->client_mrm_sudden_stop_);
+  }
+
+  const auto ecu_name = convertEcuNameToString(ecu->name);
+  if (result == Success) {
+    RCLCPP_WARN(this->get_logger(), "%s stop is canceled on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+  } else if (result == Failure) {
+    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+  } else if (result == Timeout) {
+      RCLCPP_ERROR(this->get_logger(), "MRM Service did not respond on: %s", ecu_name.c_str());
+  } else if (result) {
+    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel for unknown reason on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
   }
   RCLCPP_WARN(this->get_logger(), "invalid MRM behavior: %d", mrm_behavior);
+}
+
+service_result SupervisorNode::callMrmService(
+    const OperateMrm::Request::SharedPtr request, rclcpp::Client<OperateMrm>::SharedPtr mrm_client) const
+{
+  const auto duration = std::chrono::duration<double, std::ratio<1>>(param_.service_timeout);
+  auto future = mrm_client->async_send_request(request);
+  if (future.wait_for(duration) != std::future_status::ready) {
+      return Timeout;
+  }
+  auto result = future.get();
+  if (result->response.success) {
+    return Success;
+  }
+  return Failure;
 }
 
 
@@ -421,46 +447,73 @@ void SupervisorNode::operateMrm()
   const auto voter_state = Voter_.getVoterState();
   if (voter_state.state == VoterState::NORMAL) {
     if (CurrentMrmStatus_.mrm_ecu != VoterState::NONE) {
-      // cancel current MRM
-
-      cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
-      CurrentMrmStatus_.mrm_ecu = VoterState::NONE;
       ControlSwitchInterface_.changeSwitchTo(initial_selected_ecu_);
+      // cancel current MRM
+      if (checkMrmStatus(CurrentMrmStatus_.mrm_ecu) != MrmBehaviorStatus::AVAILABLE) {
+        cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
+        return;
+      }
+      CurrentMrmStatus_.mrm_ecu = VoterState::NONE;
     }
     return;
   }
   if (voter_state.state == VoterState::SUPERVISOR_STOP) {
     std::cout << "operateMrm SUPERVISOR_STOP" << std::endl;
     if (CurrentMrmStatus_.mrm_ecu != VoterState::SUPERVISOR) {
-      cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
+      bool appropriate_mrm_operating = true;
+      if (checkMrmStatus(CurrentMrmStatus_.mrm_ecu) == MrmBehaviorStatus::OPERATING) {
+        appropriate_mrm_operating = false;
+        cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
+      }
+      if (checkMrmStatus(VoterState::SUPERVISOR) != MrmBehaviorStatus::OPERATING) {
+        appropriate_mrm_operating = false;
+        callMrmBehavior(MrmState::EMERGENCY_STOP, &Supervisor_);
+      }
       ControlSwitchInterface_.changeSwitchTo(SwitchStatus::SUPERVISOR);
-      CurrentMrmStatus_.mrm_ecu = VoterState::SUPERVISOR;
-      callMrmBehavior(MrmState::EMERGENCY_STOP, &Supervisor_);
-      std::cout << "MRM called" << std::endl;
+      if (appropriate_mrm_operating) {
+        CurrentMrmStatus_.mrm_ecu = VoterState::SUPERVISOR;
+      }
     }
     return;
   }
   if (voter_state.state == VoterState::COMFORTABLE_STOP) {
     std::cout << "operateMrm COMFORTABLE_STOP" << std::endl;
     if (CurrentMrmStatus_.mrm_ecu != voter_state.mrm_ecu) {
-      cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
-      if (voter_state.mrm_ecu == VoterState::MAIN) {
-        ControlSwitchInterface_.changeSwitchTo(SwitchStatus::MAIN);
-        CurrentMrmStatus_.mrm_ecu = VoterState::MAIN;
-        callMrmBehavior(MrmState::COMFORTABLE_STOP, &Main_);
-        std::cout << "MRM called on Main" << std::endl;
-      } else if (voter_state.mrm_ecu == VoterState::SUB) {
-        ControlSwitchInterface_.changeSwitchTo(SwitchStatus::SUB);
-        CurrentMrmStatus_.mrm_ecu = VoterState::SUB;
-        callMrmBehavior(MrmState::COMFORTABLE_STOP, &Sub_);
+      bool appropriate_mrm_operating = true;
+      if (checkMrmStatus(CurrentMrmStatus_.mrm_ecu) == MrmBehaviorStatus::OPERATING) {
+        appropriate_mrm_operating = false;
+        cancelCurrentMrm(CurrentMrmStatus_.mrm_ecu);
       }
-      std::cout << "MRM called" << std::endl;
+      if (voter_state.mrm_ecu == VoterState::MAIN) {
+        if(checkMrmStatus(VoterState::MAIN) != MrmBehaviorStatus::OPERATING) {
+          appropriate_mrm_operating = false;
+          callMrmBehavior(MrmState::COMFORTABLE_STOP, &Main_);
+          std::cout << "MRM called on Main" << std::endl;
+        }
+        ControlSwitchInterface_.changeSwitchTo(SwitchStatus::MAIN);
+        if (appropriate_mrm_operating) {
+          CurrentMrmStatus_.mrm_ecu = VoterState::MAIN;
+        }
+        return;
+      }
+      if (voter_state.mrm_ecu == VoterState::SUB) {
+        if(checkMrmStatus(VoterState::SUB) != MrmBehaviorStatus::OPERATING) {
+          appropriate_mrm_operating = false;
+          callMrmBehavior(MrmState::COMFORTABLE_STOP, &Sub_);
+          std::cout << "MRM called on Sub" << std::endl;
+        }
+        ControlSwitchInterface_.changeSwitchTo(SwitchStatus::SUB);
+        if (appropriate_mrm_operating) {
+          CurrentMrmStatus_.mrm_ecu = VoterState::SUB;
+        }
+      }
     }
   }
 }
 
-void SupervisorNode::cancelCurrentMrm(VoterState::_mrm_ecu_type & mrm_ecu)
+void SupervisorNode::cancelCurrentMrm(const VoterState::_mrm_ecu_type & mrm_ecu)
 {
+  // TODO currently only comfortable stop is called for Main & Sub MRM
   for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
     if (ecu->name == convertMrmEcu(mrm_ecu)) {
       if (ecu->name == Supervisor) {
@@ -471,6 +524,25 @@ void SupervisorNode::cancelCurrentMrm(VoterState::_mrm_ecu_type & mrm_ecu)
       }
     }
   }
+  // no mrm operator to cancel
+  return;
 }
+
+MrmBehaviorStatus::_state_type SupervisorNode::checkMrmStatus(const VoterState::_mrm_ecu_type & mrm_ecu) const
+{
+  // TODO currently only comfortable stop is called for Main & Sub MRM
+  for (const auto ecu: {&Main_, &Sub_, &Supervisor_}) {
+    if (ecu->name == convertMrmEcu(mrm_ecu)) {
+      if (ecu->name == Supervisor) {
+        return ecu->mrm_sudden_stop_status_->state;
+      }
+      else {
+        return ecu->mrm_comfortable_stop_status_->state;
+      }
+    }
+  }
+  return MrmBehaviorStatus::NOT_AVAILABLE;
+}
+
 
 } // namespace supervisor

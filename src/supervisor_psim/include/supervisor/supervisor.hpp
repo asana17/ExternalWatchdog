@@ -40,6 +40,7 @@ struct Param
 {
   int update_rate;
   double timeout_hazard_status;
+  double service_timeout;
   std::string frame_id;
 };
 
@@ -48,6 +49,7 @@ struct CurrentMrmStatus
   VoterState::_mrm_ecu_type mrm_ecu;
 };
 
+enum service_result {Success, Failure, Timeout, NONE};
 
 class SupervisorNode : public rclcpp::Node
 {
@@ -107,9 +109,12 @@ private:
       const MrmState::_behavior_type & mrm_behavior, Ecu* ecu) const;
   void cancelMrmBehavior(
       const MrmState::_behavior_type & mrm_behavior, Ecu* ecu) const;
+  service_result callMrmService(
+      const OperateMrm::Request::SharedPtr request, rclcpp::Client<OperateMrm>::SharedPtr mrm_client) const;
 
   void operateMrm();
-  void cancelCurrentMrm(VoterState::_mrm_ecu_type & mrm_ecu);
+  void cancelCurrentMrm(const VoterState::_mrm_ecu_type & mrm_ecu);
+  MrmBehaviorStatus::_state_type checkMrmStatus(const VoterState::_mrm_ecu_type & mrm_ecu) const;
 
 };
 

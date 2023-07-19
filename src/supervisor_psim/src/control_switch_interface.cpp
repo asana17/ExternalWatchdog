@@ -52,6 +52,12 @@ void ControlSwitchInterface::publishHazardLightsToVehicle(const HazardLightsComm
 
 void ControlSwitchInterface::changeSwitchTo(const SwitchStatus::_ecu_type ecu)
 {
+
+  if (switch_status_.ecu == ecu) {
+    // do nothing
+    return;
+  }
+
   const auto ecu2string = [](const int ecu) {
     if (ecu == SwitchStatus::MAIN) {
       return "Main";
