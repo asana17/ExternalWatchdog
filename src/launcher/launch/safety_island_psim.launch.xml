@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <launch>
 
+  <!-- control cmd -->
+  <arg name="main_control_cmd" default="/control/command/control_cmd"/>
+  <arg name="main_gear_cmd" default="/control/command/gear_cmd"/>
+  <arg name="main_turn_indicators_cmd" default="/control/command/turn_indicators_cmd"/>
+  <arg name="main_hazard_lights_cmd" default="/control/command/hazard_lights_cmd"/>
+  <arg name="sub_control_cmd" default="/sub/control/command/control_cmd"/>
+  <arg name="sub_gear_cmd" default="/sub/control/command/gear_cmd"/>
+  <arg name="sub_turn_indicators_cmd" default="/sub/control/command/turn_indicators_cmd"/>
+  <arg name="sub_hazard_lights_cmd" default="/sub/control/command/hazard_lights_cmd"/>
+  <arg name="supervisor_control_cmd" default="/supervisor/control/command/control_cmd"/>
+  <arg name="supervisor_gear_cmd" default="/supervisor/control/command/gear_cmd"/>
+  <arg name="supervisor_turn_indicators_cmd" default="/supervisor/control/command/turn_indicators_cmd"/>
+  <arg name="supervisor_hazard_lights_cmd" default="/supervisor/control/command/hazard_lights_cmd"/>
+
   <arg name="hazard_status_converter_config_file" default="$(find-pkg-share hazard_status_converter)/config/hazard_status_converter.param.yaml" />
   <!-- hazard_status from autoware system_error_monitor -->
   <arg name="main_self_system_emergency_hazard_status" default="/system/emergency/hazard_status"/>
@@ -54,6 +68,19 @@
     <arg name="main_mrm_emergency_stop_operate" value="$(var main_mrm_emergency_stop_operate)"/>
     <arg name="sub_mrm_emergency_stop_operate" value="$(var sub_mrm_emergency_stop_operate)"/>
     <arg name="supervisor_mrm_emergency_stop_operate" value="$(var supervisor_mrm_emergency_stop_operate)"/>
+    <arg name="main_control_cmd" value="$(var main_control_cmd)"/>
+    <arg name="main_gear_cmd" value="$(var main_gear_cmd)"/>
+    <arg name="main_turn_indicators_cmd" value="$(var main_turn_indicators_cmd)"/>
+    <arg name="main_hazard_lights_cmd" value="$(var main_hazard_lights_cmd)"/>
+    <arg name="sub_control_cmd" value="$(var sub_control_cmd)"/>
+    <arg name="sub_gear_cmd" value="$(var sub_gear_cmd)"/>
+    <arg name="sub_turn_indicators_cmd" value="$(var sub_turn_indicators_cmd)"/>
+    <arg name="sub_hazard_lights_cmd" value="$(var sub_hazard_lights_cmd)"/>
+    <arg name="supervisor_control_cmd" value="$(var supervisor_control_cmd)"/>
+    <arg name="supervisor_gear_cmd" value="$(var supervisor_gear_cmd)"/>
+    <arg name="supervisor_turn_indicators_cmd" value="$(var supervisor_turn_indicators_cmd)"/>
+    <arg name="supervisor_hazard_lights_cmd" value="$(var supervisor_hazard_lights_cmd)"/>
+
   </include>
 
   <!-- emergency_stop_operator -->

@@ -20,6 +20,12 @@ Remap following `simple_planning_simulator` launch parameter in Main ECU.
   ("input/hazard_lights_command", "/control_switch_interface/hazard_lights_cmd"),
   ```
 
+#### Change SubECU launch parameters
+Remap SubECU topic parameters to distinguish with that of Main ECU.
+
+When operating single ECU simulation, this part can be skipped.
+
+
 #### Build pilot-auto.x2 and safety_island
 ##### pilot-auto.x2
 Please look at [Reference](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/).
