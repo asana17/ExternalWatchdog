@@ -365,31 +365,28 @@ void SupervisorNode::callMrmBehavior(
   auto request = std::make_shared<OperateMrm::Request>();
   request->operate = true;
 
-  service_result result;
+  service_result result = No_Response;
   std::string mrm_behavior_str;
 
-   if (mrm_behavior == MrmState::COMFORTABLE_STOP) {
-    result = NONE;
+  if (mrm_behavior == MrmState::COMFORTABLE_STOP) {
     mrm_behavior_str = "comfortable_stop";
     result = callMrmService(request, ecu->client_mrm_comfortable_stop_);
   }
   if (mrm_behavior == MrmState::EMERGENCY_STOP) {
     std::cout << "calling emergency stop on: " << convertEcuNameToString(ecu->name) << std::endl;
-    result = NONE;
     mrm_behavior_str = "emergency_stop";
     result = callMrmService(request, ecu->client_mrm_sudden_stop_);
   }
   const auto ecu_name = convertEcuNameToString(ecu->name);
   if (result == Success) {
-    RCLCPP_WARN(this->get_logger(), "%s stop is canceled on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+    RCLCPP_WARN(this->get_logger(), "%s stop is called on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
   } else if (result == Failure) {
-    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+    RCLCPP_ERROR(this->get_logger(), "%s is failed to call on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
   } else if (result == Timeout) {
       RCLCPP_ERROR(this->get_logger(), "MRM Service did not respond on: %s", ecu_name.c_str());
-  } else if (result) {
-    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel for unknown reason on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+  } else {
+    RCLCPP_WARN(this->get_logger(), "invalid MRM behavior: %d", mrm_behavior);
   }
-  RCLCPP_WARN(this->get_logger(), "invalid MRM behavior: %d", mrm_behavior);
 }
 
 void SupervisorNode::cancelMrmBehavior(
@@ -399,16 +396,14 @@ void SupervisorNode::cancelMrmBehavior(
   auto request = std::make_shared<OperateMrm::Request>();
   request->operate = false;
 
-  service_result result;
+  service_result result = No_Response;
   std::string mrm_behavior_str;
 
   if (mrm_behavior == MrmState::COMFORTABLE_STOP) {
-    result = NONE;
     mrm_behavior_str = "comfortable_stop";
     result = callMrmService(request, ecu->client_mrm_comfortable_stop_);
   }
   if (mrm_behavior == MrmState::EMERGENCY_STOP) {
-    result = NONE;
     mrm_behavior_str = "emergency_stop";
     result = callMrmService(request, ecu->client_mrm_sudden_stop_);
   }
@@ -420,10 +415,9 @@ void SupervisorNode::cancelMrmBehavior(
     RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
   } else if (result == Timeout) {
       RCLCPP_ERROR(this->get_logger(), "MRM Service did not respond on: %s", ecu_name.c_str());
-  } else if (result) {
-    RCLCPP_ERROR(this->get_logger(), "%s is failed to cancel for unknown reason on: %s", mrm_behavior_str.c_str(), ecu_name.c_str());
+  } else {
+    RCLCPP_WARN(this->get_logger(), "invalid MRM behavior: %d", mrm_behavior);
   }
-  RCLCPP_WARN(this->get_logger(), "invalid MRM behavior: %d", mrm_behavior);
 }
 
 service_result SupervisorNode::callMrmService(

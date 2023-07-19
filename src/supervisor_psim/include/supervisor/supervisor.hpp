@@ -49,7 +49,7 @@ struct CurrentMrmStatus
   VoterState::_mrm_ecu_type mrm_ecu;
 };
 
-enum service_result {Success, Failure, Timeout, NONE};
+enum service_result {Success, Failure, Timeout, No_Response};
 
 class SupervisorNode : public rclcpp::Node
 {

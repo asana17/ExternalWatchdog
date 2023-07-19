@@ -1,17 +1,17 @@
 # supervisor_psim
 
-safety island simulation using planning simulator.
+Safety island simulation using planning simulator.
 
-## single ECU simulation
-Simulation can run with only one ECU by using exclusive launch file.
+## Single ECU Simulation
+Run simulation with only one ECU using exclusive launch file.
 
 Please look at `launcher` directory.
 
-## How to run
+## How to Run
 
 ### Preparation
-#### Change planning simulator launch parameters
-Remap following `simple_planning_simulator` launch parameter in Main ECU.
+#### Change Planning Simulator Launch Parameters
+Remap following `simple_planning_simulator` launch parameters in Main ECU.
 
   ```
   ("input/ackermann_control_command", "/control_switch_interface/control_cmd"),
@@ -20,15 +20,15 @@ Remap following `simple_planning_simulator` launch parameter in Main ECU.
   ("input/hazard_lights_command", "/control_switch_interface/hazard_lights_cmd"),
   ```
 
-#### Change SubECU launch parameters
-Remap SubECU topic parameters to distinguish with that of Main ECU.
+#### Change SubECU Launch Parameters
+Remap Sub ECU topic parameters to distinguish with that of Main ECU.
 
-When operating single ECU simulation, this part can be skipped.
+When operating the single ECU simulation, this part can be skipped.
 
 
 #### Build pilot-auto.x2 and safety_island
 ##### pilot-auto.x2
-Please look at [Reference](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/).
+Please look at the [Reference](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/).
 
 ##### safety_island
 
@@ -38,7 +38,7 @@ Please look at [Reference](https://autowarefoundation.github.io/autoware-documen
 ```
 
 ### Run
-#### Launch planning simulation and safety_island
+#### Launch planning Simulation and safety_island
 It is better to launch safety_island first.
 
 ##### planning simulation

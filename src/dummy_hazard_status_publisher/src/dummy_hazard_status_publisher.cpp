@@ -39,7 +39,7 @@ std::vector<std::string> split(const std::string & str, const char delim)
 }
 
 DummyHazardStatusPublisher::DummyHazardStatusPublisher()
-  : Node("dummy_hazard_status_publisher", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true))
+  : Node("dummy_hazard_status_publisher", rclcpp::NodeOptions().automatically_declare_parameters_from_overrides(true).allow_undeclared_parameters(true))
 {
 
   params_.update_rate = declare_parameter<int>("update_rate", 10);
@@ -155,6 +155,7 @@ rcl_interfaces::msg::SetParametersResult DummyHazardStatusPublisher::paramCallba
   const std::vector<rclcpp::Parameter> & parameters)
 {
   rcl_interfaces::msg::SetParametersResult result;
+  result.set__successful(true);
 
   for (const auto & param : parameters) {
     const auto & param_name = param.get_name();
@@ -165,22 +166,21 @@ rcl_interfaces::msg::SetParametersResult DummyHazardStatusPublisher::paramCallba
         std::begin(monitoring_topics_), std::end(monitoring_topics_),
         [&topic_name](MonitoringTopic monitoring_topic){ return monitoring_topic.name == topic_name;});
     if (it == std::end(monitoring_topics_)) {
-      result.successful = false;
-      result.reason = "no matching topic name";
+      result.set__successful(false);
+      result.set__reason("no matching topic name");
       return result;
     }
-    const auto level_with_prefix_str = topic_name + std::string(".level");
-    const auto emergency_with_prefix_str = topic_name + std::string(".emergency");
-    const auto emergency_holding_with_prefix_str = topic_name + std::string(".emergency_holding");
-    const auto self_recoverable_with_prefix_str = topic_name + std::string(".self_recoverable");
-    std::string level_str, emergency_str, emergency_holding_str, self_recoverable_str;
+    std::cout << "matching topic found" << std::endl;
+    const auto hazard_status_params_with_prefix_str = topic_name + std::string(".hazard_status_params");
+    std::vector<std::string> hazard_status_params_str;
 
     try {
-      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, level_str);
-      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, emergency_str);
-      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, emergency_holding_str);
-      tier4_autoware_utils::updateParam(parameters, level_with_prefix_str, self_recoverable_str);
-    } catch (const rclcpp::exceptions::InvalidParametersException & e) {
+      if (!tier4_autoware_utils::updateParam(parameters, hazard_status_params_with_prefix_str, hazard_status_params_str)) {
+        result.set__successful(false);
+        result.set__reason("updateParam failed");
+        return result;
+      };
+    } catch (const rclcpp::exceptions::InvalidParameterTypeException & e) {
         result.set__successful(false);
         result.set__reason(e.what());
         return result;
@@ -188,10 +188,14 @@ rcl_interfaces::msg::SetParametersResult DummyHazardStatusPublisher::paramCallba
 
     HazardStatusParams hazard_status_params;
 
-    convertStrParamsToHazardStatusParams(result, hazard_status_params,{level_str, emergency_str, emergency_holding_str, self_recoverable_str});
+    std::cout << "converting parameter" << std::endl;
+    convertStrParamsToHazardStatusParams(result, hazard_status_params, hazard_status_params_str);
     if (result.successful == false) {
+    std::cout << "converting parameter failed" << std::endl;
       return result;
     }
+
+    RCLCPP_INFO(this->get_logger(), "changing hazard_status of %s, ...level: %s, emergency: %s, emergency_holding: %s, self_recoverable: %s", topic_name.c_str(), hazard_status_params_str[0].c_str(), hazard_status_params_str[1].c_str(), hazard_status_params_str[2].c_str(), hazard_status_params_str[3].c_str());
 
     it->hazard_status_params.level = hazard_status_params.level;
     it->hazard_status_params.emergency = hazard_status_params.emergency;
@@ -199,8 +203,6 @@ rcl_interfaces::msg::SetParametersResult DummyHazardStatusPublisher::paramCallba
     it->hazard_status_params.self_recoverable = hazard_status_params.self_recoverable;
     it->hazard_status_params.fault_time_after_engage = 0.0;
 
-    RCLCPP_INFO(this->get_logger(), "changing hazard_status of %s, ...level: %s, emergency: %s, emergency_holding: %s, self_recoverable: %s", topic_name.c_str(), level_str.c_str(), emergency_str.c_str(), emergency_holding_str.c_str(), self_recoverable_str.c_str());
-    result.set__successful(true);
   }
   return result;
 }
@@ -213,6 +215,7 @@ void DummyHazardStatusPublisher::convertStrParamsToHazardStatusParams(
     result.set__reason("invalid parameter length, please set string param as follows: {level, emergency, emergency_holding, self_recoverable}");
     return;
   }
+
 
   // check level argument
   int level;
@@ -232,6 +235,7 @@ void DummyHazardStatusPublisher::convertStrParamsToHazardStatusParams(
   // check other arguments
   std::map<int, std::string>indexes{{ 1, "emergency" }, { 2, "emergency_holding" }, { 3, "self_recoverable" }};
   for (const auto & index : indexes) {
+    std::cout << index.second << " parameter set" << std::endl;
     checkBoolParam(result, str_params[index.first], index.second);
     if (result.successful == false) {
       return;
@@ -242,7 +246,6 @@ void DummyHazardStatusPublisher::convertStrParamsToHazardStatusParams(
   std::istringstream(str_params[1]) >> std::boolalpha >> hazard_status_params.emergency;
   std::istringstream(str_params[2]) >> std::boolalpha >> hazard_status_params.emergency_holding;
   std::istringstream(str_params[3]) >> std::boolalpha >> hazard_status_params.self_recoverable;
-  return;
 }
 
 void DummyHazardStatusPublisher::checkBoolParam(
@@ -252,7 +255,7 @@ void DummyHazardStatusPublisher::checkBoolParam(
   auto isBool = [](std::string str) {return (str == "false" || str == "true");};
   if (!isBool(str)) {
     result.set__successful(false);
-    const auto err_msg = "invalid" + err_param_name + "argument: param must be bool";
+    const auto err_msg = "invalid " + err_param_name + " argument: param must be bool";
     result.set__reason(err_msg);
     return;
   }

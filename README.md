@@ -1,9 +1,9 @@
 # Safety Island
 Currently WIP.
 
-This repository contains safety island components. `supervisor(_psim)`, `emergency_stop_operator` pkg is used for ecu switching MRM.
+This repository contains safety island components. The `supervisor(_psim)`, `emergency_stop_operator` package are mainly used for safety island funcitons.
 
-## pkg description
+## Package Descriptions
 - `supervisor`, `supervisor_psim`
 
   Includes `voter` and `switch` functionality in one ROS2 node.
@@ -14,7 +14,7 @@ This repository contains safety island components. `supervisor(_psim)`, `emergen
 
 - `diagnostic_monitor`
 
-  Judge system `hazard_status` from ROS2 diagnostic msg.
+  Judge system `hazard_status` from ROS2 diagnostic msgs.
 
 - `tilde_monitor`
 
@@ -22,11 +22,11 @@ This repository contains safety island components. `supervisor(_psim)`, `emergen
 
 - `hazard_status_converter`
 
-  Convert Autoware style hazard_status to safety_island style hazard_status.
+  Convert Autoware style `hazard_status` to safety_island style `hazard_status`.
 
 - `dummy_hazard_status_publisher`
 
-  Publish safety_island style dummy hazard_status.
+  Publish safety_island style dummy `hazard_status`.
 
 - `launcher`
 
@@ -34,20 +34,21 @@ This repository contains safety island components. `supervisor(_psim)`, `emergen
 
 - `supervisor_vehicle_cmd_gate`, `raw_vehicle_cmd_converter`
 
-  Convert vehicle `control_cmd` to CAN frame (not implemented completly).
+  Convert vehicle `control_cmd` to CAN frames (not implemented completly).
 
 - `watchdog`
 
-  Temporal external MRM operator. (not implemented completly.)
+  A temporal external MRM operator. (Not implemented completly and currently pending.)
 
 
-## How to build
+## How to Build
   ```
    $ vcs import src < build_depends.repos
    $ colcon build --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=Release -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --packages-skip tilde_error_monitor tilde_aggregator external_watchdog
   ```
 
-## vehicle and psim ver.
-Currently working on with planning simulator (`supervisor_psim` pkg). `supervisor` pkg is for real vehicle.
+## How to Run
+### Vehicle and Planning Simulator ver.
+Currently working on planning simulation (The `supervisor_psim` package). The `supervisor` pacakge is for real vehicle implementation.
 
-Please look at `supervisor_psim` directory to quick run.
+Please look at the `supervisor_psim` directory for a quick run.
