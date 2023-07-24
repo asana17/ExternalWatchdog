@@ -1,11 +1,11 @@
-# The Safety Island Manual
+# The Safety Island Manual V1.0
 
 ## Index
 1. [Description](#description)
+1. [Node Descriptions](#node-descriptions)
 1. [Prerequisites](#Prerequisites)
 1. [Preparation](#preparation)
 1. [How to Run](#how-to-run)
-1. [Node Descriptions](#node-descriptions)
 1. [Simulation Examples](#simulation-examples)
 
 ## Description
@@ -29,6 +29,42 @@ In the repository above, simulation helper functions are also included.
 
 Details of those functions are written inside the [Node Description section](#node-descriptions).
 
+## Node Descriptions
+<a id="node-descriptions"></a>
+
+For more info, please read README in [repo](https://github.com/tier4/safety_island).
+
+### supervisor / supervisor_psim
+https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/supervisor_psim
+
+(`psim` stands for `planning_simulator`)
+
+This node has Voter and Switch functionality in one ROS2 node.
+
+Voter: Judge MRM behavior and operating ECU from self and external monitoring result.
+
+Switch: Change Control Interface to connect with vehicle / psim.
+
+### emergency_stop_operator
+https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/emergency_stop_operator
+
+Operate MRM emergency stop without Autoware.
+
+### diagnostic_monitor
+https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/diagnostic_monitor
+
+Judge system `hazard_status` from ROS2 diagnostics. This node publish safety island style `hazard_status`.
+
+### hazard_status_converter
+https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/hazard_status_converter
+
+This node converts Autoware style `hazard_status` to safety island style `hazard_status` by adding `self_recoverable` flag. The `self_recoverable` variable can be dynamically set with the config yaml. If the topic name written in the config is included in LF/SPF `hazard_status`, `self_recoverable` flag is set to false.
+
+### dummy_hazard_status_publisher
+https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/dummy_hazard_status_publisher
+
+This node can generate `hazard_status` without subscribing diagnostics. `hazard_status` parameters can be set from the config yaml. Also, the `hazard_status` parameters can be dynamically change from `ros2 param set` interface.
+
 ### Node Diagram and Data Flow
 
 #### Real Vehicle
@@ -49,11 +85,11 @@ ROS: ROS2 Humble
 
 Git
 
-(For single ECU planning simulation, high-performance machine with more then 8 threads. Example development environment: CPU Intel Core i7-10700,  GPU RTX3070Ti.)
+(For single ECU planning simulation, high-performance machine with more then 8 threads. Example development environment: CPU Intel Core i7-9700K,  GPU RTX3070Ti.)
 
 ## Preparation
 <a id="preparation"></a>
-For ease, planning simulation with a single ECU is recommended.
+To understand the behavior, a planning simulation with a single ECU is recommended.
 
 ### Autoware
 Please also look at [Autoware Documentation](https://autowarefoundation.github.io/autoware-documentation/main/installation/autoware/source-installation/).
@@ -142,6 +178,8 @@ source install/setup.bash
 ros2 launch safety_island_psim_single_autoware_ecu.launch.xml
 ```
 
+It is also possible to run only safety island on a different ECU from the Autoware ECU by using this configuration.
+
 ### Launch Autoware
 Please also look at [Autoware Documentation](https://autowarefoundation.github.io/autoware-documentation/main/tutorials/ad-hoc-simulation/planning-simulation/).
 ```
@@ -154,40 +192,191 @@ ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autowa
 ## Simulation Examples
 <a id="simulation-examples"></a>
 
+Currently in the main branch, configuration to achieve following behavior is already set. Also, some console output lines are included to help understanding the `supervisor` behavior.
+
 ### Planning Simulation with a Single ECU
 
-## Node Descriptions
-<a id="node-descriptions"></a>
+Following conditions are different from normal run:
 
-For more info, please read README in [repo](https://github.com/tier4/safety_island).
+1. Main ECU control cmd and MRM operator result is also used as Sub ECU's.
+1. `lane_departure` is treated as non self recoverable error.
 
-### supervisor / supervisor_psim
-https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/supervisor_psim
+#### Run Simulation
+This simulation configuration is already done in main safety island branch.
 
-(`psim` stands for `planning_simulator`)
+1. Launch safety island on command-line 1.
+    ```
+    cd safety_island
+    source install/setup.bash
+    ros2 launch safety_island_psim_single_autoware_ecu.launch.xml
+    ```
 
-This node has Voter and Switch functionality in one ROS2 node.
+    At this point, the log of the command line 1 is as follows:
 
-Voter: Judge MRM behavior and operating ECU from self and external monitoring result.
+    ```
+    ...
+    [supervisor_psim-1] [INFO] [1690191340.471333997] [supervisor]: waiting for self_hazard_status_stamped msg of Main ...
+    [supervisor_psim-1] [INFO] [1690191340.471361791] [supervisor]: waiting for mrm comfortable stop to become available on Main ...
+    [supervisor_psim-1] [INFO] [1690191340.471368258] [supervisor]: waiting for mrm emergency stop to become available on Main ...
+    [supervisor_psim-1] [INFO] [1690191340.471374802] [supervisor]: data not ready for supervisor
+    ...
+    ```
 
-Switch: Change Control Interface to connect with vehicle / psim.
+2. Launch Autoware on command-line 2.
 
-### emergency_stop_operator
-https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/emergency_stop_operator
+    ```
+    cd pilot-auto.x2
+    source install/setup.bash
+    ros2 launch autoware_launch planning_simulator.launch.xml map_path:=$HOME/autoware_map/sample-map-planning vehicle_model:=gsm8 sensor_model:=aip_x2
+    ```
 
-Operate MRM emergency stop without Autoware.
+    At this point, the log of the command line 1 is as follows:
 
-### diagnostic_monitor
-https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/diagnostic_monitor
+    ```
+    ...
+    [supervisor_psim-1] [INFO] [1690191469.237818330] [supervisor]: waiting for control_cmd to become available on Main ...
+    [supervisor_psim-1] [INFO] [1690191469.237844626] [supervisor]: waiting for gear_cmd to become available on Main ...
+    [supervisor_psim-1] [INFO] [1690191469.237851052] [supervisor]: waiting for turn_indicators_cmd_to become available on Main ...
+    [supervisor_psim-1] [INFO] [1690191469.237856401] [supervisor]: waiting for hazard_lights_cmd_ to become available on Main ...
+    [supervisor_psim-1] [INFO] [1690191470.971167992] [supervisor]: data not ready for supervisor
+    ...
+    ```
 
-Judge system `hazard_status` from ROS2 diagnostics. This node publish safety island style `hazard_status`.
+3. set initial pose and goal on command-line 3.
+    ```
+    cd safety_island/src/scripts
+    chmod +x set_init_and_goal_supervisor_stop.sh
+    ./set_init_and_goal_supervisor_stop.sh
+    ```
 
-### hazard_status_converter
-https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/hazard_status_converter
 
-This node converts Autoware style `hazard_status` to safety island style `hazard_status` by adding `self_recoverable` flag. The `self_recoverable` variable can be dynamically set with the config yaml. If the topic name written in the config is included in LF/SPF `hazard_status`, `self_recoverable` flag is set to false.
+    At this point, the log of the command line 1 is as follows:
+    ```
+    ...
+    [supervisor_psim-1] [INFO] [1690191475.371165375] [supervisor]: Main is selected...
+    [supervisor_psim-1] [INFO] [1690191476.371190188] [supervisor]: Main is selected...
+    ...
+    ```
 
-### dummy_hazard_status_publisher
-https://github.com/tier4/safety_island/tree/549fe05a041e81e707d1ba7db02930058854c5c4/src/dummy_hazard_status_publisher
 
-This node can generate `hazard_status` without subscribing diagnostics. `hazard_status` parameters can be set from the config yaml. Also, the `hazard_status` parameters can be dynamically change from `ros2 param set` interface.
+4. start autonomous driving on command-line 3.
+    ```
+    cd safety_island/src/scripts
+    chmod +x change_to_autonomous.sh
+    ./change_to_autonomous.sh
+    ```
+
+    During autonomous driving, `voter` state transits as follows:
+
+5. Normal -> Supervisor Emergency Stop
+    At this point, the log of the command line 1 is as follows:
+    ```
+    ...
+    [supervisor_psim-1] [INFO] [1690191580.104609290] [supervisor]: Main is selected...
+    [supervisor_psim-1] Voter State changed: NORMAL -> SUPERVISOR_STOP
+    [supervisor_psim-1] operateMrm SUPERVISOR_STOP
+    [supervisor_psim-1] calling emergency stop on: Supervisor
+    [supervisor_psim-1] [ERROR] [1690191580.481416839] [supervisor]: MRM Service did not respond on: Supervisor
+    [supervisor_psim-1] Switch Status changed: Main -> Supervisor
+    [supervisor_psim-1] operateMrm SUPERVISOR_STOP
+    [supervisor_psim-1] operateMrm SUPERVISOR_STOP
+    ...
+    [supervisor_psim-1] [INFO] [1690191581.137820892] [supervisor]: Supervisor is selected...
+    ...
+    ```
+
+    Here, the log tells us "MRM Service did not respond on: Supervisor". This does not mean a MRM stop operator did not start service. The MRM stop operator did not return response to `voter` even if the service was succesfully called, because of DDS implementation.
+    The operation of the corresponding MRM stop operator is confirmed in the experimental environment.
+
+6. Supervisor Emergency Stop -> Normal
+
+    At this point, the log of the command line 1 is as follows:
+
+    ```
+    ...
+    [supervisor_psim-1] Voter State changed: SUPERVISOR_STOP -> NORMAL
+    [supervisor_psim-1] Switch Status changed: Supervisor -> Main
+    [supervisor_psim-1] [ERROR] [1690191581.481416065] [supervisor]: MRM Service did not respond on: Supervisor
+    [supervisor_psim-1] [INFO] [1690189904.756843401] [supervisor]: Main is selected...
+    [supervisor_psim-1] [INFO] [1690189905.756884998] [supervisor]: Main is selected...
+    ...
+    ```
+
+    Here, the MRM service is called to cancel a MRM operation.
+
+7. Supervisor Emergency Stop -> Sub Comfortable Stop
+
+    At this point, the log of the command line 1 is as follows:
+
+    ```
+    ...
+
+    [supervisor_psim-1] Voter State changed: NORMAL -> SUPERVISOR_STOP
+    [supervisor_psim-1] operateMrm SUPERVISOR_STOP
+    [supervisor_psim-1] calling emergency stop on: Supervisor
+    [supervisor_psim-1] [ERROR] [1690189922.000271712] [supervisor]: MRM Service did not respond on: Supervisor
+    [supervisor_psim-1] Switch Status changed: Main -> Supervisor
+    [supervisor_psim-1] operateMrm SUPERVISOR_STOP
+    [supervisor_psim-1] [INFO] [1690189922.056764075] [supervisor]: Supervisor is selected...
+    [supervisor_psim-1] operateMrm SUPERVISOR_STOP
+    ...
+    [supervisor_psim-1] Voter State changed: SUPERVISOR_STOP -> COMFORTABLE_STOP
+    [supervisor_psim-1] operateMrm COMFORTABLE_STOP
+    [supervisor_psim-1] [ERROR] [1690189922.566968354] [supervisor]: MRM Service did not respond on: Supervisor
+    [supervisor_psim-1] [WARN] [1690189922.567591871] [supervisor]: comfortable_stop stop is called on: Sub
+    [supervisor_psim-1] MRM called on Sub
+    [supervisor_psim-1] Switch Status changed: Supervisor -> Sub
+    [supervisor_psim-1] Voter State changed: COMFORTABLE_STOP -> MRM_SUCCEEDED
+    [supervisor_psim-1] [INFO] [1690189923.056798595] [supervisor]: Sub is selected...
+    [supervisor_psim-1] [INFO] [1690189924.056871367] [supervisor]: Sub is selected...
+    ...
+    ```
+
+    Here, Comfortable Stop on the Sub ECU is called after Supervisor Emergency Stop.
+
+
+### Simulation Configuration Examples
+
+#### Set Non Self Recoverable Error
+Autonomous running behavior can be changed by temporarily setting `lane_departure` error as non self recoverable error. To acheive this, add following parameters to `hazard_status_converter` config file `src/hazard_status_converter/config/hazard_status_converter.param.yaml` :
+
+```
+ros__parameters:
+  non_self_recoverable_modules:
+    /autoware/control/autonomous_driving/performance_monitoring/lane_departure: default
+```
+
+This setting change running behaviors as follows.
+
+Before change: When `lane_departure` occurs, this error is judged as self recoverable error and `emergency_handler` run MRM Comfortable Stop on Main ECU.
+
+After change: When `lane_departure` occurs, this error is judged as non self recoverable error and `voter` run MRM Emergency Stop on Supervisor ECU, then run MRM Comfortable Stop on Sub ECU.
+
+
+
+#### Change Hazard Status Parameters
+
+By changing `dummy_hazard_status_publisher` configuration file `src/dummy_hazard_status_publisher/config/dummy_hazard_status_publisher.param.yaml`, another behavior can be operated during autonomous driving.
+Ex. Following setting cause MRM Comfortable Stop on Main 5 seconds after starting autonomous driving:
+
+
+```
+/**:
+  ros__parameters:
+    monitoring_topics:
+      #/main/self_monitoring/hazard_status: default
+      /sub/self_monitoring/hazard_status: default
+      /supervisor/self_monitoring/hazard_status: default
+      /main/external_monitoring/hazard_status/sub: {level: "3", emergency: "true", emergency_holding: "false", self_recoverable: "true", fault_time_after_engage: "5.0"}
+      /main/external_monitoring/hazard_status/supervisor: default
+      /sub/external_monitoring/hazard_status/main: default
+      /sub/external_monitoring/hazard_status/supervisor: default
+      /supervisor/external_monitoring/hazard_status/main: default
+      /supervisor/external_monitoring/hazard_status/sub: {level: "3", emergency: "true", emergency_holding: "false", self_recoverable: "true", fault_time_after_engage: "5.0"}
+
+```
+
+This setting sets new parameters for `/main/external_monitoring/hazard_status/sub` and `supervisor/external_monitoring/hazard_status/sub`. The parameter `emergency` is set to `true` and `fault_time_after_engage` is set to `5.0`. This means 5 seconds after starting autonomous driving, two external monitoring results of Sub becomes emergency. By this, `voter` judges the Sub ECU has fault and operate MRM Comfortable Stop on Main. (If Main is already treated as a fault ECU in the `voter`, MRM Emergency Stop is continue operatiog on Supervisor and this monitoring result is ignored.)
+
+cf. Reconfiguration of paramters above is available from command-line. Please see `dummy_hazard_status_publisher` README.
+
