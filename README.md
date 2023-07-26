@@ -1,5 +1,5 @@
-# Safety Island
-Currently WIP.
+# External Watchdog
+Old development repository for [safety_island](https://github.com/tier4/safety_island)
 
 This repository contains safety island components. The `supervisor(_psim)`, `emergency_stop_operator` package are mainly used for safety island funcitons.
 
